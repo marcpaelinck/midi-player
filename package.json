@@ -8,5 +8,8 @@
   "keywords": [],
   "author": "Marc Paelinck",
   "license": "ISC",
-  "description": "Soundfont player using the Web Audio API"
+  "description": "Soundfont player using the Web Audio API",
+  "dependencies": {
+    "spessasynth_lib": "^3.21.5"
+  }
 }
