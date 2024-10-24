@@ -1,0 +1,22 @@
+{"songs": 
+    [
+        {"title": "Cendrawasih", "file": "Cendrawasih_GONG_KEBYAR3.mid"},
+        {"title": "Sinom Ladrang", "file": "Sinom Ladrang_GONG_KEBYAR3.mid"}
+    ],
+"instruments":
+    [
+      { "name": "GONGS", "channel": 0 },
+      { "name": "_KEMPLI", "channel": 1 },
+      { "name": "_CENGCENG", "channel": 2 },
+      { "name": "KENDANG", "channel": 3 },
+      { "name": "JEGOGAN", "channel": 4 },
+      { "name": "CALUNG", "channel": 5 },
+      { "name": "_PENYACAH", "channel": 6 },
+      { "name": "PEMADE", "channel": 7 },
+      { "name": "KANTILAN", "channel": 8 },
+      { "name": "_UGAL", "channel": 10 },
+      { "name": "_GENDERRAMBAT", "channel": 11 },
+      { "name": "REYONG", "channel": 12 },
+      { "name": "_TROMPONG", "channel": 13 }
+    ]
+}
