@@ -1,0 +1,6 @@
+/* Emulate a WordPress HTML block */
+.block {
+    width: 50%;
+    position: absolute;
+    left: 25%;
+}

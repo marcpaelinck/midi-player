@@ -11,5 +11,8 @@
   "description": "Soundfont player using the Web Audio API",
   "dependencies": {
     "spessasynth_lib": "^3.21.5"
+  },
+  "prettier": {
+    "printWidth": 120
   }
 }

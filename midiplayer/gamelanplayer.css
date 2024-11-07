@@ -1,0 +1,72 @@
+/* See https://www.w3schools.com/css/css_rwd_intro.asp */
+* {
+  box-sizing: border-box;
+}
+.mp-row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+/* MAKE PAGE RESPONSIVE */
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+  /* For mobile phones: */
+  width: 100%;
+}
+@media (min-width: 600px) {
+  /* For larger screens */
+  .col-1 {width: 8.33%;}
+  .col-2 {width: 16.66%;}
+  .col-3 {width: 25%;}
+  .col-4 {width: 33.33%;}
+  .col-5 {width: 41.66%;}
+  .col-6 {width: 50%;}
+  .col-7 {width: 58.33%;}
+  .col-8 {width: 66.66%;}
+  .col-9 {width: 75%;}
+  .col-10 {width: 83.33%;}
+  .col-11 {width: 91.66%;}
+  .col-12 {width: 100%;}
+}
+/* SELECTOR PANEL above player */
+.selector-group {
+	display: table;
+	grid-template-columns: max-content;
+/*     padding-right: 10%; */
+}
+.selector-box {
+	display: table-row;
+    padding-bottom: 10%;
+}
+.label {
+	display: table-cell;
+    padding-right: 10px;
+	white-space: nowrap;
+	width: 1%;
+}
+.selector {
+	display: table-cell;
+    padding-right: 10px;
+	width: auto;
+}
+/* PLAYER */
+#progress {
+    width: 100%;
+} 
+.mp-player-button {
+    font-size: inherit;
+    line-height: 30pt;
+    padding-bottom: 5%;
+}
+.mp-player-button span {
+		vertical-align: middle;
+}
+.mp-animation {
+    width:100%;
+}
+.mp-canvas {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
