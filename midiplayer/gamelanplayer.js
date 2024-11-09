@@ -2,9 +2,8 @@
 import { Sequencer } from "./spessasynth_lib/sequencer/sequencer.js";
 import { Synthetizer } from "./spessasynth_lib/synthetizer/synthetizer.js";
 import { DATAFOLDER_URL_ABSOLUTE, WORKLET_URL_ABSOLUTE } from "./settings.js";
-import { setSongOnChangeEvent, populate_dropdown, initializeElementEvents } from "./gamelanplayer/events.js";
+import { initializeDropDownsAndEvents } from "./gamelanplayer/userinterface.js";
 import { log } from "./gamelanplayer/utilities.js";
-import { initialize_canvas } from "./gamelanplayer/animation.js";
 
 const dom = {
     playerElement: document.getElementById("midiplayer"),
@@ -14,33 +13,29 @@ const dom = {
     instrumentSelector: document.getElementById("instrumentselector"),
     speedSelector: document.getElementById("speedselector"),
     audioTimeSlider: document.getElementById("progress"),
+    audioTimeDisplay: document.getElementById("elapsedtime"),
     playPauseButton: document.getElementById("play"),
     stopButton: document.getElementById("stop"),
     canvas: document.getElementById("canvas"),
 };
 
 dom.playerElement.style.visibility = "hidden";
-initialize_canvas(canvas);
 
 let settings;
 
-// Populate the dropdown with song titles from the content file.
+// Load the JSON settings file
 fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
     .then((response) => response.json())
     .then((json) => {
-        // Only keep songs that should be displayed
-        json["songs"] = json["songs"].filter((song) => song.display);
-        populate_dropdown(dom.songSelector, json["songs"], "title", [], 1);
-        setSongOnChangeEvent(dom, json);
         settings = json;
     })
     .then(() => {
-        // load the soundfont
+        // Import the soundfont
         return fetch(DATAFOLDER_URL_ABSOLUTE + "/soundfont/" + settings["soundfont"]);
     })
     .then(async (response) => {
+        // Load the soundfont into a buffer
         let soundFontBuffer = await response.arrayBuffer();
-
         if (response.headers.get("content-length") > 0) {
             document.getElementById("message").innerText = " ";
             dom.playerElement.style.visibility = "visible";
@@ -50,15 +45,14 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
         return soundFontBuffer;
     })
     .then(async (soundFontBuffer) => {
-        // create the context and add audio worklet
+        // create the audio context, sequencer and synthesizer
         const context = new AudioContext();
         await context.audioWorklet.addModule(new URL("./spessasynth_lib/" + WORKLET_URL_ABSOLUTE, import.meta.url));
         let synthesizer = new Synthetizer(context.destination, soundFontBuffer); // create the synthetizer
         const SEQ_OPTIONS = { skipToFirstNoteOn: true, autoPlay: false };
         let sequencer = new Sequencer([], synthesizer, SEQ_OPTIONS);
 
-        // add an event listener for the part drop-down
-        // setPartOnChangeEvent(dom.partSelector, context, sequencer, dom);
-        initializeElementEvents(context, sequencer, synthesizer, settings, dom, log);
+        // Set up the user interfae
+        initializeDropDownsAndEvents(context, sequencer, synthesizer, settings, dom, log);
     });
 

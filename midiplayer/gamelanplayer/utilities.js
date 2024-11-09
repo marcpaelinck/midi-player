@@ -1,3 +1,5 @@
+import { LOGGING } from "../settings.js";
+
 export function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }

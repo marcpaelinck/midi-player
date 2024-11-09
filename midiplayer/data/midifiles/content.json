@@ -61,7 +61,7 @@
             { "name": "PEMADE_SANGSIH", "channel": 5, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
             { "name": "KANTILAN_POLOS", "channel": 6, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
             { "name": "KANTILAN_SANGSIH", "channel": 7, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "TROMPONG", "channel": 8, "midioffset": 50, "configuration": ["I", "O", "E", "EU", "U", "A", "AI", "i", "o", "e", "eu", "u", "a", "ai"], "shape": "circle" }
+            { "name": "TROMPONG", "channel": 8, "midioffset": 50, "configuration": [["I", "O", "E", "EU", "U", "A", "AI", "i", "o", "e", "eu", "u", "a", "ai"]], "shape": "circle" }
         ]
     }
 ,

@@ -1,6 +1,40 @@
-import { DATAFOLDER_URL_ABSOLUTE, LOGGING } from "../settings.js";
-import { drawInstrument } from "./animation.js";
+import { DATAFOLDER_URL_ABSOLUTE } from "../settings.js";
+import { Animator } from "./animation.js";
 import { delay, log } from "./utilities.js";
+
+/**
+ * Initializes events of DOM elements. Parameters from position 3 refer to Element objects.
+ * @param {*} sequencer {Sequencer}
+ * @param {*} synthesizer {Synthesizer}
+ * @param {*} json_settings {json}
+ *
+ */
+export function initializeDropDownsAndEvents(context, sequencer, synthesizer, json_settings, dom, logfunc) {
+    populateSongDropdown(json_settings, dom);
+    setSongOnChangeEvent(dom, json_settings);
+    setPartOnChangeEvent(context, sequencer, dom);
+
+    dom.audioTimeSlider.onclick = () => {
+        sequencer.currentTime = (dom.audioTimeSlider.value / 1000) * sequencer.duration; // switch the time (the sequencer adjusts automatically)
+    };
+
+    // Change playback speed
+    dom.speedSelector.onchange = () => {
+        if (!sequencer.paused) {
+            sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
+            dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
+        }
+    };
+
+    const animator = new Animator(canvas, synthesizer);
+
+    setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom);
+    setPlayPauseStopOnClickEvents(sequencer, dom);
+
+    dom.loopCheckbox.onclick = () => {
+        sequencer.loop = true;
+    };
+}
 
 /**
  * Populates a dropdown selector
@@ -10,7 +44,7 @@ import { delay, log } from "./utilities.js";
  * @param {string} value label of the json items containing the value to assign to the 'value' property of the option.
  * @param {int} deletefrom delete existing content starting from given index. (-1 = do not delete existing content)
  */
-export function populate_dropdown(selector, jsoncontent, display, attributes, deletefrom = 0) {
+function populate_dropdown(selector, jsoncontent, display, attributes, deletefrom = 0) {
     // Remove existing elements
     if (deletefrom >= 0) {
         while (selector.children.length > deletefrom) {
@@ -30,11 +64,22 @@ export function populate_dropdown(selector, jsoncontent, display, attributes, de
 }
 
 /**
+ * Populates the dropdown with compositions
+ * @param {JSON} json_settings
+ * @param {Dictionary of Element} dom DOM elements
+ */
+function populateSongDropdown(json_settings, dom) {
+    // Only keep songs that should be displayed
+    json_settings["songs"] = json_settings["songs"].filter((song) => song.display);
+    populate_dropdown(dom.songSelector, json_settings["songs"], "title", [], 1);
+}
+
+/**
  * sets the change event for the song selector
  * @param {dictionary of Element} dom DOM elements
  * @param {JSON} json_settings
  */
-export function setSongOnChangeEvent(dom, json_settings) {
+function setSongOnChangeEvent(dom, json_settings) {
     // Remove an initial "Select a <type>..." option (if present)
     // as soon as a selection is made by the user.
     let jsonptr = json_settings;
@@ -68,7 +113,7 @@ export function setSongOnChangeEvent(dom, json_settings) {
  * @param {Sequencer} sequencer
  * @param {dictionary of Element} dom
  */
-export function setPartOnChangeEvent(context, sequencer, dom) {
+function setPartOnChangeEvent(context, sequencer, dom) {
     // add an event listener for the part drop-down
     dom.partSelector.addEventListener("change", async (event) => {
         // retrieve the file path for the selected song
@@ -94,8 +139,12 @@ export function setPartOnChangeEvent(context, sequencer, dom) {
 
         // make the slider move with the song
         setInterval(() => {
-            // slider ranges from 0 to 1000
+            // Slider ranges from 0 to 1000
             dom.audioTimeSlider.value = (sequencer.currentTime / sequencer.duration) * 1000;
+            // Display elapsed time
+            let mm = Math.floor(sequencer.currentTime / 60);
+            let ss = Math.round(sequencer.currentTime - 60 * mm, 0);
+            dom.audioTimeDisplay.innerHTML = String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
         }, 500);
     });
 }
@@ -106,7 +155,7 @@ export function setPartOnChangeEvent(context, sequencer, dom) {
  * @param {JSON} json_settings
  * @param {dictionary of Element} dom DOM elements
  */
-function setInstrumentOnChangeEvent(synthesizer, json_settings, dom) {
+function setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom) {
     dom.instrumentSelector.onchange = () => {
         // let selectedChannel = dom.instrumentSelector.options[dom.instrumentSelector.selectedIndex].value;
         let selectedChannel =
@@ -139,7 +188,7 @@ function setInstrumentOnChangeEvent(synthesizer, json_settings, dom) {
         }
         // Draw the animation area or clear it if instrument == null
         // draw_instrument(keyboard, instrument, synthetizer);
-        drawInstrument(dom.canvas, instrument, synthesizer);
+        animator.draw(instrument);
     };
 }
 
@@ -151,6 +200,7 @@ function setInstrumentOnChangeEvent(synthesizer, json_settings, dom) {
 function setPlayPauseStopOnClickEvents(sequencer, dom) {
     const playPauseIcon = dom.playPauseButton.querySelectorAll(".icon")[0];
     dom.playPauseButton.onclick = () => {
+        if (sequencer.hasDummyData) return;
         if (sequencer.paused) {
             playPauseIcon.innerText = "pause";
             sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
@@ -167,40 +217,10 @@ function setPlayPauseStopOnClickEvents(sequencer, dom) {
     // Stop button functionality
     dom.stopButton.onclick = () => {
         // Pause playback and reset playback pointer
+        if (sequencer.hasDummyData) return;
         playPauseIcon.innerText = "play_arrow";
         dom.audioTimeSlider.value = 0;
         dom.audioTimeSlider.dispatchEvent(new Event("click")); // redraws slider and resets sequencer time
         sequencer.pause(); // pause
-    };
-}
-
-/**
- * Initializes events of DOM elements. Parameters from position 3 refer to Element objects.
- * @param {*} sequencer {Sequencer}
- * @param {*} synthesizer {Synthesizer}
- * @param {*} json_settings {json}
- *
- */
-export function initializeElementEvents(context, sequencer, synthesizer, json_settings, dom, logfunc) {
-    setPartOnChangeEvent(context, sequencer, dom);
-
-    dom.audioTimeSlider.onclick = () => {
-        sequencer.currentTime = (dom.audioTimeSlider.value / 1000) * sequencer.duration; // switch the time (the sequencer adjusts automatically)
-    };
-
-    // Change playback speed
-    dom.speedSelector.onchange = () => {
-        if (!sequencer.paused) {
-            sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
-            dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
-        }
-    };
-
-    setInstrumentOnChangeEvent(synthesizer, json_settings, dom);
-
-    setPlayPauseStopOnClickEvents(sequencer, dom);
-
-    dom.loopCheckbox.onclick = () => {
-        sequencer.loop = true;
     };
 }
