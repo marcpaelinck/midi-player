@@ -2,6 +2,9 @@
 * {
   box-sizing: border-box;
 }
+.mp-row {
+    display: block;
+}
 .mp-row::after {
   content: "";
   clear: both;
@@ -14,7 +17,7 @@
   /* For mobile phones: */
   width: 100%;
 }
-@media (min-width: 600px) {
+@media (min-width: 1300px) {
   /* For larger screens */
   .col-1 {width: 8.33%;}
   .col-2 {width: 16.66%;}

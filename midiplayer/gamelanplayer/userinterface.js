@@ -14,15 +14,16 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     setSongOnChangeEvent(dom, json_settings);
     setPartOnChangeEvent(context, sequencer, dom);
 
-    dom.audioTimeSlider.onclick = () => {
+    dom.audioTimeSlider.onchange = () => {
         sequencer.currentTime = (dom.audioTimeSlider.value / 1000) * sequencer.duration; // switch the time (the sequencer adjusts automatically)
+        dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volumes.
     };
 
     // Change playback speed
     dom.speedSelector.onchange = () => {
         if (!sequencer.paused) {
             sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
-            dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
+            dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volumes.
         }
     };
 
@@ -188,7 +189,8 @@ function setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom) {
         }
         // Draw the animation area or clear it if instrument == null
         // draw_instrument(keyboard, instrument, synthetizer);
-        animator.draw(instrument);
+        animator.set_instrument(instrument);
+        animator.animate();
     };
 }
 
