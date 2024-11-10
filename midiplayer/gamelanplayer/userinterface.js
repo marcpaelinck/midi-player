@@ -2,6 +2,9 @@ import { DATAFOLDER_URL_ABSOLUTE } from "../settings.js";
 import { Animator } from "./animation.js";
 import { delay, log } from "./utilities.js";
 
+let selectedSong = null; // JSON
+let selectedInstrument = null; // JSON
+
 /**
  * Initializes events of DOM elements. Parameters from position 3 refer to Element objects.
  * @param {*} sequencer {Sequencer}
@@ -83,7 +86,6 @@ function populateSongDropdown(json_settings, dom) {
 function setSongOnChangeEvent(dom, json_settings) {
     // Remove an initial "Select a <type>..." option (if present)
     // as soon as a selection is made by the user.
-    let jsonptr = json_settings;
     dom.songSelector.onchange = () => {
         let json = json_settings;
         let selected = dom.songSelector.children[dom.songSelector.selectedIndex];
@@ -91,10 +93,10 @@ function setSongOnChangeEvent(dom, json_settings) {
             dom.songSelector.remove(0);
         }
         let idx = selected.id;
-        let song = json["songs"][idx];
+        selectedSong = json["songs"][idx];
 
         // Populate the instrument selector
-        let instr_jsoncontent = json["instrumentgroup"][song["instrumentgroup"]];
+        let instr_jsoncontent = json["instrumentgroups"][selectedSong["instrumentgroup"]];
         populate_dropdown(dom.instrumentSelector, instr_jsoncontent, "name", ["channel"], 1);
         dom.instrumentSelector.selectedIndex = 0;
         dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
@@ -158,39 +160,38 @@ function setPartOnChangeEvent(context, sequencer, dom) {
  */
 function setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom) {
     dom.instrumentSelector.onchange = () => {
-        // let selectedChannel = dom.instrumentSelector.options[dom.instrumentSelector.selectedIndex].value;
-        let selectedChannel =
-            dom.instrumentSelector.options[dom.instrumentSelector.selectedIndex].getAttribute("channel");
-        // Set instrument volumes
-        let instrument_index = -1;
-        for (let i = 0; i < dom.instrumentSelector.options.length; i++) {
-            let option = dom.instrumentSelector.options[i];
-            let channel = option.getAttribute("channel");
-            // Max volume for focus instruments or for all instruments
-            // if "None" is selected (selectedChannel=-1)
-            // channel 0 (kempli + gong) should always be loud
-            if ((channel == selectedChannel) | (selectedChannel < 0) | (channel == 0)) {
-                synthesizer.controllerChange(channel, 7, 127, true);
-                if (channel == selectedChannel) {
-                    instrument_index = option.id;
-                }
+        // Do nothing if no song is selected.
+        if (selectedSong !== null) {
+            // Determine instrument group and selected instrument
+            let instrumentgroup = json_settings["instrumentgroups"][selectedSong["instrumentgroup"]];
+            let instrument_index = dom.instrumentSelector.selectedIndex;
+            if (instrument_index == 0) {
+                selectedInstrument = null;
             } else {
-                synthesizer.controllerChange(channel, 7, 50, true);
+                selectedInstrument = instrumentgroup[instrument_index - 1];
             }
+            // Set instrument volumes
+            instrumentgroup.forEach((instrument) => {
+                // Max volume for focus instruments
+                // or for all instruments if no focus is selected.
+                // Channel 0 (kempli + gong) should always have max volume.
+                instrument.channels.forEach((channel) => {
+                    if (
+                        (channel == 0) | // kempli + gong always loud
+                        (selectedInstrument === null) | // No focus selected
+                        (selectedInstrument && selectedInstrument.channels.includes(channel))
+                    ) {
+                        synthesizer.controllerChange(channel, 7, 127, true);
+                    } else {
+                        synthesizer.controllerChange(channel, 7, 50, true);
+                    }
+                });
+            });
+            // Initialize animation area for the focus instrument
+            self.name = "";
+            animator.set_instrument(selectedInstrument);
+            animator.animate();
         }
-        // Initialize animation area for the focus instrument
-        self.name = "";
-        let instrument = null;
-        if ((instrument_index >= 0) & (dom.songSelector.selectedIndex >= 0)) {
-            // Look up the instrument information
-            let song_index = dom.songSelector.selectedOptions[0].id;
-            let song = json_settings["songs"][song_index];
-            instrument = json_settings["instrumentgroup"][song["instrumentgroup"]][instrument_index];
-        }
-        // Draw the animation area or clear it if instrument == null
-        // draw_instrument(keyboard, instrument, synthetizer);
-        animator.set_instrument(instrument);
-        animator.animate();
     };
 }
 

@@ -8,26 +8,31 @@ const colorDefault = colorGoldLight;
 const colorHilite = ["green", "purple", "orange"];
 const CIRCLE = "circle";
 const RECTANGLE = "rectangle";
+const TRAPEZE = "trapeze";
 
 let IdGenerator = 0;
 
 class Key {
     note;
+    midiNote;
     shape;
     x;
     y;
     width;
     height;
     drawingContext;
+    sequence;
 
-    constructor(note, shape, x, y, width, height, drawingContext) {
+    constructor(note, midiNote, shape, x, y, width, height, drawingContext, sequence) {
         this.note = note;
+        this.midiNote = midiNote;
         this.shape = shape;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.drawingContext = drawingContext;
+        this.sequence = sequence;
     }
 
     /**
@@ -47,6 +52,13 @@ class Key {
             case CIRCLE:
                 let radius = Math.floor(this.width / 2);
                 this.drawingContext.arc(this.x + radius, this.y + radius, radius, 0, 2 * Math.PI);
+                break;
+            case TRAPEZE:
+                this.drawingContext.moveTo(this.x, this.y + Math.floor(this.height / 3));
+                this.drawingContext.lineTo(this.x, this.y + Math.floor((2 * this.height) / 3));
+                this.drawingContext.lineTo(this.x + this.width, this.y + this.height);
+                this.drawingContext.lineTo(this.x + this.width, this.y);
+                this.drawingContext.closePath();
                 break;
             default:
         }
@@ -103,15 +115,17 @@ class Highlighter {
     drawingContext; // Canvas drawingContext.
     key; // Key object that should be highlighted.
     hiliteColor;
+    channel;
     midiNote; // Midi note that is being played.
     startAnimation; // Starting time of the highlighter's animation.
     eventOffID = null; // ID of this highlighter's abort event (see below).
     fade_duration = 1000; // Duration of the animation in milliseconds.
 
-    constructor(key, hiliteColor, midiNote, eventDict, drawingContext) {
+    constructor(key, hiliteColor, midiNote, channel, eventDict, drawingContext) {
         this.id = IdGenerator++;
         this.key = key;
         this.hiliteColor = hiliteColor;
+        this.channel = channel;
         this.midiNote = midiNote;
         this.eventDict = eventDict;
         this.drawingContext = drawingContext;
@@ -204,11 +218,16 @@ export class Animator {
     }
 
     /**
-     * Returns the key that corresponds with the given MIDI note number.
+     * Returns the key that corresponds with the given MIDI note number
+     * and the color that corresponds with the stroke type.
      * @param {number} midiNote
      * @returns Key object.
      */
     getKeyAndColor(midiNote) {
+        // The MIDI notes are numbered from 1 through N where N is the total number of keys.
+        // In case of multiple strokes ([open], [abbreviated], [muted] or for the kendang [kp], [dt], [nu]),
+        // the second stroke is numbered from N+1 through 2N, the next from 2N+1 through 3N etc.
+        // Currently the kempli and gong section are both on channel 0 with notes 1 for kempli and 2-4 for G, P and T.
         let key = this.keys[(midiNote - 1 - this.instrument.midioffset) % this.keys.length];
         let hiliteColor = colorHilite[Math.floor((midiNote - 1 - this.instrument.midioffset) / this.keys.length)];
         return [key, hiliteColor];
@@ -223,13 +242,17 @@ export class Animator {
         if (instrument == null) return;
 
         // Determine dimensions of keys and separating gaps
-        let config = this.instrument["configuration"];
+        let config = instrument["configuration"];
         let gap_ratio = 0.1; // small gap between the instrument keys
         let GAP_ratio = 0.2; // wider gap where the suspenders are placed
         let tot_GAPS = config.length - 1; // # wider gaps
         let tot_keys = 0;
+        let notes = [];
         for (let gidx = 0; gidx < config.length; gidx++) {
             tot_keys += config[gidx].length;
+            for (let kidx = 0; kidx < config[gidx].length; kidx++) {
+                notes.push(config[gidx][kidx]);
+            }
         }
         let tot_gaps = tot_keys - 1 - tot_GAPS; // # regular gaps
         let key_width = Math.floor(this.canvas.width / (tot_keys + GAP_ratio * tot_GAPS + gap_ratio * tot_gaps));
@@ -238,27 +261,46 @@ export class Animator {
         let key_height = Math.floor(this.canvas.height * 0.9);
         if (this.instrument["shape"] === CIRCLE) key_height = key_width;
 
+        let sequence;
+        if ("sequence" in instrument) {
+            // Retrieve specification of midinotes
+            sequence = instrument.sequence;
+        } else {
+            // Default: MIDI notes numbered sequencially from 1.
+            sequence = [];
+            for (let i = 1; i < tot_keys; i++) {
+                sequence.push(i);
+            }
+        }
+
         // Populate the keys collection
         this.keys = [];
         let xpos = 0;
+        let count = 0;
         for (let gidx = 0; gidx < config.length; gidx++) {
             for (let kidx = 0; kidx < config[gidx].length; kidx++) {
                 let key = new Key(
-                    config[gidx][kidx],
+                    notes[sequence[count] - 1],
+                    sequence[count],
                     this.instrument["shape"],
                     xpos,
                     0,
                     key_width,
                     key_height,
-                    this.drawingContext
+                    this.drawingContext,
+                    sequence[count]
                 );
                 this.keys.push(key);
                 // Add a small gap between the keys
                 xpos += key_width + gap_width;
+                count++;
             }
             // Replace the small gap with a wider gap between key groups
             xpos += GAP_width - gap_width;
         }
+        this.keys.sort((a, b) => {
+            return Math.sign(a.midiNote - b.midiNote);
+        });
     }
 
     /**
@@ -278,9 +320,7 @@ export class Animator {
             if (this.instrument == null) return;
 
             // TODO: enable non-consecutive note indices)
-            if (this.instrument["shape"] === RECTANGLE || this.instrument["shape"] === CIRCLE) {
-                this.keys.forEach((key) => key.draw());
-            }
+            this.keys.forEach((key) => key.draw());
             this.abortAll.clear();
         });
     }
@@ -313,12 +353,13 @@ export class Animator {
 
         synthesizer.eventHandler.addEvent("noteon", "animation", (event_on) => {
             if (animator.instrument == null) return;
-            if (event_on.channel == animator.instrument["channel"]) {
+            if (animator.instrument["channels"].includes(event_on.channel)) {
                 let [key, color] = animator.getKeyAndColor(event_on.midiNote);
                 let highLighter = new Highlighter(
                     key,
                     color,
                     event_on.midiNote,
+                    event_on.channel,
                     synthesizer.eventHandler.events["noteoff"]
                 );
                 // console.log(`animation requested for key ${key.note}${highLighter.id}`);
@@ -330,11 +371,9 @@ export class Animator {
                 // add Highlighter to note off listeners
                 synthesizer.eventHandler.addEvent("noteoff", eventOffID, (event_off) => {
                     if (animator.instrument == null) return;
-                    if (event_off.channel == animator.instrument["channel"]) {
-                        if (event_off.midiNote === highLighter.midiNote) {
-                            // console.log(`END animation requested for key ${key.note}${highLighter.id}`);
-                            abortSignal.raise();
-                        }
+                    if (event_off.channel == highLighter.channel && event_off.midiNote === highLighter.midiNote) {
+                        // console.log(`END animation requested for key ${key.note}${highLighter.id}`);
+                        abortSignal.raise();
                     }
                 });
             }

@@ -1,7 +1,7 @@
 {
 "songs": 
     [
-        {"title": "Cendrawasih", "instrumentgroup": "GONG_KEBYAR", "display": false, "parts": 
+        {"title": "Cendrawasih", "instrumentgroup": "GONG_KEBYAR", "display": true, "parts": 
             [
                 {"title": "entire piece", "file": "Cendrawasih_full_GAMELAN1.mid", "loop": false}
             ]
@@ -35,35 +35,39 @@
             ]
         }
     ],
-"instrumentgroup":
+"instrumentgroups":
     {"GONG_KEBYAR": [
-            { "name": "GONGS", "channel": 0, "midioffset": 0, "configuration": [["G", "P", "T"]], "shape": "circle" },
-            { "name": "KENDANG", "channel": 1, "midioffset": 0, "configuration": [[" ", " "]], "shape": "circle" },
-            { "name": "JEGOGAN", "channel": 2, "midioffset": 0, "configuration": [["I", "O", "E", "U", "A"]], "shape": "rectangle" },
-            { "name": "CALUNG", "channel": 3, "midioffset": 0, "configuration": [["I", "O", "E", "U", "A"]], "shape": "rectangle" },
-            { "name": "PEMADE_POLOS", "channel": 4, "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
-            { "name": "PEMADE_SANGSIH", "channel": 5, "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
-            { "name": "KANTILAN_POLOS", "channel": 6, "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
-            { "name": "KANTILAN_SANGSIH", "channel": 7, "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
-            { "name": "UGAL", "channel": 8, "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
-            { "name": "TROMPONG", "channel": 8, "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "circle" },
-            { "name": "REYONG_1", "channel": 11, "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
-            { "name": "REYONG_2", "channel": 12, "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
-            { "name": "REYONG_3", "channel": 13, "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
-            { "name": "REYONG_4", "channel": 14, "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" }
+            { "name": "GONGS", "channels": [0], "midioffset": 0, "configuration": [["K"], [], [], ["G", "P", "T"]], "shape": "circle" , "sequence": [1, 3, 4, 2]},
+            { "name": "KENDANG", "channels": [1], "midioffset": 0, "configuration": [["W", "L"]], "shape": "trapeze" , "sequence": [2, 1]},
+            { "name": "JEGOGAN", "channels": [2], "midioffset": 0, "configuration": [["I", "O", "E", "U", "A"]], "shape": "rectangle" },
+            { "name": "CALUNG", "channels": [3], "midioffset": 0, "configuration": [["I", "O", "E", "U", "A"]], "shape": "rectangle" },
+            { "name": "PEMADE", "channels": [4, 5], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "- PEMADE_POLOS", "channels": [4], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "- PEMADE_SANGSIH", "channels": [5], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "KANTILAN", "channels": [6, 7], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "- KANTILAN_POLOS", "channels": [6], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "- KANTILAN_SANGSIH", "channels": [7], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "UGAL", "channels": [8], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "rectangle" },
+            { "name": "TROMPONG", "channels": [8], "midioffset": 0, "configuration": [["O", "E"], ["U", "A"], ["I", "O"], ["E", "U"], ["A", "I"]], "shape": "circle" },
+            { "name": "REYONG", "channels": [10, 11, 12, 13], "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
+            { "name": "- REYONG_1", "channels": [10], "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
+            { "name": "- REYONG_2", "channels": [11], "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
+            { "name": "- REYONG_3", "channels": [12], "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" },
+            { "name": "- REYONG_4", "channels": [13], "midioffset": 0, "configuration": [["A", "I", "O"], ["E", "U", "A"], ["I", "O", "E"], ["U", "A", "I"]], "shape": "circle" }
         ],
     "SEMAR_PAGULINGAN": [
-            { "name": "GONGS", "channel": 0, "midioffset": 50, "configuration": [["G", "P", "T"]], "shape": "circle" },
-            { "name": "KENDANG", "channel": 1, "midioffset": 50, "configuration": [[" ", " "]], "shape": "circle" },
-            { "name": "JEGOGAN", "channel": 2, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "CALUNG", "channel": 3, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "PEMADE_POLOS", "channel": 4, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "PEMADE_SANGSIH", "channel": 5, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "KANTILAN_POLOS", "channel": 6, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "KANTILAN_SANGSIH", "channel": 7, "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
-            { "name": "TROMPONG", "channel": 8, "midioffset": 50, "configuration": [["I", "O", "E", "EU", "U", "A", "AI", "i", "o", "e", "eu", "u", "a", "ai"]], "shape": "circle" }
+            { "name": "GONGS", "channels": [0], "midioffset": 50, "configuration": [["K"], [], [], ["G", "P", "T"]], "shape": "circle" , "sequence": [1, 3, 4, 2]},
+            { "name": "KENDANG", "channels": [1], "midioffset": 50, "configuration": [["W", "L"]], "shape": "trapeze" , "sequence": [2, 1]},
+            { "name": "JEGOGAN", "channels": [2], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "CALUNG", "channels": [3], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "PEMADE", "channels": [4, 5], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "- PEMADE_POLOS", "channels": [4], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "- PEMADE_SANGSIH", "channels": [5], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "KANTILAN", "channels": [6, 7], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "- KANTILAN_POLOS", "channels": [6], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "- KANTILAN_SANGSIH", "channels": [7], "midioffset": 50, "configuration": [["I"], ["O", "E"], ["EU", "U"], ["A", "AI"]], "shape": "rectangle" },
+            { "name": "TROMPONG", "channels": [8], "midioffset": 50, "configuration": [["I", "O", "E", "EU", "U", "A", "AI", "i", "o", "e", "eu", "u", "a", "ai"]], "shape": "circle" }
         ]
-    }
-,
+    },
 "soundfont": "GAMELAN1.sf2"
 }
