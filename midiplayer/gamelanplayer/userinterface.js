@@ -30,7 +30,7 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
         }
     };
 
-    const animator = new Animator(canvas, synthesizer);
+    const animator = new Animator(synthesizer, json_settings);
 
     setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom);
     setPlayPauseStopOnClickEvents(sequencer, dom);

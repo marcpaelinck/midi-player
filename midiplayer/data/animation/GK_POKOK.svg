@@ -1,0 +1,77 @@
+<svg viewBox="0 0 350 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+    <defs>
+        <linearGradient x1="35" y1="140" x2="35" y2="25" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill1">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.5" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="41" y1="830" x2="54" y2="82" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill2">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.5" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="42" y1="-24" x2="74" y2="30" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill3">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.72" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <rect x="0" y="0" rx="12" ry="12" width="30" height="90" fill="#CC9900" fill-rule="evenodd" id="separator"/>
+        <symbol id="daun" width="30" height="128" viewBox="0 0 33 128">
+            <rect class="highlight-target-bg" x="5" y="4" width="20" height="120" fill="url(#fill1)" fill-opacity="1"/>
+            <path class="fixed-item" id="rechts" d="M30 0 30 128 25 124 25 4Z" fill="url(#fill2)" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="links" d="M0 0 0 128 5 124 5 4Z" fill="url(#fill3)" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="boven" d="M0 0 30 0 25 4 5 4Z" fill="#CC9900" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="onder" d="M0 128 30 128 25 124 5 124Z" fill="#966F00" fill-rule="evenodd" fill-opacity="1"/>
+        </symbol>
+        <symbol id="highlight-target" width="30" height="128" viewBox="0 0 33 128">
+            <rect class="highlight-target" x="5" y="4" width="20" height="120"/>
+        </symbol>
+        <symbol id="suspenders" width="6" height="128" viewBox="0 0 6 128">
+            <rect class="fixed-item" x="1" y="32" rx="2" ry="2" width="3" height="9" fill="#CC9900" fill-rule="evenodd"/>
+            <rect class="fixed-item" x="1" y="87" rx="2" ry="2" width="3" height="9" fill="#CC9900" fill-rule="evenodd"/>
+        </symbol>
+    </defs>
+    <style>
+         <!-- 
+            The styling enables animation by making variables available (see :root).
+            The first two sections (.target * and .target) account for the fact that symbols referred to by the `use` elements
+            cannot be accessed from these `use` elements. However the css inherit property does propagate down to the symbols
+            from the use elements. The animation uses this property by adding an item 'highlight' to the target that needs to
+            be highlighted and by setting the `color` and `alpha` variables. These will be propagated down to the symbol instance.
+            See https://stackoverflow.com/questions/78108597/styling-use-instances-of-an-svg-symbol 
+         -->
+       .target *{
+            fill: inherit;
+        }
+         <!-- The next setting defines the default color for the highlight-target of a daun (key) -->
+        .target {
+            fill: url(#fill1);
+        }
+         <!-- The following sections will give control of the highlighting from the javascript application -->
+        :root {
+          --alpha: 1;
+          --color:orange;
+        }
+        .highlight {
+          fill: var(--color);
+          opacity: var(--alpha);
+        }
+
+    </style>
+    <!-- without dummy, Firefox sets the fill of the first daun to white when the highlight of another key is removed -->
+    <use id="dummy" href="#suspenders" x="0" y="0" transform="scale(1 .98)"/>" 0.00"
+    <use id="DING1-daun" class="daun" href="#daun" x="0" y="0%" transform="scale(1 1.00)"/>
+    <use id="DING1" class="target" href="#highlight-target" x="0" y="0%" transform="scale(1 1.00)"/>
+    <use id="" href="#suspenders" x="30"/>"""0%"" 0.00"
+    <use id="DONG1-daun" class="daun" href="#daun" x="36" y="1%" transform="scale(1 0.98)"/>
+    <use id="DONG1" class="target" href="#highlight-target" x="36" y="1%" transform="scale(1 0.98)"/>
+    <use id="" href="#suspenders" x="66"/>"""0%"" 0.00"
+    <use id="DENG1-daun" class="daun" href="#daun" x="72" y="2%" transform="scale(1 0.96)"/>
+    <use id="DENG1" class="target" href="#highlight-target" x="72" y="2%" transform="scale(1 0.96)"/>
+    <use id="" href="#suspenders" x="102"/>"""0%"" 0.00"
+    <use id="DUNG1-daun" class="daun" href="#daun" x="108" y="3%" transform="scale(1 0.95)"/>
+    <use id="DUNG1" class="target" href="#highlight-target" x="108" y="3%" transform="scale(1 0.95)"/>
+    <use id="" href="#suspenders" x="138"/>"""0%"" 0.00"
+    <use id="DANG1-daun" class="daun" href="#daun" x="144" y="3%" transform="scale(1 0.93)"/>
+    <use id="DANG1" class="target" href="#highlight-target" x="144" y="3%" transform="scale(1 0.93)"/>
+</svg>

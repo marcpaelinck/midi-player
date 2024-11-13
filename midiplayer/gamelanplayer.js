@@ -28,6 +28,7 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
     .then((response) => response.json())
     .then((json) => {
         settings = json;
+        settings["datafolder"] = DATAFOLDER_URL_ABSOLUTE;
     })
     .then(() => {
         // Import the soundfont
@@ -55,4 +56,3 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
         // Set up the user interfae
         initializeDropDownsAndEvents(context, sequencer, synthesizer, settings, dom, log);
     });
-

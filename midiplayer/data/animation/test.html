@@ -1,0 +1,19 @@
+<html>
+
+    <embed id="svgimage" width="1000" src="http://localhost:8080/midiplayer/data/animation/GK_GANGSA.svg"/>
+    <!-- Created with Fritzing (http://www.fritzing.org/) -->
+    <a href="#" onclick=" {
+        imageDoc = document.getElementById('svgimage').getSVGDocument();
+        console.log('here0');
+        list = imageDoc.getElementById('DENG1').classList;
+        console.log('here1');
+        if (list.contains('highlight')) {
+            list.remove('highlight')
+            console.log('removed HL');
+        } else {
+            list.add('highlight');
+            console.log('activated HL');
+        }
+    }">click</a>
+
+</html>
