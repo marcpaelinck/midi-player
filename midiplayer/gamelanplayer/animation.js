@@ -1,36 +1,41 @@
-import { waitForSVGDocLoaded, logConsole } from "./utilities.js";
-
-const colorClear = "rgb(255, 255, 255)";
-const colorBorder = "black";
-const colorGold = "rgb(255, 215, 0)";
-const colorGoldLight = "rgb(255, 243, 178)";
-const colorDefault = colorGoldLight;
-const colorHilite = ["green", "blue", "purple"];
-const CIRCLE = "circle";
-const RECTANGLE = "rectangle";
-const TRAPEZE = "trapeze";
+import { waitForObjectContent, logConsole, loadHTMLContent, delay } from "./utilities.js";
 
 let IdGenerator = 0;
 
 class Key {
     note;
     midiNotes;
-    strokes;
+    animationProfile;
+    animationHighlight;
     shape;
+    midiToStrokeDict;
 
-    constructor(note, midiNotes, strokes, shape) {
+    constructor(note, midiNotes, animationProfile, animationHighlight, shape) {
         this.note = note;
-        this.midiNotes = midiNotes;
-        this.strokes = strokes;
+        this.midiNotes = midiNotes.filter((value) => value !== null);
+        this.animationProfile = animationProfile;
+        this.animationHighlight = animationHighlight;
         this.shape = shape;
+        this.#createMidiDict(midiNotes);
+    }
+
+    /**
+     * Creates a dictionary to look up the stroke and highlight color for a given midi note.
+     */
+    #createMidiDict(midiNotes) {
+        this.midiToStrokeDict = {};
+        for (let i = 0; i < midiNotes.length; i++) {
+            if (midiNotes[i] !== null) this.midiToStrokeDict[midiNotes[i]] = this.animationProfile.strokes[i];
+        }
+        let x = 1; //dummy for breakpoint
     }
 
     getStroke(midiNote) {
-        let idx = this.midiNotes.indexOf(midiNote);
-        if (idx >= 0 && idx < this.strokes.length) {
-            return this.strokes[idx];
-        }
-        return null;
+        return this.midiToStrokeDict[midiNote];
+    }
+
+    getHighlightColor(midiNote) {
+        return this.animationHighlight[this.midiToStrokeDict[midiNote]];
     }
 }
 
@@ -66,26 +71,30 @@ class Abort {
 class Highlighter {
     id;
     key; // Key object that should be highlighted.
-    hiliteColor;
     midiNote; // Midi note that is being played.
     channel;
     eventDict; // Dictionary containing the noteoff events of the sythesizer.
     imageDoc;
+    highlightColor;
+    highlightTags;
     startAnimation; // Starting time of the highlighter's animation.
     eventOffID = null; // ID of this highlighter's abort event (see below).
     fade_duration = 1000; // Duration of the animation in milliseconds.
-    initial_alpha = 0.7;
+    initial_alpha = 1.0;
 
-    constructor(key, midiNote, hiliteColor, imageDoc, channel, eventDict) {
+    constructor(key, midiNote, imageDoc, channel, eventDict) {
         this.id = IdGenerator++;
         this.key = key;
         this.midiNote = midiNote;
-        this.hiliteColor = hiliteColor;
         this.imageDoc = imageDoc;
         this.channel = channel;
         this.eventDict = eventDict;
         this.stroke = key.getStroke(midiNote);
+        this.highlightColor = key.getHighlightColor(midiNote);
+        this.highlightTags = ["highlight", this.stroke];
+
         this.startAnimation = new Date();
+        this.totalframes = 0;
     }
 
     toStr() {
@@ -124,8 +133,6 @@ class Highlighter {
     setOpacity(value) {
         // Set the value of variable --blue to another value (in this case "lightblue")
         let r = this.imageDoc.querySelector(":root");
-        // r.style.setProperty("--opacity", `${value}`);
-        // getComputedStyle(r).setProperty("--alpha", value);
         r.style.setProperty("--alpha", value);
         var x = 1;
     }
@@ -146,7 +153,7 @@ class Highlighter {
         // Draw a non-highlighted key
         // Draw the hilite on top of the default color.
         let alpha = this.currentAlpha();
-        // logConsole(`alpha=${alpha} ${highLighter.toStr()}`);
+        logConsole(`alpha=${alpha} ${highLighter.toStr()}`, "highlight");
         if (alpha > 0) this.setOpacity(alpha);
         return alpha <= 0;
     }
@@ -159,23 +166,31 @@ class Highlighter {
     start_hilite(abortObjectList) {
         let highLighter = this;
         let abortObjects = abortObjectList;
-        logConsole(`start ${highLighter.toStr()}`);
+        logConsole(`start ${highLighter.toStr()}`, "ani-detail");
         do_loop();
 
         function do_loop() {
+            highLighter.off();
             highLighter.on();
             let abort = highLighter.#hilite_frame(highLighter);
             let endloop = abort;
             abortObjects.forEach((signal) => (abort = abort || signal.isRaised()));
-            if (abort != endloop) {
-                logConsole(`aborted ${highLighter.toStr()}`);
-            }
             if (!abort) {
+                logConsole(`timeout ${highLighter.toStr()}`, "test1");
                 window.requestAnimationFrame(do_loop);
             } else {
                 highLighter.off();
                 highLighter.deleteSynthNoteOffEvent();
-                logConsole(`end ${highLighter.toStr()}`);
+                if (abort != endloop) {
+                    logConsole(`animation prematurely aborted ${highLighter.toStr()}`, "ani-detail");
+                } else {
+                    logConsole(
+                        `animation terminated normally for ${highLighter.toStr()}', total ${
+                            highLighter.totalframes
+                        } frames`,
+                        "ani-detail"
+                    );
+                }
             }
         }
     }
@@ -183,14 +198,16 @@ class Highlighter {
     on() {
         let classList = this.key.shape.classList;
         if (!classList.contains("highlight")) {
-            this.setColor(this.hiliteColor);
-            classList.add("highlight");
+            logConsole(`setting color to ${this.highlightColor} for ${this.toStr()}`, "ani-detail");
+            this.setColor(this.highlightColor);
+            delay(50).then(classList.add(...this.highlightTags));
         }
     }
+
     off() {
         let classList = this.key.shape.classList;
-        if (classList.contains("highlight")) {
-            classList.remove("highlight");
+        if (classList.contains(...this.highlightTags)) {
+            classList.remove(...this.highlightTags);
             this.setOpacity(1);
         }
     }
@@ -206,6 +223,7 @@ export class Animator {
 
     instrument = null;
     keys = null;
+    midiToKeyDict = null;
     animatednotes = null;
     imageDoc = null;
     abortAll;
@@ -214,8 +232,11 @@ export class Animator {
         this.synthesizer = synthesizer;
         this.settings = settings;
         this.abortAll = new Abort(false);
+        this.midiToKeyDict = {};
         // Set the synthesizer events. Needs to be done only once.
         this.#set_animation_events(this.synthesizer);
+        document.getElementById("svg-embed").setH;
+        // document.getElementById("svg-embed").onload = this.#process_svg_document();
     }
 
     /**
@@ -224,17 +245,9 @@ export class Animator {
      * @param {number} midiNote
      * @returns Key object.
      */
-    getKeyAndColor(midiNote) {
-        // The MIDI notes are numbered from 1 through N where N is the total number of keys.
-        // In case of multiple strokes ([open], [abbreviated], [muted] or for the kendang [kp], [dt], [nu]),
-        // the second stroke is numbered from N+1 through 2N, the next from 2N+1 through 3N etc.
-        // Currently the kempli and gong section are both on channel 0 with notes 1 for kempli and 2-4 for G, P and T.
-        let key = this.keys.find((k) => k.midiNotes.includes(midiNote));
+    getKey(midiNote) {
         // TODO raise error if key is null
-        let idx = key.midiNotes.indexOf(midiNote);
-        // let key = this.keys[(midiNote - 1 - this.instrument.midioffset) % this.keys.length];
-        let hiliteColor = colorHilite[idx];
-        return [key, hiliteColor];
+        return this.midiToKeyDict[midiNote];
     }
 
     /**
@@ -243,29 +256,43 @@ export class Animator {
      */
     set_instrument(instrument) {
         this.instrument = instrument;
-        document.getElementById("svg-embed").setAttribute("src", "");
+        document.getElementById("svg-embed").innerHTML = "";
         if (instrument == null) return;
         if (instrument["animation"] == null) return;
 
         // Populate the keys collection
-        this.keys = [];
-        this.animatednotes = [];
         // Load the animation picture
-        let animationInfo = this.settings.animation[instrument.animation];
-        let svcFile = this.settings.datafolder + "/animation/" + animationInfo.file;
-        document.getElementById("svg-embed").setAttribute("src", svcFile);
-        waitForSVGDocLoaded("svg-embed").then(() => {
-            this.imageDoc = document.getElementById("svg-embed").getSVGDocument();
+        let animationProfile = this.settings.animation.profiles[instrument.animation];
+        let svcFile = this.settings.datafolder + "/animation/" + animationProfile.file;
+        let embed_div = document.getElementById("svg-embed");
+        loadHTMLContent(embed_div, svcFile).then((response) => {
+            this.#process_svg_document(response);
+        });
+    }
 
-            // Create Key objects
-            for (const [note, midiNotes] of Object.entries(animationInfo.notes)) {
-                if (note !== null) {
-                    let key = new Key(note, midiNotes, animationInfo.strokes, this.imageDoc.getElementById(note));
-                    this.keys.push(key);
-                    this.animatednotes.push(...key.midiNotes);
+    #process_svg_document(response) {
+        console.log(response);
+        if (this.instrument == null) return;
+        this.imageDoc = document;
+
+        // Create Key objects
+        let animationHighlight = this.settings.animation.highlight;
+        let animationProfile = this.settings.animation.profiles[this.instrument.animation];
+        for (const [note, midiNotes] of Object.entries(animationProfile.notes)) {
+            if (note !== null) {
+                let key = new Key(
+                    note,
+                    midiNotes,
+                    animationProfile,
+                    animationHighlight,
+                    this.imageDoc.getElementById(note)
+                );
+                // Update midiToKeyDict for quick lookup
+                for (const [midiNote, ignore] of Object.entries(key.midiToStrokeDict)) {
+                    this.midiToKeyDict[midiNote] = key;
                 }
             }
-        });
+        }
     }
 
     /**
@@ -278,8 +305,6 @@ export class Animator {
         this.abortAll.raise();
         // No instrument focus selected
         if (this.instrument == null) return;
-
-        // TODO: enable non-consecutive note indices)
         this.abortAll.clear();
     }
 
@@ -296,20 +321,17 @@ export class Animator {
             if (animator.instrument == null) return;
             if (
                 animator.instrument["channels"].includes(event_on.channel) &&
-                animator.animatednotes.includes(event_on.midiNote)
+                event_on.midiNote in animator.midiToKeyDict
             ) {
-                let [key, color] = animator.getKeyAndColor(event_on.midiNote);
-                //key, hiliteColor, midiNote, channel, eventDict
+                let key = animator.getKey(event_on.midiNote);
                 let highLighter = new Highlighter(
                     key,
                     event_on.midiNote,
-                    color,
                     animator.imageDoc,
                     event_on.channel,
                     synthesizer.eventHandler.events["noteoff"]
                 );
-                logConsole(`note_on ${highLighter.toStr()}`);
-                // console.log(`animation requested for key ${key.note}${highLighter.id}`);
+                logConsole(`note_on ${highLighter.toStr()}`, "ani-detail");
                 let abortSignal = new Abort(false);
                 let eventOffID = `animation${highLighter.id}`;
                 highLighter.setEventOffID(eventOffID);
@@ -319,8 +341,8 @@ export class Animator {
                 synthesizer.eventHandler.addEvent("noteoff", eventOffID, (event_off) => {
                     if (animator.instrument == null) return;
                     if (event_off.channel == highLighter.channel && event_off.midiNote === highLighter.midiNote) {
-                        logConsole(`note_off ${highLighter.toStr()}`);
-                        // console.log(`END animation requested for key ${key.note}${highLighter.id}`);
+                        logConsole(`note_off ${highLighter.toStr()}`, "ani-detail");
+                        highLighter.off();
                         abortSignal.raise();
                     }
                 });

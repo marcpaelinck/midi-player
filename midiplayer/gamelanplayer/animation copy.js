@@ -362,7 +362,7 @@ export class Animator {
                     event_on.channel,
                     synthesizer.eventHandler.events["noteoff"]
                 );
-                // console.log(`animation requested for key ${key.note}${highLighter.id}`);
+                logConsole(`animation requested for key ${key.note}${highLighter.id}`, "ani-detail");
                 let abortSignal = new Abort(false);
                 let eventOffID = `animation${event_on.midiNote}`;
                 highLighter.setEventOffID(eventOffID);
@@ -372,7 +372,7 @@ export class Animator {
                 synthesizer.eventHandler.addEvent("noteoff", eventOffID, (event_off) => {
                     if (animator.instrument == null) return;
                     if (event_off.channel == highLighter.channel && event_off.midiNote === highLighter.midiNote) {
-                        // console.log(`END animation requested for key ${key.note}${highLighter.id}`);
+                        logConsole(`END animation requested for key ${key.note}${highLighter.id}`, "ani-detail");
                         abortSignal.raise();
                     }
                 });

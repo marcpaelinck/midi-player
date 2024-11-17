@@ -1,85 +1,76 @@
-<svg viewBox="0 0 1588 1222" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
-    <defs>
-        <radialGradient cx="568036" cy="568036" r="803325" fx="568036" fy="568036" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill0" gradientTransform="matrix(0.000360892 0 0 0.000360892 1787.5 1398.5)">
-            <stop offset="0" stop-color="#764A1F"/>
-            <stop offset="0.5" stop-color="#AA6E31"/>
-            <stop offset="1" stop-color="#CB843D"/>
-        </radialGradient>
-        <linearGradient x1="1932.5" y1="1662.5" x2="2051.5" y2="1544.5" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill1">
-            <stop offset="0" stop-color="#7F5B00"/>
-            <stop offset="0.5" stop-color="#B88600"/>
-            <stop offset="1" stop-color="#DBA100"/>
-        </linearGradient>
-        <linearGradient x1="1452.5" y1="1343" x2="1246.5" y2="1343" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill2">
-            <stop offset="0" stop-color="#4D1900"/>
-            <stop offset="0.5" stop-color="#722902"/>
-            <stop offset="1" stop-color="#883205"/>
-        </linearGradient>
-        <linearGradient x1="1390.72" y1="1339.34" x2="1514.28" y2="1346.66" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill3">
-            <stop offset="0" stop-color="#4D1900"/>
-            <stop offset="0.5" stop-color="#722902"/>
-            <stop offset="1" stop-color="#883205"/>
-        </linearGradient>
-        <radialGradient cx="-0.015625" cy="473826" r="491397" fx="0" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill4" gradientTransform="matrix(0.000360892 0 0 0.000360892 1466 1250)">
-            <stop offset="0" stop-color="#7F5B00"/>
-            <stop offset="0.5" stop-color="#B88600"/>
-            <stop offset="1" stop-color="#DBA100"/>
-        </radialGradient>
-        <linearGradient x1="609.5" y1="280" x2="609.5" y2="0" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill5">
-            <stop offset="0" stop-color="#4D1900"/>
-            <stop offset="0.5" stop-color="#722902"/>
-            <stop offset="1" stop-color="#883205"/>
-        </linearGradient>
-        <linearGradient x1="-41.1171" y1="603.875" x2="124.117" y2="615.125" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill6">
-            <stop offset="0" stop-color="#4D1900"/>
-            <stop offset="0.5" stop-color="#722902"/>
-            <stop offset="1" stop-color="#883205"/>
-        </linearGradient>
-        <radialGradient cx="-0.03125" cy="551411" r="580081" fx="0" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill7" gradientTransform="scale(0.000360892 0.000360892)">
-            <stop offset="0" stop-color="#7F5B00"/>
-            <stop offset="0.5" stop-color="#B88600"/>
-            <stop offset="1" stop-color="#DBA100"/>
-        </radialGradient>
-    </defs>
+<svg viewBox="0 0 2500 1300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+<defs>
+<linearGradient x1="609.5" y1="280" x2="609.5" y2="0" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill3">
+<stop offset="0" stop-color="#8A6600"/>
+<stop offset="0.5" stop-color="#D09A00"/>
+<stop offset="1" stop-color="#FFBE05"/>
+</linearGradient>
+<linearGradient x1="-41.1171" y1="603.875" x2="124.117" y2="615.125" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill4">
+<stop offset="0" stop-color="#8A6600"/>
+<stop offset="0.5" stop-color="#D09A00"/>
+<stop offset="1" stop-color="#FFBE05"/>
+</linearGradient>
+<radialGradient cx="-0.03125" cy="551411" r="580080" fx="0" fy="551411" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill5" gradientTransform="scale(0.000360892 0.000360892)">
+<stop offset="0" stop-color="#7F5B00"/>
+<stop offset="0.5" stop-color="#B88600"/>
+<stop offset="1" stop-color="#DBA100"/>
+</radialGradient>
+<radialGradient cx="0.0625" cy="1221971" r="1728128" fx="0" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill6" gradientTransform="matrix(0.000360892 0 0 0.000360892 546 627)">
+<stop offset="0" stop-color="#765700"/>
+<stop offset="0.23" stop-color="#C49100"/>
+<stop offset="1" stop-color="#FFC82D"/>
+</radialGradient>
+<radialGradient cx="-0.0625" cy="1077883" r="1518491" fx="0" fy="1077883" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill7" gradientTransform="matrix(0.000360892 0 0 0.000360892 573 653)">
+<stop offset="0" stop-color="#B48500"/>
+<stop offset="0.44" stop-color="#E6AA00"/>
+<stop offset="1" stop-color="#F6B600"/>
+</radialGradient>
+<radialGradient cx="-0.03125" cy="703811" r="991428" fx="0" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill8" gradientTransform="matrix(0.000360892 0 0 0.000360892 640 721)">
+<stop offset="0" stop-color="#F6B600"/>
+<stop offset="0.55" stop-color="#E6AA00"/>
+<stop offset="1" stop-color="#DEA400"/>
+</radialGradient>
+<linearGradient x1="715" y1="899" x2="817" y2="797" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill9">
+<stop offset="0" stop-color="#7F5B00"/>
+<stop offset="0.4" stop-color="#B88600"/>
+<stop offset="1" stop-color="#FFC319"/>
+</linearGradient>
+</defs>
     <style id="style">
-         <!-- The following define the default colors for the highlight-target for each instrument -->
-        .GONG {
-            fill: url(#fill7);
+         <!-- 
+            The styling enables animation. See file GK_REYONG.svg for an explanation.
+         -->
+       .target *{
+            fill: inherit;
         }
-        .PUR {
-            fill: url(#fill4);
+        .GONG-shape {
+            fill: url(#fill5);
         }
-        .TONG {
-            fill: url(#fill1);
+        .TONG-shape {
+            fill: url(#fill9);
         }
          <!-- The following sections will give control of the highlighting from the javascript application -->
         :root {
           --alpha: 1;
           --color:orange;
         }
-        .highlight .highlight-target {
+        .highlight {
           fill: var(--color);
           opacity: var(--alpha);
         }
-
     </style>
-    <g transform="translate(-1246 -740)">
-        <g id="GONG" class="GONG">
-            <path class="fixed-item" d="M1219 280 0 280 53.793 29.2092 54.8985 29.2092 54.4958 29.0005C54.4958 12.9841 303.004 0 609.555 0 916.105 0 1164.61 12.9841 1164.61 29.0005L1164.21 29.2092 1165.21 29.2092Z" stroke="#80350E" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill5)" fill-rule="evenodd" transform="matrix(-6.12323e-17 -1 -1 6.12323e-17 2833.5 1960.5)" fill-opacity="1"/>
-            <path class="fixed-item" d="M0 609.5C-5.28352e-15 272.882 18.5802-7.75975e-14 41.5001-1.55195e-13 64.42-3.1039e-13 83.0002 272.882 83.0002 609.5 83.0002 946.117 64.42 1219 41.5001 1219 18.5802 1219-2.64176e-14 946.117 0 609.5Z" stroke="#80350E" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill6)" fill-rule="evenodd" transform="matrix(-1 0 0 1 2595.5 741.5)" fill-opacity="1"/>
-            <path class="fixed-item" id="highlight-target-bg" d="M17.5645 0 21.4816 4.48012 21.4816 0C43.2413 30.5478 65.0003 61.0961 65.0003 94.2628 65.0003 127.429 43.2413 163.215 21.4816 199L21.4816 194.52 17.5645 199C7.86413 199 0 154.453 0 99.5 0 44.5475 7.86413 0 17.5645 0Z" fill-rule="evenodd" transform="matrix(-1 0 0 1 2535 1243)" fill-opacity="1"/>
-            <path class="highlight-target" d="M17.5645 0 21.4816 4.48012 21.4816 0C43.2413 30.5478 65.0003 61.0961 65.0003 94.2628 65.0003 127.429 43.2413 163.215 21.4816 199L21.4816 194.52 17.5645 199C7.86413 199 0 154.453 0 99.5 0 44.5475 7.86413 0 17.5645 0Z" fill-rule="evenodd" transform="matrix(-1 0 0 1 2535 1243)"/>
-        </g>
-        <g id="PUR" class="PUR">
-            <path class="fixed-item" d="M1452.5 819.5 1452.5 1866.5 1267.99 1820.3 1267.99 1819.35 1267.84 1819.69C1256.05 1819.69 1246.5 1606.25 1246.5 1342.95 1246.5 1079.66 1256.05 866.213 1267.84 866.213L1267.99 866.558 1267.99 865.703Z" stroke="#80350E" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill2)" fill-rule="evenodd" fill-opacity="1"/>
-            <path class="fixed-item" d="M1421.5 1343C1421.5 1053.88 1435.38 819.5 1452.5 819.5 1469.62 819.5 1483.5 1053.88 1483.5 1343 1483.5 1632.12 1469.62 1866.5 1452.5 1866.5 1435.38 1866.5 1421.5 1632.12 1421.5 1343Z" stroke="#80350E" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill3)" fill-rule="evenodd" fill-opacity="1"/>
-            <path class="highlight-target-bg fixed-item" d="M1478.7 1250 1481.53 1253.85 1481.53 1250C1497.27 1276.25 1513 1302.5 1513 1331 1513 1359.5 1497.27 1390.25 1481.53 1421L1481.53 1417.15 1478.7 1421C1471.69 1421 1466 1382.72 1466 1335.5 1466 1288.28 1471.69 1250 1478.7 1250Z" fill-rule="evenodd" fill-opacity="1"/>
-            <path class="highlight-target" d="M1478.7 1250 1481.53 1253.85 1481.53 1250C1497.27 1276.25 1513 1302.5 1513 1331 1513 1359.5 1497.27 1390.25 1481.53 1421L1481.53 1417.15 1478.7 1421C1471.69 1421 1466 1382.72 1466 1335.5 1466 1288.28 1471.69 1250 1478.7 1250Z" fill-rule="evenodd"/>
-        </g>
-        <g id="TONG" class="TONG">
-            <path class="fixed-item" d="M1787.5 1603.5C1787.5 1490.28 1879.28 1398.5 1992.5 1398.5 2105.72 1398.5 2197.5 1490.28 2197.5 1603.5 2197.5 1716.72 2105.72 1808.5 1992.5 1808.5 1879.28 1808.5 1787.5 1716.72 1787.5 1603.5Z" stroke="#C04F15" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill0)" fill-rule="evenodd" fill-opacity="1"/>
-            <path class="highlight-target-bg fixed-item" d="M1933 1603.5C1933 1570.64 1959.42 1544 1992 1544 2024.58 1544 2051 1570.64 2051 1603.5 2051 1636.36 2024.58 1663 1992 1663 1959.42 1663 1933 1636.36 1933 1603.5Z" fill-rule="evenodd" fill-opacity="1"/>
-            <path class="highlight-target" d="M1933 1603.5C1933 1570.64 1959.42 1544 1992 1544 2024.58 1544 2051 1570.64 2051 1603.5 2051 1636.36 2024.58 1663 1992 1663 1959.42 1663 1933 1636.36 1933 1603.5Z" fill-rule="evenodd"/>
-        </g>
+    <!--******************************************************-->
+    <g  id="GONG-shape" class="GONG-shape">
+        <path id="gong-border" class="fixed-item" d="M1219 280 0 280 53.793 29.2092 54.8985 29.2092 54.4958 29.0005C54.4958 12.9841 303.004 0 609.555 0 916.105 0 1164.61 12.9841 1164.61 29.0005L1164.21 29.2092 1165.21 29.2092Z"  fill="url(#fill3)" fill-rule="evenodd" transform="matrix(-6.12323e-17 -1 -1 6.12323e-17 1587.5 1219.5)"/>
+        <path id="gong-rim" class="fixed-item" d="M0 609.5C-5.28352e-15 272.883 18.5802-7.75975e-14 41.5001-1.55195e-13 64.42-3.1039e-13 83.0002 272.883 83.0002 609.5 83.0002 946.118 64.42 1219 41.5001 1219 18.5802 1219-2.64176e-14 946.118 0 609.5Z" fill="url(#fill4)" fill-rule="evenodd" transform="matrix(-1 0 0 1 1349.5 0.499836)"/>
+        <path id="gong-knob" class="fixed-item" d="M17.5644 0 21.4815 4.48012 21.4815 0C43.241 30.5478 65 61.0961 65 94.2628 65 127.429 43.241 163.215 21.4815 199L21.4815 194.52 17.5644 199C7.86409 199 0 154.453 0 99.5 0 44.5475 7.86409 0 17.5644 0Z" fill="url(#fill5)" fill-rule="evenodd" transform="matrix(-1 0 0 1 1289 502)"/>
+        <path id="GONG" class="highlight-target" d="M17.5644 0 21.4815 4.48012 21.4815 0C43.241 30.5478 65 61.0961 65 94.2628 65 127.429 43.241 163.215 21.4815 199L21.4815 194.52 17.5644 199C7.86409 199 0 154.453 0 99.5 0 44.5475 7.86409 0 17.5644 0Z" fill="url(#fill5)" fill-rule="evenodd" transform="matrix(-1 0 0 1 1289 502)"/>
+    </g>
+    <g  id="TONG-shape" class="TONG-shape">
+        <path id="tong-outer-border" class="fixed-item" d="M546 847.5C546 725.721 644.721 627 766.5 627 888.279 627 987 725.721 987 847.5 987 969.279 888.279 1068 766.5 1068 644.721 1068 546 969.279 546 847.5Z" fill="url(#fill6)" fill-rule="evenodd"/>
+        <path id="tong-inner-border" class="fixed-item" d="M573 847.5C573 740.081 659.409 653 766 653 872.591 653 959 740.081 959 847.5 959 954.919 872.591 1042 766 1042 659.409 1042 573 954.919 573 847.5Z" fill="url(#fill7)" fill-rule="evenodd"/>
+        <path id="tong-rim" class="fixed-item" d="M640 848C640 777.86 696.412 721 766 721 835.588 721 892 777.86 892 848 892 918.14 835.588 975 766 975 696.412 975 640 918.14 640 848Z" fill="url(#fill8)" fill-rule="evenodd"/>
+        <path id="tong-knob" class="fixed-item" d="M715 848C715 819.834 737.833 797 766 797 794.167 797 817 819.834 817 848 817 876.167 794.167 899 766 899 737.833 899 715 876.167 715 848Z" fill="url(#fill9)" fill-rule="evenodd"/>
+        <path id="TONG" class="highlight-target" d="M715 848C715 819.834 737.833 797 766 797 794.167 797 817 819.834 817 848 817 876.167 794.167 899 766 899 737.833 899 715 876.167 715 848Z" fill-rule="evenodd"/>
     </g>
 </svg>

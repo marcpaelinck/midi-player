@@ -1,6 +1,6 @@
 import { DATAFOLDER_URL_ABSOLUTE } from "../settings.js";
 import { Animator } from "./animation.js";
-import { delay, log } from "./utilities.js";
+import { delay, logConsole } from "./utilities.js";
 
 let selectedSong = null; // JSON
 let selectedInstrument = null; // JSON
@@ -122,7 +122,7 @@ function setPartOnChangeEvent(context, sequencer, dom) {
         // retrieve the file path for the selected song
         let selection = event.target.options[event.target.selectedIndex];
         let filepath = DATAFOLDER_URL_ABSOLUTE + "/midifiles/".concat(selection.getAttribute("file"));
-        console.log(`selected file: ${filepath}`);
+        logConsole(`selected file: ${filepath}`, "always");
         dom.loopCheckbox.checked = selection.getAttribute("loop") === "true";
 
         // resume the context if paused

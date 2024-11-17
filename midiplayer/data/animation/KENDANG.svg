@@ -1,0 +1,265 @@
+<svg viewBox="0 0 4000 1233" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+    <defs>
+        <filter id="fx0" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+        <feComponentTransfer color-interpolation-filters="sRGB">
+            <feFuncR type="discrete" tableValues="0 0"/>
+            <feFuncG type="discrete" tableValues="0 0"/>
+            <feFuncB type="discrete" tableValues="0 0"/>
+            <feFuncA type="linear" slope="0.4" intercept="0"/>
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="6.11111 6.11111"/>
+        </filter>
+        <filter id="fx1" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+        <feComponentTransfer color-interpolation-filters="sRGB">
+            <feFuncR type="discrete" tableValues="0 0"/>
+            <feFuncG type="discrete" tableValues="0 0"/>
+            <feFuncB type="discrete" tableValues="0 0"/>
+            <feFuncA type="linear" slope="0.4" intercept="0"/>
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="6.11111 6.11111"/>
+        </filter>
+        <filter id="fx2" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+        <feComponentTransfer color-interpolation-filters="sRGB">
+            <feFuncR type="discrete" tableValues="0 0"/>
+            <feFuncG type="discrete" tableValues="0 0"/>
+            <feFuncB type="discrete" tableValues="0 0"/>
+            <feFuncA type="linear" slope="0.4" intercept="0"/>
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="5.35068 5.34722"/>
+        </filter>
+        <filter id="fx3" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+        <feComponentTransfer color-interpolation-filters="sRGB">
+            <feFuncR type="discrete" tableValues="0 0"/>
+            <feFuncG type="discrete" tableValues="0 0"/>
+            <feFuncB type="discrete" tableValues="0 0"/>
+            <feFuncA type="linear" slope="0.4" intercept="0"/>
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="7.64407 7.66885"/>
+        </filter>
+        <filter id="fx4" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+        <feComponentTransfer color-interpolation-filters="sRGB">
+            <feFuncR type="discrete" tableValues="0 0"/>
+            <feFuncG type="discrete" tableValues="0 0"/>
+            <feFuncB type="discrete" tableValues="0 0"/>
+            <feFuncA type="linear" slope="0.4" intercept="0"/>
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="5.35078 5.34722"/>
+        </filter>
+        <filter id="fx5" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+        <feComponentTransfer color-interpolation-filters="sRGB">
+            <feFuncR type="discrete" tableValues="0 0"/>
+            <feFuncG type="discrete" tableValues="0 0"/>
+            <feFuncB type="discrete" tableValues="0 0"/>
+            <feFuncA type="linear" slope="0.4" intercept="0"/>
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="5.35069 5.34722"/>
+        </filter>
+        <radialGradient cx="465513" cy="2072640" r="2124274" fy="2072640" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill7" gradientTransform="matrix(0.000360892 0 0 0.000360892 1315.5 -0.499836)">
+            <stop offset="0" stop-color="#9AAA72"/>
+            <stop offset="0.3" stop-color="#D6D8CA"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="401782" cy="1393767" r="1450522" fy="1393767" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill8" gradientTransform="matrix(0.000360892 0 0 0.000360892 2.4999 115.5)">
+            <stop offset="0" stop-color="#93A468"/>
+            <stop offset="0.3" stop-color="#929771"/>
+            <stop offset="1" stop-color="#E1DCA9"/>
+        </radialGradient>
+        <linearGradient x1="739.5" y1="711.5" x2="739.5" y2="22.4998" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill9">
+            <stop offset="0" stop-color="#352213"/>
+            <stop offset="0.5" stop-color="#BA7441"/>
+            <stop offset="1" stop-color="#CA9268"/>
+        </linearGradient>
+            <radialGradient cx="3987338" cy="437803" r="4011301" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill11" gradientTransform="matrix(0.000360892 0 0 0.000360892 25.4999 131.5)">
+            <stop offset="0" stop-color="#B1A46B"/>
+            <stop offset="0.3" stop-color="#D6C9A6"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+            <radialGradient cx="4039380" cy="430830" r="4062291" fx="4039380" fy="430830" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill13" gradientTransform="matrix(0.000360673 1.2595e-05 -1.2595e-05 0.000360673 24.4412 284.902)">
+            <stop offset="0" stop-color="#B1A46B"/>
+            <stop offset="0.3" stop-color="#D6C9A6"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+                    <radialGradient cx="4085833" cy="438431" r="4109289" fx="4085834" fy="438431" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill17" gradientTransform="scale(0.000360892 0.000360892)">
+            <stop offset="0" stop-color="#DEDEBC"/>
+            <stop offset="0.3" stop-color="#DEDEBC"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="3821083" cy="440575" r="3846398" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill20" gradientTransform="matrix(0.000360892 0 0 0.000360892 42.5001 1.49987)">
+            <stop offset="0" stop-color="#DEDEBC"/>
+            <stop offset="0.3" stop-color="#DEDEBC"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <rect x="-6.50432" y="-6.5" width="766.009" height="65"/>
+        <radialGradient cx="3954263" cy="439536" r="3978617" fx="3954264" fy="439536" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill24" gradientTransform="scale(0.000360892 0.000360892)">
+            <stop offset="0" stop-color="#DEDEBC"/>
+            <stop offset="0.3" stop-color="#DEDEBC"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="72000" cy="108973" r="130611" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill25" gradientTransform="matrix(0.000360673 1.2595e-05 -1.2595e-05 0.000360673 256.024 117.974)">
+            <stop offset="0" stop-color="#9AAA72"/>
+            <stop offset="0.3" stop-color="#D6D8CA"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="72043" cy="144087" r="161094" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill26" gradientTransform="matrix(0.000360892 0 0 0.000360892 217.5 246.5)">
+            <stop offset="0" stop-color="#9AAA72"/>
+            <stop offset="0.3" stop-color="#D6D8CA"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="3871579" cy="461710" r="3899013" fx="3871579" fy="461710" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill27" gradientTransform="matrix(0.000359519 3.14538e-05 -3.14538e-05 0.000359519 73.6064 438.601)">
+            <stop offset="0" stop-color="#B1A46B"/>
+            <stop offset="0.3" stop-color="#D6C9A6"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="4081540" cy="438177" r="4104994" fy="438178" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill30" gradientTransform="scale(0.000360892 0.000360892)">
+            <stop offset="0" stop-color="#DEDEBC"/>
+            <stop offset="0.3" stop-color="#DEDEBC"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="3829396" cy="443346" r="3854975" fx="3829396" fy="443346" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill31" gradientTransform="scale(0.000360892 0.000360892)">
+            <stop offset="0" stop-color="#9AAA72"/>
+            <stop offset="0.3" stop-color="#D6D8CA"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="72000" cy="90720" r="115819" fx="72000" fy="90720" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill32" gradientTransform="matrix(0.000360837 -6.29844e-06 6.29844e-06 0.000360837 243.464 586.921)">
+            <stop offset="0" stop-color="#9AAA72"/>
+            <stop offset="0.3" stop-color="#D6D8CA"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <radialGradient cx="72000" cy="144000" r="160997" fy="144000" gradientUnits="userSpaceOnUse" spreadMethod="pad" id="fill33" gradientTransform="matrix(0.000360673 -1.2595e-05 1.2595e-05 0.000360673 229.943 409.343)">
+            <stop offset="0" stop-color="#9AAA72"/>
+            <stop offset="0.3" stop-color="#D6D8CA"/>
+            <stop offset="1" stop-color="#F2F0DA"/>
+        </radialGradient>
+        <!--*********************** KENDANG ************************-->
+        <symbol id="Kendang-body">
+            <path id="body" d="M1389.06 22.4998 1389.06 22.5009 1389.07 22.5002 1389.07 22.5032 1395.75 24.2785C1428.75 41.9204 1454.5 188.629 1454.5 367 1454.5 545.371 1428.75 692.08 1395.75 709.721L1389.07 711.497 1389.07 711.5 1389.06 711.499 1389.06 711.5 1389.05 711.498 80.6807 597.518 80.6807 597.475C49.653 597.475 24.4999 494.288 24.4999 367 24.4999 239.712 49.653 136.525 80.6807 136.525L80.6807 136.483 1389.05 22.5019Z" stroke="#80350E" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill9)" fill-rule="evenodd"/>
+            <g filter="url(#fx0)" transform="translate(5 120)">
+                <path d="M1454.24 20.6668 214.296 150.161 20.4999 157.491 20.4999 178.667 231.834 170.522 1459.5 39.3988 1454.24 20.6668Z" stroke="#BFBFBF" stroke-miterlimit="8" fill="#FF0000" fill-rule="evenodd"/>
+            </g>
+            <path d="M1459.24 131.5 219.296 260.995 25.4999 268.325 25.4999 289.5 236.834 281.356 1464.5 150.232 1459.24 131.5Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill11)" fill-rule="evenodd"/>
+            <g filter="url(#fx1)" transform="translate(-2 324)">
+                <path d="M1478.01 20.7587 218.199 104.275 21.7421 104.632 21.0149 125.457 235.256 124.919 1482.69 39.3671 1478.01 20.7587Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="#FF0000" fill-rule="evenodd"/>
+            </g>
+            <path d="M1476.01 335.592 216.199 419.108 19.7421 419.465 19.0149 440.291 233.256 439.753 1480.69 354.2 1476.01 335.592Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill13)" fill-rule="evenodd"/>
+            <g clip-path="url(#clip15)" filter="url(#fx2)" transform="matrix(1.99871 0 0 2 -29 265)">
+                <g clip-path="url(#clip16)" transform="translate(1.77636e-15 0)">
+                    <path d="M736.531 0 101.419 64.8476 0 68.6242 2.2891 79.1133 110.39 75.0374 737.274 10.6138 736.531 0Z" stroke="#BFBFBF" stroke-width="0.999355" stroke-miterlimit="8" fill="#FF0000" fill-rule="evenodd" transform="matrix(0.999533 -0.0471354 -0.0471659 -0.998887 20.3738 97.2604)"/>
+                </g>
+            </g>
+            <path d="M1473.06 0 202.838 129.695 0 137.248 4.57819 158.226 220.78 150.075 1474.55 21.2276 1473.06 0Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill17)" fill-rule="evenodd" transform="matrix(0.998889 -0.0471355 -0.0471355 -0.998889 11.7213 427.437)"/>
+            <g filter="url(#fx3)" transform="matrix(1.99864 0 0 1.99219 1 -40)">
+                <path d="M705.467 24.0849 115.925 89.6013 24.0072 93.2772 24.0072 103.897 124.244 99.8124 713.975 31.7567 705.467 24.0849Z" stroke="#BFBFBF" stroke-miterlimit="8" fill="#FF0000" fill-rule="evenodd"/>
+            </g>
+            <path d="M1404.5 1.49987 226.212 132.021 42.5001 139.344 42.5001 160.5 242.837 152.363 1421.5 16.7834 1404.5 1.49987Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill20)" fill-rule="evenodd"/>
+            <g clip-path="url(#clip22)" filter="url(#fx4)" transform="matrix(1.99867 0 0 2 -2 126)">
+                <path d="M713.537 6.50795e-05 99.5627 65.0474-6.9072e-05 69.4204 3.95831 79.3132 108.215 75.2373 712.999 9.70465 713.537 6.50795e-05Z" stroke="#BFBFBF" stroke-width="0.999342" stroke-miterlimit="8" fill="#FF0000" fill-rule="evenodd" transform="matrix(0.995152 -0.104761 -0.104831 -0.99449 24.7292 103.593)"/>
+            </g>
+            <path d="M1427.06 0.000130158 199.124 130.094-0.000138143 138.84 7.91657 158.625 216.428 150.473 1425.99 19.4092 1427.06 0.000130158Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill24)" fill-rule="evenodd" transform="matrix(0.994497 -0.104762 -0.104762 -0.994497 47.4256 301.103)"/>
+            <path d="M255.873 122.302C255.956 119.912 257.962 118.042 260.352 118.125L277.664 118.73C280.055 118.813 281.925 120.819 281.841 123.209L280.771 153.856C280.688 156.247 278.682 158.117 276.292 158.033L258.98 157.429C256.589 157.345 254.719 155.34 254.803 152.95Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill25)" fill-rule="evenodd"/>
+            <path d="M217.5 250.833C217.5 248.44 219.44 246.5 221.833 246.5L239.166 246.5C241.56 246.5 243.5 248.44 243.5 250.833L243.5 294.167C243.5 296.56 241.56 298.5 239.166 298.5L221.833 298.5C219.44 298.5 217.5 296.56 217.5 294.167Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill26)" fill-rule="evenodd"/>
+            <path d="M1465.29 560.358 250.789 592.727 60.9311 583.481 59.0838 604.595 266.137 614.527 1463.64 581.778C1464.38 571.774 1464.55 570.363 1465.29 560.358Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill27)" fill-rule="evenodd"/>
+            <g filter="url(#fx5)" transform="matrix(1.9987 0 0 2 -34 417)">
+                <path d="M734.955 0 101.2 64.8107 1.14921 68.7617 0 79.0675 110.176 75.0005 736.498 10.2287 734.955 0Z" stroke="#BFBFBF" stroke-width="0.999352" stroke-miterlimit="8" fill="#FF0000" fill-rule="evenodd" transform="matrix(1.00064 0.00442381 0.00442668 -0.99999 16.8398 96.5721)"/>
+            </g>
+            <path d="M1469.91 0 202.4 129.621 2.29842 137.523 0 158.135 220.353 150.001 1473 20.4575 1469.91 0Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill30)" fill-rule="evenodd" transform="matrix(0.99999 0.00442381 0.00442381 -0.99999 -0.342212 573.477)"/>
+            <path d="M1382 12.6928 1362.58 0 190.768 133.207 12.0356 139.393 0 160 207.151 153.572 1382 12.6928Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill31)" fill-rule="evenodd" transform="matrix(1 0 0 -1 40.5001 744.5)"/>
+            <path d="M243.539 591.251C243.498 588.86 245.402 586.887 247.794 586.846L265.114 586.543C267.505 586.501 269.478 588.406 269.52 590.798L269.94 614.873C269.982 617.264 268.077 619.237 265.685 619.278L248.365 619.581C245.974 619.622 244.001 617.718 243.96 615.326Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill32)" fill-rule="evenodd"/>
+            <path d="M230.094 413.672C230.01 411.281 231.88 409.276 234.271 409.192L251.583 408.588C253.973 408.504 255.979 410.374 256.062 412.765L257.574 456.045C257.657 458.436 255.787 460.441 253.397 460.525L236.085 461.129C233.694 461.213 231.689 459.342 231.605 456.952Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill33)" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="right-hide">
+            <path d="M1315.5 373.5C1315.5 166.946 1353.11-0.499836 1399.5-0.499836 1445.89-0.499836 1483.5 166.946 1483.5 373.5 1483.5 580.055 1445.89 747.5 1399.5 747.5 1353.11 747.5 1315.5 580.055 1315.5 373.5Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill7)" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="left-hide">
+            <path d="M2.4999 367C2.4999 228.1 34.9593 115.5 74.9999 115.5 115.041 115.5 147.5 228.1 147.5 367 147.5 505.9 115.041 618.5 74.9999 618.5 34.9593 618.5 2.4999 505.9 2.4999 367Z" stroke="#BFBFBF" stroke-width="1.14583" stroke-miterlimit="8" fill="url(#fill8)" fill-rule="evenodd"/>
+        </symbol>
+        <!--***************** HIGHLIGHT COMPOMENTS ****************-->
+        <symbol id="right-hide-highlight">
+            <path d="M1315.5 373.5C1315.5 166.946 1353.11-0.499836 1399.5-0.499836 1445.89-0.499836 1483.5 166.946 1483.5 373.5 1483.5 580.055 1445.89 747.5 1399.5 747.5 1353.11 747.5 1315.5 580.055 1315.5 373.5Z" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="left-hide-highlight">
+            <path d="M2.4999 367C2.4999 228.1 34.9593 115.5 74.9999 115.5 115.041 115.5 147.5 228.1 147.5 367 147.5 505.9 115.041 618.5 74.9999 618.5 34.9593 618.5 2.4999 505.9 2.4999 367Z" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="letter-k-highlight">
+            <path d="M55.7749 78.1055 84.7591 78.1055 84.7591 215.185 114.037 215.185 148.271 146.717 176.148 146.717 136.111 229.629 176.148 312.492 148.248 312.492 114.014 244.024 84.7591 244.024 84.7591 312.492 55.7749 312.492Z" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-miterlimit="10" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="letter-p-highlight">
+            <path d="M104.427 175.41C99.0239 175.41 93.6676 177.682 88.3584 182.227 85.9589 185.507 84.7591 189.888 84.7591 195.371L84.7591 263.84C84.7591 269.449 86.6763 274.171 90.5106 278.006 94.3727 281.868 99.0115 283.799 104.427 283.799L127.348 283.799C132.8 283.799 137.458 281.868 141.322 278.006 145.215 274.111 147.161 269.389 147.161 263.84L147.161 195.371C147.161 189.948 145.945 185.567 143.511 182.227 138.176 177.682 132.788 175.41 127.348 175.41ZM55.7749 146.717 84.7591 146.717 84.7591 152.665C88.914 148.7 95.47 146.717 104.427 146.717L127.348 146.717C140.789 146.717 152.252 151.458 161.734 160.941 171.343 170.447 176.148 181.923 176.148 195.371L176.148 263.84C176.148 277.317 171.343 288.808 161.734 298.314 152.283 307.766 140.82 312.492 127.348 312.492L104.427 312.492C95.4176 312.492 88.8616 310.509 84.7591 306.544L84.7591 380.96 55.7749 380.96Z" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-miterlimit="10" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="letter-d-highlight">
+        <path d="M104.427 175.41C99.0239 175.41 93.6676 177.682 88.3584 182.227 85.9589 185.507 84.7591 189.888 84.7591 195.371L84.7591 263.84C84.7591 269.449 86.6763 274.171 90.5106 278.006 94.3727 281.868 99.0115 283.799 104.427 283.799L127.348 283.799C132.8 283.799 137.458 281.868 141.322 278.006 145.215 274.111 147.161 269.389 147.161 263.84L147.161 195.371C147.161 189.948 145.945 185.567 143.511 182.227 138.176 177.682 132.788 175.41 127.348 175.41ZM147.161 78.1055 176.148 78.1055 176.148 312.492 147.161 312.492 147.161 306.544C142.98 310.509 136.376 312.492 127.348 312.492L104.427 312.492C90.9992 312.492 79.5077 307.766 69.9526 298.314 60.5008 288.862 55.7749 277.371 55.7749 263.84L55.7749 195.371C55.7749 181.869 60.5008 170.393 69.9526 160.941 79.5385 151.458 91.03 146.717 104.427 146.717L127.348 146.717C136.323 146.717 142.928 148.7 147.161 152.665Z" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-miterlimit="10" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="letter-t-highlight">
+            <path d="M78.6932 78.1055 107.534 78.1055 107.534 146.717 176.148 146.717 176.148 175.41 107.534 175.41 107.534 263.84C107.534 269.449 109.451 274.171 113.286 278.006 117.148 281.868 121.835 283.799 127.348 283.799L176.148 283.799 176.148 312.492 127.348 312.492C113.815 312.492 102.323 307.766 92.8709 298.314 83.4191 288.862 78.6932 277.371 78.6932 263.84L78.6932 175.41 55.7749 175.41 55.7749 146.717 78.6932 146.717Z" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-miterlimit="10" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="letter-n-highlight">
+            <path d="M104.427 169.492 127.348 169.492C140.796 169.492 152.258 174.282 161.734 183.861 171.343 193.367 176.148 204.795 176.148 218.144L176.148 312.492 147.161 312.492 147.161 218.144C147.161 212.722 145.215 208.064 141.322 204.17 137.427 200.277 132.769 198.33 127.348 198.33L104.427 198.33C99.0424 198.33 94.4035 200.277 90.5106 204.17 86.6763 208.004 84.7591 212.662 84.7591 218.144L84.7591 312.492 55.7749 312.492 55.7749 218.144C55.7749 204.741 60.5008 193.313 69.9526 183.861 79.5323 174.282 91.0238 169.492 104.427 169.492Z" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-miterlimit="10" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="letter-u-highlight">
+            <path d="M55.7749 169.492 84.7591 169.492 84.7591 263.84C84.7591 269.449 86.6763 274.171 90.5106 278.006 94.3727 281.868 99.0115 283.799 104.427 283.799L127.348 283.799C132.8 283.799 137.458 281.868 141.322 278.006 145.215 274.111 147.161 269.389 147.161 263.84L147.161 169.492 176.148 169.492 176.148 263.84C176.148 277.317 171.343 288.808 161.734 298.314 152.283 307.766 140.82 312.492 127.348 312.492L104.427 312.492C90.9992 312.492 79.5077 307.766 69.9526 298.314 60.5008 288.862 55.7749 277.371 55.7749 263.84Z" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-miterlimit="10" fill-rule="evenodd"/>
+        </symbol>
+    </defs>
+    <style>
+         <!-- 
+            The styling enables animation. See file GK_REYONG.svg for an explanation.
+         -->
+        .target *{
+            fill: inherit;
+        }
+            <!-- The next setting defines the default color for the elements that should be highlighted.  -->
+        .target {
+            fill: none;
+        }
+         <!-- *******************************************************************************************************************
+          The following sections will give control of the highlighting of the individual elements from the javascript application. 
+          ******************************************************************************************************************* -->
+          <!-- This section should be the same in each SVG document. It enables to set the highlight color and to animate the 
+               highlighting by gradually decreasing the opacity. -->
+        :root {
+          --alpha: 1;
+          --color:red;
+        }
+        <!-- Adding classes 'highlight' and <stroke> to a `target` note element will switch on the highlighting for the corresponding SYMBOL. -->
+        .highlight {
+          fill: var(--color);
+          opacity: var(--alpha);
+        }
+    </style>
+    <!--*********************** WADON ************************-->
+    <g id="WADON" transform="translate(0 0)">
+        <!-- right and left hide need to be behind the kendang body -->
+        <use href="#right-hide" transform="scale(1.1, 1.1)"/>
+        <use href="#left-hide" transform="scale(1.1, 1.1)"/>
+        <g class="target" id="KA">
+            <use class="right-hide" href="#right-hide-highlight" transform="scale(1.1, 1.1)"/>
+            <use href="#letter-k-highlight" transform="translate(1650 0)"/>
+        </g>
+        <g class="target" id="DE">
+            <use class="right-hide" href="#right-hide-highlight" transform="scale(1.1, 1.1)"/>
+            <use href="#letter-d-highlight" transform="translate(1650 250)"/>
+        </g>
+        <g class="target" id="CUNG">
+            <use class="right-hide" href="#right-hide-highlight" transform="scale(1.1, 1.1)"/>
+            <use href="#letter-n-highlight" transform="translate(1650 450)"/>
+        </g>
+        <!-- body must partly cover highlights (and left and right hides) -->
+        <use href="#Kendang-body" transform="scale(1.1, 1.1)"/>       
+    </g>
+    <!--*********************** LANANG ************************-->
+    <g id="LANANG" transform="translate(2000 45)">
+        <use href="#right-hide"/>
+        <use href="#left-hide"/>
+        <g class="target" id="PAK">
+            <use class="right-hide" href="#right-hide-highlight"/>
+            <use href="#letter-p-highlight" transform="translate(1500 -80)"/>
+        </g>
+        <g class="target" id="TUT">
+            <use class="right-hide" href="#right-hide-highlight"/>
+            <use href="#letter-t-highlight" transform="translate(1500 250)"/>
+        </g>
+        <g class="target" id="KUNG">
+            <use class="right-hide" href="#right-hide-highlight"/>
+            <use href="#letter-u-highlight" transform="translate(1500 450)"/>
+        </g>
+        <use href="#Kendang-body"/>
+    </g>
+</svg>

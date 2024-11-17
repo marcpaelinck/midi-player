@@ -8,7 +8,7 @@ fetch("../data/soundfont/GAMELAN1.sf2").then(async (response) => {
     // load the soundfont into an array buffer
     let soundFontBuffer = await response.arrayBuffer();
 
-    console.log(response.headers);
+    logConsole(response.headers, "always");
 
     if (response.headers.get("content-length") > 0) {
         document.getElementById("message").innerText = "SoundFont has been loaded!";

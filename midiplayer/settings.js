@@ -5,5 +5,4 @@
  */
 export const DATAFOLDER_URL_ABSOLUTE = "/midiplayer/data";
 export const WORKLET_URL_ABSOLUTE = "/synthetizer/worklet_processor.min.js";
-export const LOGGING = false;
-
+export const LOGGING = true;

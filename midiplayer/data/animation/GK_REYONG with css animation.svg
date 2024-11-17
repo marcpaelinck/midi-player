@@ -74,14 +74,32 @@
             We use two keyframes for the highlight animation. The reason is that when the same note is animated twice after each other the
             second animation is not triggered if the same classes are used (even if the classes are removed before being added again).
              -->
-        .highlight.OPEN .knob, .highlight.ABBREVIATED .knob, .highlight.MUTED .knob {
-            fill: var(--color);
-            opacity: var(--alpha);        
+        @keyframes fadeout1 {
+            from {fill: var(--color); opacity: 1;}
+            to  {fill: var(--color); opacity: 0;}
         }
-        .highlight.TICK1 .rim, .highlight.TICK2 .rim {
-            fill: var(--color);
-            opacity: var(--alpha);
-        }     
+        @keyframes fadeout2 {
+            from {fill: var(--color); opacity: 1; }
+            to  {fill: var(--color); opacity: 0;}
+        }
+        [class^=highlight].OPEN .knob, [class^=highlight].ABBREVIATED .knob, [class^=highlight].MUTED .knob {
+            animation-name: fadeout1;
+            animation-duration: 1s;
+            animation-composition: replace;
+        } 
+        [class^=highlight].TICK1 .rim, [class^=highlight].TICK2 .rim {
+            animation-name: fadeout1;
+            animation-duration: 1s;
+            animation-composition: replace;
+        }
+        <!-- .highlight2.OPEN .knob, .highlight2.ABBREVIATED .knob, .highlight2.MUTED .knob {
+            animation-name: fadeout1;
+            animation-duration: 1s;
+        }
+        .highlight2.TICK1 .rim, .highlight2.TICK2 .rim {
+            animation-name: fadeout1;
+            animation-duration: 1s;
+        }  -->
     </style>
     <g id="DENG0" transform="matrix(1.00 0 0.00 1.00 0 0)">
         <use class="chime" href="#chime" x="0" y="0"/>

@@ -33,12 +33,7 @@
     </defs>
     <style>
          <!-- 
-            The styling enables animation by making variables available (see :root).
-            The first two sections (.target * and .target) account for the fact that symbols referred to by the `use` elements
-            cannot be accessed from these `use` elements. However the css inherit property does propagate down to the symbols
-            from the use elements. The animation uses this property by adding an item 'highlight' to the target that needs to
-            be highlighted and by setting the `color` and `alpha` variables. These will be propagated down to the symbol instance.
-            See https://stackoverflow.com/questions/78108597/styling-use-instances-of-an-svg-symbol 
+            The styling enables animation. See file GK_REYONG.svg for an explanation.
          -->
        .target *{
             fill: inherit;
@@ -56,28 +51,27 @@
           fill: var(--color);
           opacity: var(--alpha);
         }
-
     </style>
     <!-- without dummy, Firefox sets the fill of the first daun to white when the highlight of another key is removed -->
     <use id="dummy" href="#suspenders" x="0" y="0" transform="scale(1 .98)"/>" 0.00"
-    <use id="DING1-daun" class="daun" href="#daun" x="0" y="0%" transform="scale(1 1.00)"/>
-    <use id="DING1" class="target" href="#highlight-target" x="0" y="0%" transform="scale(1 1.00)"/>
-    <use id="" href="#suspenders" x="30"/>"""0%"" 0.00"
-    <use id="DONG1-daun" class="daun" href="#daun" x="36" y="1%" transform="scale(1 0.98)"/>
-    <use id="DONG1" class="target" href="#highlight-target" x="36" y="1%" transform="scale(1 0.98)"/>
-    <use id="" href="#suspenders" x="66"/>"""0%"" 0.00"
-    <use id="DENG1-daun" class="daun" href="#daun" x="72" y="2%" transform="scale(1 0.96)"/>
-    <use id="DENG1" class="target" href="#highlight-target" x="72" y="2%" transform="scale(1 0.96)"/>
-    <use id="" href="#suspenders" x="102"/>"""0%"" 0.00"
-    <use id="DEUNG1-daun" class="daun" href="#daun" x="108" y="3%" transform="scale(1 0.95)"/>
-    <use id="DEUNG1" class="target" href="#highlight-target" x="108" y="3%" transform="scale(1 0.95)"/>
-    <use id="" href="#suspenders" x="138"/>"""0%"" 0.00"
-    <use id="DUNG1-daun" class="daun" href="#daun" x="144" y="3%" transform="scale(1 0.93)"/>
-    <use id="DUNG1" class="target" href="#highlight-target" x="144" y="3%" transform="scale(1 0.93)"/>
-    <use id="" href="#suspenders" x="174"/>"""0%"" 0.00"
-    <use id="DANG1-daun" class="daun" href="#daun" x="180" y="4%" transform="scale(1 0.91)"/>
-    <use id="DANG1" class="target" href="#highlight-target" x="180" y="4%" transform="scale(1 0.91)"/>
-    <use id="" href="#suspenders" x="210"/>"""0%"" 0.00"
-    <use id="DAING1-daun" class="daun" href="#daun" x="216" y="5%" transform="scale(1 0.90)"/>
-    <use id="DAING1" class="target" href="#highlight-target" x="216" y="5%" transform="scale(1 0.90)"/>
+    <use id="DING1-daun" class="daun" href="#daun" x="0" y="0.0%" transform="scale(1 1.00)"/>
+    <use id="DING1" class="target" href="#highlight-target" x="0" y="0.0%" transform="scale(1 1.00)"/>
+    <use id="" href="#suspenders" x="30"/>
+    <use id="DONG1-daun" class="daun" href="#daun" x="36" y="0.9%" transform="scale(1 0.98)"/>
+    <use id="DONG1" class="target" href="#highlight-target" x="36" y="0.9%" transform="scale(1 0.98)"/>
+    <use id="" href="#suspenders" x="66"/>
+    <use id="DENG1-daun" class="daun" href="#daun" x="72" y="1.8%" transform="scale(1 0.96)"/>
+    <use id="DENG1" class="target" href="#highlight-target" x="72" y="1.8%" transform="scale(1 0.96)"/>
+    <use id="" href="#suspenders" x="102"/>
+    <use id="DEUNG1-daun" class="daun" href="#daun" x="108" y="2.6%" transform="scale(1 0.95)"/>
+    <use id="DEUNG1" class="target" href="#highlight-target" x="108" y="2.6%" transform="scale(1 0.95)"/>
+    <use id="" href="#suspenders" x="138"/>
+    <use id="DUNG1-daun" class="daun" href="#daun" x="144" y="3.5%" transform="scale(1 0.93)"/>
+    <use id="DUNG1" class="target" href="#highlight-target" x="144" y="3.5%" transform="scale(1 0.93)"/>
+    <use id="" href="#suspenders" x="174"/>
+    <use id="DANG1-daun" class="daun" href="#daun" x="180" y="4.3%" transform="scale(1 0.91)"/>
+    <use id="DANG1" class="target" href="#highlight-target" x="180" y="4.3%" transform="scale(1 0.91)"/>
+    <use id="" href="#suspenders" x="210"/>
+    <use id="DAING1-daun" class="daun" href="#daun" x="216" y="5.1%" transform="scale(1 0.90)"/>
+    <use id="DAING1" class="target" href="#highlight-target" x="216" y="5.1%" transform="scale(1 0.90)"/>
 </svg>

@@ -15,19 +15,59 @@ export function log(msg) {
     }
 }
 
-export function logConsole(msg) {
-    let now = new Date();
-    let hour = now.getHours();
-    let minute = now.getMinutes();
-    let second = now.getSeconds();
-    let millis = now.getMilliseconds();
-    let logmsg = `${hour}:${minute}:${second}:${millis} - ${msg}`;
-    console.log(logmsg);
+const msgTypes = ["always"];
+export function logConsole(msg, msg_type = none) {
+    if (LOGGING && msgTypes.includes(msg_type)) {
+        let now = new Date();
+        let hour = now.getHours();
+        let minute = now.getMinutes();
+        let second = now.getSeconds();
+        let millis = now.getMilliseconds();
+        let logmsg = `${hour}:${minute}:${second}:${millis} - ${msg}`;
+        console.log(logmsg);
+    }
 }
 
-export async function waitForSVGDocLoaded(embedID) {
-    while (!document.getElementById("svg-embed").getSVGDocument()) {
-        await delay(500);
-        // console.log(`loop: docReady=${document.readyState}`);
-    } // console.log(`ready: docReady=${document.readyState}`);
+export function waitForObjectContent(selector) {
+    return new Promise((resolve) => {
+        if (document.querySelector(selector).getSVGDocument()) {
+            return resolve(document.querySelector(selector).getSVGDocument());
+        }
+
+        const observer = new MutationObserver((mutations) => {
+            if (document.querySelector(selector).contentDocument) {
+                observer.disconnect();
+                resolve(document.querySelector(selector).getSVGDocument());
+            }
+        });
+
+        // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
+    });
+}
+/**
+ * See https://www.w3schools.com/howto/howto_html_include.asp
+ * @param {*} element Content will be inserted within this element
+ * @param {*} file File containing the XML/HTML content
+ */
+export function loadHTMLContent(element, file) {
+    return new Promise((resolve) => {
+        element.setAttribute("w3-include-html", file);
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            let success = false;
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                element.innerHTML = this.responseText;
+                success = true;
+                resolve(`Image loaded from ${file}`);
+            } else if (xhttp.readyState === 4) {
+                reject(`Could not load image from ${file}`);
+            }
+        };
+        xhttp.open("GET", file, true);
+        xhttp.send();
+    });
 }
