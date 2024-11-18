@@ -81,15 +81,17 @@
         ]
     },
     "animation": {
+        "_comment1": "Define multiple colors per stroke to differentiate channels (=positions) that are animated together.",
+        "_comment2": "If there are less colors than channels, color assigment will be performed by rotating through the list of colors (causing colors to be reused).",
         "highlight": {
-            "OPEN": "green",
-            "ABBREVIATED": "blue",
-            "MUTED": "purple",
-            "TICK1": "green",
-            "TICK2": "blue",
-            "KAPAK": "green",
-            "DETUT": "blue",
-            "CUNGKUNG": "purple"
+            "OPEN": ["green", "lime"],
+            "ABBREVIATED": ["blue", "aqua"],
+            "MUTED": ["purple", "fuchsia"],
+            "TICK1": ["green", "lime"],
+            "TICK2": ["blue", "aqua"],
+            "KAPAK": ["green"],
+            "DETUT": ["blue"],
+            "CUNGKUNG": ["purple"]
         },
         "profiles": {
             "SP_GANGSA": {

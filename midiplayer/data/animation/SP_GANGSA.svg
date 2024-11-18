@@ -42,13 +42,26 @@
         .target {
             fill: url(#fill1);
         }
-         <!-- The following sections will give control of the highlighting from the javascript application -->
+         <!-- The following sections will give control of the highlighting from the javascript application.
+              Variables color1 and color2 are used when both polos and sangsih are animated on the same instrument.
+              Otherwise variable color is used.
+         -->
         :root {
           --alpha: 1;
           --color:orange;
+          --color1:orange;
+          --color2:orange;
         }
-        .highlight {
+        .highlight.--color {
           fill: var(--color);
+          opacity: var(--alpha);
+        }
+        .highlight.--color1 {
+          fill: var(--color1);
+          opacity: var(--alpha);
+        }
+        .highlight.--color2 {
+          fill: var(--color2);
           opacity: var(--alpha);
         }
 
