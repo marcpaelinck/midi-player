@@ -7,6 +7,15 @@
             "parts": [{ "name": "entire piece", "file": "Cendrawasih_full_GAMELAN1.mid", "loop": false }]
         },
         {
+            "title": "Rejang Dewa",
+            "instrumentgroup": "GONG_KEBYAR",
+            "display": true,
+            "parts": [
+                { "name": "intro", "file": "Rejang Dewa_intro_GAMELAN1.mid", "loop": false },
+                { "name": "pengecet", "file": "Rejang Dewa_pengecet_GAMELAN1.mid", "loop": true }
+            ]
+        },
+        {
             "title": "Godek Miring",
             "instrumentgroup": "SEMAR_PAGULINGAN",
             "display": true,

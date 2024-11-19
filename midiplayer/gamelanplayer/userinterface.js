@@ -36,7 +36,7 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     setPlayPauseStopOnClickEvents(sequencer, dom);
 
     dom.loopCheckbox.onclick = () => {
-        sequencer.loop = true;
+        sequencer.loop = dom.loopCheckbox.checked;
     };
 }
 

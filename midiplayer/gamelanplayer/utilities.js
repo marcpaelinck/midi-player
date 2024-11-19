@@ -71,3 +71,16 @@ export function loadHTMLContent(element, file) {
         xhttp.send();
     });
 }
+
+/**
+ * For debugging. Adds listener to sequencer events
+ * @param {Sequencer} sequencer
+ * @param {Object<HTMLElement>} sequencer dictionary of DOM elements
+ */
+export function setTracking(sequencer, dom) {
+    if (LOGGING) {
+        sequencer.addOnSongEndedEvent(() => {
+            console.log("song changed");
+        }, "testlogging");
+    }
+}

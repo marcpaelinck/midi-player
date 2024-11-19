@@ -3,7 +3,7 @@ import { Sequencer } from "./spessasynth_lib/sequencer/sequencer.js";
 import { Synthetizer } from "./spessasynth_lib/synthetizer/synthetizer.js";
 import { DATAFOLDER_URL_ABSOLUTE, WORKLET_URL_ABSOLUTE } from "./settings.js";
 import { initializeDropDownsAndEvents } from "./gamelanplayer/userinterface.js";
-import { log } from "./gamelanplayer/utilities.js";
+import { log, setTracking } from "./gamelanplayer/utilities.js";
 
 const dom = {
     playerElement: document.getElementById("midiplayer"),
@@ -52,6 +52,18 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
         let synthesizer = new Synthetizer(context.destination, soundFontBuffer); // create the synthetizer
         const SEQ_OPTIONS = { skipToFirstNoteOn: true, autoPlay: false };
         let sequencer = new Sequencer([], synthesizer, SEQ_OPTIONS);
+
+        // Restore individual instrument volumes when looping.
+        // (Apparently, all channel volumes are being reset when a song is restarted).
+        sequencer.addOnTimeChangeEvent((time) => {
+            if (Math.abs(time) < 0.1) {
+                console.log(`(re-)starting song`);
+                dom.instrumentSelector.dispatchEvent(new Event("change"));
+            }
+        }, "resetfocus");
+
+        // Set tracking
+        setTracking(sequencer, dom);
 
         // Set up the user interfae
         initializeDropDownsAndEvents(context, sequencer, synthesizer, settings, dom, log);
