@@ -16,6 +16,12 @@
             ]
         },
         {
+            "title": "Pendet",
+            "instrumentgroup": "GONG_KEBYAR",
+            "display": true,
+            "parts": [{ "name": "entire piece", "file": "Pendet_full_GAMELAN1.mid", "loop": false }]
+        },
+        {
             "title": "Godek Miring",
             "instrumentgroup": "SEMAR_PAGULINGAN",
             "display": true,
@@ -68,7 +74,6 @@
             { "name": "- KANTILAN_POLOS", "channels": [6], "midioffset": 0, "animation": "GK_GANGSA" },
             { "name": "- KANTILAN_SANGSIH", "channels": [7], "midioffset": 0, "animation": "GK_GANGSA" },
             { "name": "UGAL", "channels": [8], "midioffset": 0, "animation": "GK_GANGSA" },
-            { "name": "TROMPONG", "channels": [8], "midioffset": 0, "animation": null },
             { "name": "REYONG", "channels": [10, 11, 12, 13], "midioffset": 0, "animation": "GK_REYONG" },
             { "name": "- REYONG_1", "channels": [10], "midioffset": 0, "animation": "GK_REYONG", "position": "REYONG_1" },
             { "name": "- REYONG_2", "channels": [11], "midioffset": 0, "animation": "GK_REYONG", "position": "REYONG_2" },

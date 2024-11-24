@@ -1,6 +1,6 @@
 import { DATAFOLDER_URL_ABSOLUTE } from "../settings.js";
 import { Animator } from "./animation.js";
-import { delay, logConsole } from "./utilities.js";
+import { delay, logConsole, timeFormat } from "./utilities.js";
 
 let selectedSong = null; // JSON
 let selectedInstrument = null; // JSON
@@ -18,8 +18,21 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     setPartOnChangeEvent(context, sequencer, dom);
 
     dom.audioTimeSlider.onchange = () => {
+        let sequencer_paused = sequencer.paused;
         sequencer.currentTime = (dom.audioTimeSlider.value / 1000) * sequencer.duration; // switch the time (the sequencer adjusts automatically)
+        // Changing the sequencer time unpauses it.
+        if (sequencer_paused) sequencer.pause();
         dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volumes.
+    };
+
+    dom.audioTimeSlider.onmousedown = () => {
+        // Disables automatic updating of the slider value
+        dom.audioTimeSlider.toggleAttribute("userinteraction", true);
+    };
+
+    dom.audioTimeSlider.onmouseup = () => {
+        // Enables automatic updating of the slider value
+        dom.audioTimeSlider.toggleAttribute("userinteraction", false);
     };
 
     // Change playback speed
@@ -38,6 +51,21 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     dom.loopCheckbox.onclick = () => {
         sequencer.loop = dom.loopCheckbox.checked;
     };
+
+    // make the slider move with the song
+    setInterval(() => {
+        if (dom.audioTimeSlider.hasAttribute("userinteraction")) {
+            // Display slider value being set by user (as an elapsed time value).
+            dom.audioTimeDisplay.innerHTML = timeFormat(
+                (dom.audioTimeSlider.value / dom.audioTimeSlider.max) * sequencer.duration
+            );
+        } else {
+            // Only update slider value to reflect sequencer progress if user is not interacting with it.
+            dom.audioTimeSlider.value = (sequencer.currentTime / sequencer.duration) * dom.audioTimeSlider.max;
+            // Display elapsed time.
+            dom.audioTimeDisplay.innerHTML = timeFormat(sequencer.currentTime);
+        }
+    }, 100);
 }
 
 /**
@@ -139,16 +167,6 @@ function setPartOnChangeEvent(context, sequencer, dom) {
         dom.speedSelector.selectedIndex = 0;
         sequencer.loop = dom.loopCheckbox.checked;
         sequencer.pause();
-
-        // make the slider move with the song
-        setInterval(() => {
-            // Slider ranges from 0 to 1000
-            dom.audioTimeSlider.value = (sequencer.currentTime / sequencer.duration) * 1000;
-            // Display elapsed time
-            let mm = Math.floor(sequencer.currentTime / 60);
-            let ss = Math.round(sequencer.currentTime - 60 * mm, 0);
-            dom.audioTimeDisplay.innerHTML = String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
-        }, 500);
     });
 }
 
@@ -221,9 +239,9 @@ function setPlayPauseStopOnClickEvents(sequencer, dom) {
     dom.stopButton.onclick = () => {
         // Pause playback and reset playback pointer
         if (sequencer.hasDummyData) return;
+        sequencer.currentTime = 0;
+        sequencer.pause();
         playPauseIcon.innerText = "play_arrow";
         dom.audioTimeSlider.value = 0;
-        dom.audioTimeSlider.dispatchEvent(new Event("click")); // redraws slider and resets sequencer time
-        sequencer.pause(); // pause
     };
 }

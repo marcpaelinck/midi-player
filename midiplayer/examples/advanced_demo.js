@@ -2,6 +2,7 @@
 import { WORKLET_URL_ABSOLUTE } from "../spessasynth_lib/synthetizer/worklet_url.js";
 import { Sequencer } from "../spessasynth_lib/sequencer/sequencer.js";
 import { Synthetizer } from "../spessasynth_lib/synthetizer/synthetizer.js";
+import { logConsole } from "../gamelanplayer/utilities.js";
 
 // load the soundfont
 fetch("../data/soundfont/GAMELAN1.sf2").then(async (response) => {

@@ -84,3 +84,10 @@ export function setTracking(sequencer, dom) {
         }, "testlogging");
     }
 }
+
+export function timeFormat(timeValue) {
+    // Trigger is sequencer time change: value is elapsed time.
+    let mm = Math.floor(timeValue / 60);
+    let ss = Math.round(timeValue - 60 * mm, 0);
+    return String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
+}

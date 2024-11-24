@@ -4,6 +4,7 @@ import { Synthetizer } from "./spessasynth_lib/synthetizer/synthetizer.js";
 import { DATAFOLDER_URL_ABSOLUTE, WORKLET_URL_ABSOLUTE } from "./settings.js";
 import { initializeDropDownsAndEvents } from "./gamelanplayer/userinterface.js";
 import { log, setTracking } from "./gamelanplayer/utilities.js";
+// import { parse } from "./yaml/browser/dist/index.js";
 
 const dom = {
     playerElement: document.getElementById("midiplayer"),
@@ -24,6 +25,9 @@ dom.playerElement.style.visibility = "hidden";
 let settings;
 
 // Load the JSON settings file
+// fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.yaml")
+//     .then((response) => response.text())
+//     .then((text) => parse(text))
 fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
     .then((response) => response.json())
     .then((json) => {
@@ -52,6 +56,7 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
         let synthesizer = new Synthetizer(context.destination, soundFontBuffer); // create the synthetizer
         const SEQ_OPTIONS = { skipToFirstNoteOn: true, autoPlay: false };
         let sequencer = new Sequencer([], synthesizer, SEQ_OPTIONS);
+        sequencer.skipToFirstNoteOn = false;
 
         // Restore individual instrument volumes when looping.
         // (Apparently, all channel volumes are being reset when a song is restarted).
