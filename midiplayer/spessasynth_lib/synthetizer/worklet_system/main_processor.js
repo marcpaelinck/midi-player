@@ -49,7 +49,9 @@ import {
 import { applySynthesizerSnapshot, sendSynthesizerSnapshot } from "./worklet_methods/snapshot.js";
 import { WorkletSoundfontManager } from "./worklet_methods/worklet_soundfont_manager/worklet_soundfont_manager.js";
 import { interpolationTypes } from "./worklet_utilities/wavetable_oscillator.js";
+import { WorkletKeyModifierManager } from "./worklet_methods/worklet_key_modifier.js";
 import { getWorkletVoices } from "./worklet_utilities/worklet_voice.js";
+import { panVoice } from "./worklet_utilities/stereo_panner.js";
 
 
 /**
@@ -60,6 +62,8 @@ import { getWorkletVoices } from "./worklet_utilities/worklet_voice.js";
 // if the note is released faster than that, it forced to last that long
 // this is used mostly for drum channels, where a lot of midis like to send instant note off after a note on
 export const MIN_NOTE_LENGTH = 0.03;
+// this sounds way nicer for instant hi-hat cutoff
+export const MIN_EXCLUSIVE_LENGTH = 0.07;
 
 export const SYNTHESIZER_GAIN = 1.0;
 
@@ -83,6 +87,12 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
         this._outputsAmount = this.oneOutputMode ? 1 : options.processorOptions.midiChannels;
         
         this.enableEventSystem = options.processorOptions.enableEventSystem;
+        
+        /**
+         * If the worklet is alive
+         * @type {boolean}
+         */
+        this.alive = true;
         
         /**
          * Synth's device id: -1 means all
@@ -129,6 +139,9 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
         
         this.midiVolume = 1;
         
+        this.reverbGain = 1;
+        this.chorusGain = 1;
+        
         /**
          * Maximum number of voices allowed at once
          * @type {number}
@@ -144,12 +157,18 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
          * the pan of the left channel
          * @type {number}
          */
-        this.panLeft = 0.5 * this.currentGain;
+        this.panLeft = 0.5;
         
         this.highPerformanceMode = false;
         
         /**
-         * Overrides the main soundfont (embedded for example
+         * Handlese custom key overrides: velocity and preset
+         * @type {WorkletKeyModifierManager}
+         */
+        this.keyModifierManager = new WorkletKeyModifierManager();
+        
+        /**
+         * Overrides the main soundfont (embedded for example)
          * @type {BasicSoundFont}
          */
         this.overrideSoundfont = undefined;
@@ -158,7 +177,7 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
          * the pan of the right channel
          * @type {number}
          */
-        this.panRight = 0.5 * this.currentGain;
+        this.panRight = 0.5;
         try
         {
             /**
@@ -196,8 +215,8 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
         this.workletProcessorChannels[DEFAULT_PERCUSSION].drumChannel = true;
         
         // these smoothing factors were tested on 44100Hz, adjust them here
-        this.volumeEnvelopeSmoothingFactor = VOLUME_ENVELOPE_SMOOTHING_FACTOR * (sampleRate / 44100);
-        this.panSmoothingFactor = PAN_SMOOTHING_FACTOR * (sampleRate / 44100);
+        this.volumeEnvelopeSmoothingFactor = VOLUME_ENVELOPE_SMOOTHING_FACTOR * (44100 / sampleRate);
+        this.panSmoothingFactor = PAN_SMOOTHING_FACTOR * (44100 / sampleRate);
         
         /**
          * Controls the system
@@ -302,6 +321,10 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
      */
     process(inputs, outputs)
     {
+        if (!this.alive)
+        {
+            return false;
+        }
         if (this.processTickCallback)
         {
             this.processTickCallback();
@@ -374,6 +397,26 @@ class SpessaSynthProcessor extends AudioWorkletProcessor
         }
         return true;
     }
+    
+    destroyWorkletProcessor()
+    {
+        this.alive = false;
+        this.workletProcessorChannels.forEach(c =>
+        {
+            delete c.midiControllers;
+            delete c.voices;
+            delete c.sustainedVoices;
+            delete c.cachedVoices;
+            delete c.lockedControllers;
+            delete c.preset;
+            delete c.customControllers;
+        });
+        delete this.workletProcessorChannels;
+        delete this.sequencer.midiData;
+        delete this.sequencer;
+        this.soundfontManager.destroyManager();
+        delete this.soundfontManager;
+    }
 }
 
 // include other methods
@@ -444,5 +487,7 @@ SpessaSynthProcessor.prototype.sendPresetList = sendPresetList;
 // snapshot related
 SpessaSynthProcessor.prototype.sendSynthesizerSnapshot = sendSynthesizerSnapshot;
 SpessaSynthProcessor.prototype.applySynthesizerSnapshot = applySynthesizerSnapshot;
+
+SpessaSynthProcessor.prototype.panVoice = panVoice;
 
 export { SpessaSynthProcessor };

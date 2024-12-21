@@ -14,6 +14,7 @@ const dom = {
     instrumentSelector: document.getElementById("instrumentselector"),
     speedSelector: document.getElementById("speedselector"),
     audioTimeSlider: document.getElementById("progress"),
+    audioTimeSliderMarkers: document.getElementById("progress-markers"),
     audioTimeDisplay: document.getElementById("elapsedtime"),
     playPauseButton: document.getElementById("play"),
     stopButton: document.getElementById("stop"),

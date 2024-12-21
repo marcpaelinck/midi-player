@@ -1,4 +1,9 @@
-import { ALL_CHANNELS_OR_DIFFERENT_ACTION, masterParameterType, workletMessageType } from "./worklet_message.js";
+import {
+    ALL_CHANNELS_OR_DIFFERENT_ACTION,
+    masterParameterType,
+    returnMessageType,
+    workletMessageType
+} from "./worklet_message.js";
 import { SpessaSynthLogging, SpessaSynthWarn } from "../../../utils/loggin.js";
 
 /**
@@ -184,8 +189,22 @@ export function handleMessage(message)
             break;
         
         case workletMessageType.soundFontManager:
-            this.soundfontManager.handleMessage(data[0], data[1]);
+            try
+            {
+                this.soundfontManager.handleMessage(data[0], data[1]);
+            }
+            catch (e)
+            {
+                this.post({
+                    messageType: returnMessageType.soundfontError,
+                    messageData: e
+                });
+            }
             this.clearSoundFont(true, false);
+            break;
+        
+        case workletMessageType.keyModifierManager:
+            this.keyModifierManager.handleMessage(data[0], data[1]);
             break;
         
         case workletMessageType.requestSynthesizerSnapshot:
@@ -194,6 +213,15 @@ export function handleMessage(message)
         
         case workletMessageType.setLogLevel:
             SpessaSynthLogging(data[0], data[1], data[2], data[3]);
+            break;
+        
+        case workletMessageType.setEffectsGain:
+            this.reverbGain = data[0];
+            this.chorusGain = data[1];
+            break;
+        
+        case workletMessageType.destroyWorklet:
+            this.alive = false;
             break;
         
         default:

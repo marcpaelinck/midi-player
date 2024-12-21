@@ -2,6 +2,7 @@ import { computeModulators } from "../worklet_utilities/worklet_modulator.js";
 import { WorkletVolumeEnvelope } from "../worklet_utilities/volume_envelope.js";
 import { WorkletModulationEnvelope } from "../worklet_utilities/modulation_envelope.js";
 import { generatorTypes } from "../../../soundfont/basic_soundfont/generator.js";
+import { MIN_EXCLUSIVE_LENGTH } from "../main_processor.js";
 
 /**
  * Append the voices
@@ -50,6 +51,13 @@ export function noteOn(channel, midiNote, velocity, enableDebugging = false, sen
         velocity = channelObject.velocityOverride;
     }
     
+    // key velocity override
+    const keyVel = this.keyModifierManager.getVelocity(channel, midiNote);
+    if (keyVel > -1)
+    {
+        velocity = keyVel;
+    }
+    
     // get voices
     const voices = this.getWorkletVoices(
         channel,
@@ -73,7 +81,7 @@ export function noteOn(channel, midiNote, velocity, enableDebugging = false, sen
             {
                 if (v.generators[generatorTypes.exclusiveClass] === exclusive)
                 {
-                    this.releaseVoice(v);
+                    this.releaseVoice(v, MIN_EXCLUSIVE_LENGTH);
                     v.modulatedGenerators[generatorTypes.releaseVolEnv] = -7000; // make the release nearly instant
                     v.modulatedGenerators[generatorTypes.releaseModEnv] = -7000;
                     WorkletVolumeEnvelope.recalculate(v);
@@ -109,7 +117,7 @@ export function noteOn(channel, midiNote, velocity, enableDebugging = false, sen
         }
         // set the current attenuation to target,
         // as it's interpolated (we don't want 0 attenuation for even a split second)
-        voice.volumeEnvelope.attenuation = voice.volumeEnvelope.attenuationTarget;
+        voice.volumeEnvelope.attenuation = voice.volumeEnvelope.attenuationTargetGain;
         // set initial pan to avoid split second changing from middle to the correct value
         voice.currentPan = ((Math.max(
             -500,

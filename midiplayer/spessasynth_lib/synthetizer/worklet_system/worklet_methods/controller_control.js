@@ -1,6 +1,6 @@
 import { consoleColors } from "../../../utils/other.js";
 import { midiControllers } from "../../../midi_parser/midi_message.js";
-import { channelConfiguration } from "../worklet_utilities/worklet_processor_channel.js";
+import { channelConfiguration, getBankSelect, setBankSelect } from "../worklet_utilities/worklet_processor_channel.js";
 import { computeModulators } from "../worklet_utilities/worklet_modulator.js";
 import { SpessaSynthInfo, SpessaSynthWarn } from "../../../utils/loggin.js";
 import { SYNTHESIZER_GAIN } from "../main_processor.js";
@@ -102,11 +102,7 @@ export function controllerChange(channel, controllerNumber, controllerValue, for
                     case "gm2":
                         if (bankNr === 120)
                         {
-                            channelObject.drumChannel = true;
-                            this.callEvent("drumchange", {
-                                channel: channel,
-                                isDrumChannel: true
-                            });
+                            this.setDrums(channel, true);
                         }
                 }
                 
@@ -118,11 +114,11 @@ export function controllerChange(channel, controllerNumber, controllerValue, for
                 if (bankNr === 128 && !channelObject.drumChannel)
                 {
                     // if channel is not for percussion, default to bank current
-                    bankNr = channelObject.midiControllers[midiControllers.bankSelect];
+                    bankNr = getBankSelect(channelObject);
                 }
             }
             
-            channelObject.midiControllers[midiControllers.bankSelect] = bankNr;
+            setBankSelect(channelObject, bankNr);
             break;
         
         case midiControllers.lsbForControl0BankSelect:
@@ -134,13 +130,13 @@ export function controllerChange(channel, controllerNumber, controllerValue, for
                     // if it's not marked as drums by bank MSB (line 47), then we DO NOT want the drums!
                     if (controllerValue !== 127)
                     {
-                        channelObject.midiControllers[midiControllers.bankSelect] = controllerValue;
+                        setBankSelect(channelObject, controllerValue);
                     }
                 }
             }
             else if (this.system === "gm2")
             {
-                channelObject.midiControllers[midiControllers.bankSelect] = controllerValue;
+                setBankSelect(channelObject, controllerValue);
             }
             break;
         
@@ -201,13 +197,13 @@ export function controllerChange(channel, controllerNumber, controllerValue, for
             }
             channelObject.midiControllers[controllerNumber] = controllerValue << 7;
             channelObject.voices.forEach(v => computeModulators(v, channelObject.midiControllers, 1, controllerNumber));
-            this.callEvent("controllerchange", {
-                channel: channel,
-                controllerNumber: controllerNumber,
-                controllerValue: controllerValue
-            });
             break;
     }
+    this.callEvent("controllerchange", {
+        channel: channel,
+        controllerNumber: controllerNumber,
+        controllerValue: controllerValue
+    });
 }
 
 /**
@@ -239,8 +235,8 @@ export function setMasterPan(pan)
     this.pan = pan;
     // clamp to 0-1 (0 is left)
     pan = (pan / 2) + 0.5;
-    this.panLeft = (1 - pan) * this.currentGain;
-    this.panRight = (pan) * this.currentGain;
+    this.panLeft = (1 - pan);
+    this.panRight = (pan);
 }
 
 /**

@@ -93,25 +93,40 @@ export function writeRIFFChunk(chunk, prepend = undefined)
  * @param header {string}
  * @param data {Uint8Array}
  * @param addZeroByte {Boolean}
+ * @param isList {boolean}
  * @returns {IndexedByteArray}
  */
-export function writeRIFFOddSize(header, data, addZeroByte = false)
+export function writeRIFFOddSize(header, data, addZeroByte = false, isList = false)
 {
     if (addZeroByte)
     {
         const tempData = new Uint8Array(data.length + 1);
-        tempData.set(data, 0);
+        tempData.set(data);
         data = tempData;
     }
-    let finalSize = 8 + data.length;
+    let offset = 8;
+    let finalSize = offset + data.length;
+    let writtenSize = data.length;
     if (finalSize % 2 !== 0)
     {
         finalSize++;
     }
+    let headerWritten = header;
+    if (isList)
+    {
+        finalSize += 4;
+        writtenSize += 4;
+        offset += 4;
+        headerWritten = "LIST";
+    }
     const outArray = new IndexedByteArray(finalSize);
-    writeStringAsBytes(outArray, header);
-    writeDword(outArray, data.length);
-    outArray.set(data, 8);
+    writeStringAsBytes(outArray, headerWritten);
+    writeDword(outArray, writtenSize);
+    if (isList)
+    {
+        writeStringAsBytes(outArray, header);
+    }
+    outArray.set(data, offset);
     return outArray;
 }
 

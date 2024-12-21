@@ -4,6 +4,8 @@ import { midiControllers } from "../../midi_parser/midi_message.js";
 import { DLSDestinations } from "./dls_destinations.js";
 
 import { generatorTypes } from "../basic_soundfont/generator.js";
+import { consoleColors } from "../../utils/other.js";
+import { SpessaSynthWarn } from "../../utils/loggin.js";
 
 /**
  * @param source {number}
@@ -71,7 +73,7 @@ function getSF2SourceFromDLS(source)
     }
     if (sourceEnum === undefined)
     {
-        throw `not known?? ${source}`;
+        throw new Error(`Unknown DLS Source: ${source}`);
     }
     return { enum: sourceEnum, isCC: isCC };
 }
@@ -146,32 +148,82 @@ function checkForSpecialDLSCombo(source, destination)
 {
     if (source === DLSSources.vibratoLfo && destination === DLSDestinations.pitch)
     {
+        // vibrato lfo to pitch
         return generatorTypes.vibLfoToPitch;
     }
     else if (source === DLSSources.modLfo && destination === DLSDestinations.pitch)
     {
+        // mod lfo to pitch
         return generatorTypes.modLfoToPitch;
     }
     else if (source === DLSSources.modLfo && destination === DLSDestinations.filterCutoff)
     {
+        // mod lfo to filter
         return generatorTypes.modLfoToFilterFc;
     }
     else if (source === DLSSources.modLfo && destination === DLSDestinations.gain)
     {
+        // mod lfo to volume
         return generatorTypes.modLfoToVolume;
     }
     else if (source === DLSSources.modEnv && destination === DLSDestinations.filterCutoff)
     {
+        // mod envelope to filter
         return generatorTypes.modEnvToFilterFc;
     }
     else if (source === DLSSources.modEnv && destination === DLSDestinations.pitch)
     {
+        // mod envelope to pitch
         return generatorTypes.modEnvToPitch;
     }
     else
     {
         return undefined;
     }
+}
+
+/**
+ * @param source {number}
+ * @param control {number}
+ * @param destination {number}
+ * @param value {number}
+ * @param transform {number}
+ * @param msg {string}
+ */
+export function modulatorConverterDebug(
+    source,
+    control,
+    destination,
+    value,
+    transform,
+    msg = "Attempting to convert the following DLS Articulator to SF2 Modulator:"
+)
+{
+    const type = Object.keys(DLSDestinations).find(k => DLSDestinations[k] === destination);
+    const srcType = Object.keys(DLSSources).find(k => DLSSources[k] === source);
+    const ctrlType = Object.keys(DLSSources).find(k => DLSSources[k] === control);
+    const typeString = type ? type : destination.toString(16);
+    const srcString = srcType ? srcType : source.toString(16);
+    const ctrlString = ctrlType ? ctrlType : control.toString(16);
+    console.debug(
+        `%c${msg}
+        Source: %c${srcString}%c
+        Control: %c${ctrlString}%c
+        Destination: %c${typeString}%c
+        Amount: %c${value}%c
+        Transform: %c${transform}%c...`,
+        consoleColors.info,
+        consoleColors.recognized,
+        consoleColors.info,
+        consoleColors.recognized,
+        consoleColors.info,
+        consoleColors.recognized,
+        consoleColors.info,
+        consoleColors.recognized,
+        consoleColors.info,
+        consoleColors.recognized,
+        consoleColors.info
+    );
 }
 
 /**
@@ -190,6 +242,13 @@ export function getSF2ModulatorFromArticulator(
     value
 )
 {
+    // modulatorConverterDebug(
+    //     source,
+    //     control,
+    //     destination,
+    //     value,
+    //     transform
+    // );
     // check for special combinations
     const specialDestination = checkForSpecialDLSCombo(source, destination);
     /**
@@ -202,6 +261,7 @@ export function getSF2ModulatorFromArticulator(
     let sf2Source;
     let swapSources = false;
     let isSourceNoController = false;
+    let newValue = value;
     if (specialDestination === undefined)
     {
         // determine destination
@@ -209,6 +269,7 @@ export function getSF2ModulatorFromArticulator(
         if (sf2GenDestination === undefined)
         {
             // cannot be a valid modulator
+            SpessaSynthWarn(`Invalid destination: ${destination}`);
             return undefined;
         }
         /**
@@ -217,13 +278,14 @@ export function getSF2ModulatorFromArticulator(
         destinationGenerator = sf2GenDestination;
         if (sf2GenDestination.newAmount !== undefined)
         {
-            value = sf2GenDestination.newAmount;
+            newValue = sf2GenDestination.newAmount;
             destinationGenerator = sf2GenDestination.gen;
         }
         sf2Source = getSF2SourceFromDLS(source);
         if (sf2Source === undefined)
         {
             // cannot be a valid modulator
+            SpessaSynthWarn(`Invalid source: ${source}`);
             return undefined;
         }
     }
@@ -238,6 +300,7 @@ export function getSF2ModulatorFromArticulator(
     if (sf2SecondSource === undefined)
     {
         // cannot be a valid modulator
+        SpessaSynthWarn(`Invalid control: ${control}`);
         return undefined;
     }
     
@@ -263,10 +326,16 @@ export function getSF2ModulatorFromArticulator(
         }
         const sourceIsBipolar = (transform >> 14) & 1;
         let sourceIsNegative = (transform >> 15) & 1;
-        // special case: for attenuation, invert source
+        // special case: for attenuation, invert source (dls gain is the opposite of sf2 attenuation)
         if (destinationGenerator === generatorTypes.initialAttenuation)
         {
-            sourceIsNegative = !sourceIsNegative;
+            // if the value is negative, the source shall be negative!
+            // why?
+            // Idk, it makes it work with ROCK.RMI and NOKIA_S30.dls
+            if (value < 0)
+            {
+                sourceIsNegative = 1;
+            }
         }
         sourceEnumFinal = getModSourceEnum(
             sourceTransform,
@@ -301,7 +370,7 @@ export function getSF2ModulatorFromArticulator(
         secSrcEnum: secSourceEnumFinal,
         dest: destinationGenerator,
         transform: 0x0,
-        amt: value
+        amt: newValue
     });
     
 }

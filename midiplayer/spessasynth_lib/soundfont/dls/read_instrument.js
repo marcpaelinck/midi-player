@@ -5,6 +5,9 @@ import { findRIFFListType, readRIFFChunk } from "../basic_soundfont/riff_chunk.j
 import { SpessaSynthGroup, SpessaSynthGroupEnd } from "../../utils/loggin.js";
 import { BasicInstrumentZone } from "../basic_soundfont/basic_zones.js";
 import { consoleColors } from "../../utils/other.js";
+import { generatorLimits, generatorTypes } from "../basic_soundfont/generator.js";
+import { Modulator } from "../basic_soundfont/modulator.js";
+import { DEFAULT_DLS_CHORUS, DEFAULT_DLS_REVERB } from "./dls_sources.js";
 
 /**
  * @this {DLSSoundFont}
@@ -73,7 +76,23 @@ export function readDLSInstrument(chunk)
     // read articulators
     const globalLart = findRIFFListType(chunks, "lart");
     const globalLar2 = findRIFFListType(chunks, "lar2");
-    this.readLart(globalLart, globalLar2, globalZone);
+    if (globalLar2 !== undefined || globalLart !== undefined)
+    {
+        this.readLart(globalLart, globalLar2, globalZone);
+    }
+    // remove generators with default values
+    globalZone.generators = globalZone.generators.filter(g => g.generatorValue !== generatorLimits[g.generatorType].def);
+    // override reverb and chorus with 1000 instead of 200 (if not overriden)
+    // reverb
+    if (globalZone.modulators.find(m => m.modulatorDestination === generatorTypes.reverbEffectsSend) === undefined)
+    {
+        globalZone.modulators.push(Modulator.copy(DEFAULT_DLS_REVERB));
+    }
+    // chorus
+    if (globalZone.modulators.find(m => m.modulatorDestination === generatorTypes.chorusEffectsSend) === undefined)
+    {
+        globalZone.modulators.push(Modulator.copy(DEFAULT_DLS_CHORUS));
+    }
     preset.DLSInstrument.instrumentZones.push(globalZone);
     
     // read regions
@@ -85,7 +104,7 @@ export function readDLSInstrument(chunk)
         if (type !== "rgn " && type !== "rgn2")
         {
             SpessaSynthGroupEnd();
-            throw new SyntaxError(`Invalid DLS region! Expected "rgn " or "rgn2" got "${type}"`);
+            this.parsingError(`Invalid DLS region! Expected "rgn " or "rgn2" got "${type}"`);
         }
         
         

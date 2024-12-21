@@ -20,7 +20,7 @@ export function readBytesAsString(dataArray, bytes, encoding = undefined, trimEn
             {
                 continue;
             }
-            if (byte < 32 || byte > 127)
+            if ((byte < 32 || byte > 127) && byte !== 10) // 10 is "\n"
             {
                 if (trimEnd)
                 {
@@ -64,6 +64,15 @@ export function getStringBytes(string, padLength = 0)
     const arr = new IndexedByteArray(len);
     writeStringAsBytes(arr, string, padLength);
     return arr;
+}
+
+/**
+ * @param string {string}
+ * @returns {IndexedByteArray}
+ */
+export function getStringBytesZero(string)
+{
+    return getStringBytes(string, string.length + 1);
 }
 
 /**

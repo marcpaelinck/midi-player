@@ -79,15 +79,16 @@ export class WorkletLowpassFilter
     
     /**
      * Cutoff frequency in cents
+     * Note: defaults to 13501 to cause a recalculation even at initial fc being 13500
      * @type {number}
      */
-    cutoffCents = 13500;
+    cutoffCents = 13501;
     
     /**
      * Cutoff frequency in Hz
      * @type {number}
      */
-    cutoffHz = 20000;
+    cutoffHz = 20001;
     
     /**
      * Applies a low-pass filter to the given buffer
@@ -143,16 +144,15 @@ export class WorkletLowpassFilter
         // fix cutoff on low frequencies (fluid_iir_filter.c line 392)
         filter.cutoffHz = Math.min(filter.cutoffHz, 0.45 * sampleRate);
         
-        // adjust the filterQ (fluid_iir_filter.c line 204)
-        const qDb = (filter.reasonanceCb / 10) - 3.01;
-        filter.reasonanceGain = decibelAttenuationToGain(-1 * qDb); // -1 because it's attenuation and we don't want attenuation
+        const qDb = filter.reasonanceCb / 10;
+        // correct the filter gain, like fluid does
+        filter.reasonanceGain = decibelAttenuationToGain(-1 * (qDb - 3.01)); // -1 because it's attenuation and we don't want attenuation
         
         // reduce the gain by the Q factor (fluid_iir_filter.c line 250)
-        const qGain = 1 / Math.sqrt(filter.reasonanceGain);
+        const qGain = 1 / Math.sqrt(decibelAttenuationToGain(-qDb));
         
         
         // code is ported from https://github.com/sinshu/meltysynth/ to work with js.
-        // I'm too dumb to understand the math behind this...
         let w = 2 * Math.PI * filter.cutoffHz / sampleRate; // we're in the audioworkletglobalscope so we can use sampleRate
         let cosw = Math.cos(w);
         let alpha = Math.sin(w) / (2 * filter.reasonanceGain);

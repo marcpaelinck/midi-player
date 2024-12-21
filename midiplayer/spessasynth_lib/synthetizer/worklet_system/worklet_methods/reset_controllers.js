@@ -1,5 +1,4 @@
 import { consoleColors } from "../../../utils/other.js";
-import { midiControllers } from "../../../midi_parser/midi_message.js";
 import { DEFAULT_PERCUSSION, DEFAULT_SYNTH_MODE } from "../../synthetizer.js";
 import { SpessaSynthInfo } from "../../../utils/loggin.js";
 import { modulatorSources } from "../../../soundfont/basic_soundfont/modulator.js";
@@ -10,6 +9,7 @@ import {
     NON_CC_INDEX_OFFSET,
     resetArray
 } from "../worklet_utilities/controller_tables.js";
+import { getBankSelect, setBankSelect } from "../worklet_utilities/worklet_processor_channel.js";
 
 /**
  * @this {SpessaSynthProcessor}
@@ -35,7 +35,7 @@ export function resetAllControllers(log = true)
         if (!ch.lockPreset)
         {
             ch.presetUsesOverride = true;
-            ch.midiControllers[midiControllers.bankSelect] = 0;
+            setBankSelect(ch, 0);
             if (channelNumber % 16 === DEFAULT_PERCUSSION)
             {
                 this.setPreset(channelNumber, this.drumPreset);
@@ -67,11 +67,11 @@ export function resetAllControllers(log = true)
         this.callEvent("programchange", {
             channel: channelNumber,
             program: ch.preset.program,
-            bank: ch.preset.bank,
+            bank: getBankSelect(ch),
             userCalled: false
         });
         
-        let restoreControllerValueEvent = ccNum =>
+        for (let ccNum = 0; ccNum < 128; ccNum++)
         {
             if (this.workletProcessorChannels[channelNumber].lockedControllers[ccNum])
             {
@@ -83,18 +83,11 @@ export function resetAllControllers(log = true)
                 });
             }
             
-        };
+        }
         
-        restoreControllerValueEvent(midiControllers.mainVolume);
-        restoreControllerValueEvent(midiControllers.pan);
-        restoreControllerValueEvent(midiControllers.expressionController);
-        restoreControllerValueEvent(midiControllers.modulationWheel);
-        restoreControllerValueEvent(midiControllers.chorusDepth);
-        restoreControllerValueEvent(midiControllers.reverbDepth);
-        restoreControllerValueEvent(midiControllers.brightness);
         
         // restore pitch wheel
-        if (this.workletProcessorChannels[channelNumber].lockedControllers[NON_CC_INDEX_OFFSET + modulatorSources.pitchWheel])
+        if (this.workletProcessorChannels[channelNumber].lockedControllers[NON_CC_INDEX_OFFSET + modulatorSources.pitchWheel] === false)
         {
             const val = this.workletProcessorChannels[channelNumber].midiControllers[NON_CC_INDEX_OFFSET + modulatorSources.pitchWheel];
             const msb = val >> 7;
@@ -138,26 +131,31 @@ export function resetControllers(channel)
         return lockedCCs;
     }, []);
     // save excluded controllers as reset doesn't affect them
-    let excludedCCvalues = excludedCCs.map(ccNum =>
-    {
-        return {
-            ccNum: ccNum,
-            ccVal: channelObject.midiControllers[ccNum]
-        };
-    });
     
     channelObject.channelOctaveTuning.fill(0);
     channelObject.keyCentTuning.fill(0);
     
     // reset the array
-    channelObject.midiControllers.set(resetArray);
+    for (let i = 0; i < resetArray.length; i++)
+    {
+        if (channelObject.lockedControllers[i])
+        {
+            return;
+        }
+        const resetValue = resetArray[i];
+        if (channelObject.midiControllers[i] !== resetValue && i < 127)
+        {
+            // call cc change if reset
+            this.callEvent("controllerchange", {
+                channel: channel,
+                controllerNumber: i,
+                controllerValue: resetValue >> 7
+            });
+        }
+        channelObject.midiControllers[i] = resetValue;
+    }
     channelObject.channelVibrato = { rate: 0, depth: 0, delay: 0 };
     channelObject.holdPedal = false;
-    
-    excludedCCvalues.forEach((cc) =>
-    {
-        channelObject.midiControllers[cc.ccNum] = cc.ccVal;
-    });
     
     // reset custom controllers
     // special case: transpose does not get affected

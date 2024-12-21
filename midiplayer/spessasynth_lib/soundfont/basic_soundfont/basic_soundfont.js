@@ -2,6 +2,7 @@ import { SpessaSynthWarn } from "../../utils/loggin.js";
 import { consoleColors } from "../../utils/other.js";
 import { write } from "./write_sf2/write.js";
 import { defaultModulators, Modulator } from "./modulator.js";
+import { writeDLS } from "./write_dls/write_dls.js";
 
 class BasicSoundFont
 {
@@ -225,8 +226,24 @@ class BasicSoundFont
         }
         return preset;
     }
+    
+    /**
+     * @param error {string}
+     */
+    parsingError(error)
+    {
+        throw new Error(`SF parsing error: ${error} The file may be corrupted.`);
+    }
+    
+    destroySoundfont()
+    {
+        delete this.presets;
+        delete this.instruments;
+        delete this.samples;
+    }
 }
 
 BasicSoundFont.prototype.write = write;
+BasicSoundFont.prototype.writeDLS = writeDLS;
 
 export { BasicSoundFont };

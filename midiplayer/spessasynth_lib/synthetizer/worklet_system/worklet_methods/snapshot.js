@@ -27,17 +27,19 @@
 /**
  * @typedef {Object} SynthesizerSnapshot
  * @property {ChannelSnapshot[]} channelSnapshots - the individual channel snapshots
+ * @property {KeyModifier[][]} keyMappings - key modifiers
  * @property {number} mainVolume - main synth volume (set by MIDI), from 0 to 1
  * @property {number} pan - master stereo panning, from -1 to 1
  * @property {interpolationTypes} interpolation - the synth's interpolation type
  * @property {SynthSystem} system - the synths system. Values can be "gs", "gm", "gm2" or "xg"
  * @property {number} transposition - the current synth transpositon in semitones. can be a float
+ * @property {EffectsConfig} effectsConfig - the effects configuration object
  */
 
 import { returnMessageType } from "../message_protocol/worklet_message.js";
 import { SpessaSynthInfo } from "../../../utils/loggin.js";
 import { consoleColors } from "../../../utils/other.js";
-import { midiControllers } from "../../../midi_parser/midi_message.js";
+import { getBankSelect, setBankSelect } from "../worklet_utilities/worklet_processor_channel.js";
 
 /**
  * sends a snapshot of the current controller values of the synth (used to copy that data to OfflineAudioContext when rendering)
@@ -52,7 +54,7 @@ export function sendSynthesizerSnapshot()
     {
         return {
             program: channel.preset.program,
-            bank: channel.preset.bank,
+            bank: getBankSelect(channel),
             lockPreset: channel.lockPreset,
             patchName: channel.preset.presetName,
             
@@ -81,7 +83,8 @@ export function sendSynthesizerSnapshot()
         pan: this.pan,
         transposition: this.transposition,
         system: this.system,
-        interpolation: this.interpolationType
+        interpolation: this.interpolationType,
+        keyMappings: this.keyModifierManager.getMappings()
     };
     
     this.post({
@@ -105,6 +108,7 @@ export function applySynthesizerSnapshot(snapshot)
     this.setMasterPan(snapshot.pan);
     this.transposeAllChannels(snapshot.transposition);
     this.interpolationType = snapshot.interpolation;
+    this.keyModifierManager.setMappings(snapshot.keyMappings);
     
     // add channels if more needed
     while (this.workletProcessorChannels.length < snapshot.channelSnapshots.length)
@@ -133,7 +137,7 @@ export function applySynthesizerSnapshot(snapshot)
         
         // restore preset and lock
         channelObject.lockPreset = false;
-        channelObject.midiControllers[midiControllers.bankSelect] = channelSnapshot.bank;
+        setBankSelect(channelObject, channelSnapshot.bank);
         this.programChange(index, channelSnapshot.program);
         channelObject.lockPreset = channelSnapshot.lockPreset;
     });

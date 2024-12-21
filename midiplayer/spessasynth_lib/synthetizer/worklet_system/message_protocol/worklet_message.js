@@ -27,6 +27,9 @@
  * @property {number} sequencerSpecific          - 23 -> [messageType<WorkletSequencerMessageType> messageData<any>] note: refer to sequencer_message.js
  * @property {number} requestSynthesizerSnapshot - 24 -> (no data)
  * @property {number} setLogLevel                - 25 -> [enableInfo<boolean>, enableWarning<boolean>, enableGroup<boolean>, enableTable<boolean>]
+ * @property {number} keyModifier                - 26 -> [messageType<workletKeyModifierMessageType> messageData<any>]
+ * @property {number} setEffectsGain             - 27 -> [reverbGain<number>, chorusGain<number>]
+ * @property {number} destroyWorklet             - 28 -> (no data)
  */
 export const workletMessageType = {
     noteOff: 0,
@@ -54,7 +57,10 @@ export const workletMessageType = {
     lockController: 22,
     sequencerSpecific: 23,
     requestSynthesizerSnapshot: 24,
-    setLogLevel: 25
+    setLogLevel: 25,
+    keyModifierManager: 26,
+    setEffectsGain: 27,
+    destroyWorklet: 28
 };
 
 /**
@@ -83,6 +89,7 @@ export const ALL_CHANNELS_OR_DIFFERENT_ACTION = -1;
  *     |boolean
  *     |ArrayBuffer
  *     |{messageType: WorkletSequencerMessageType, messageData: any}
+ *     |{messageType: workletKeyModifierMessageType, messageData: any}
  *     )
  * }} WorkletMessage
  */

@@ -108,7 +108,7 @@ generatorLimits[generatorTypes.attackModEnv] = { min: -32768, max: 8000, def: -3
 generatorLimits[generatorTypes.holdModEnv] = { min: -12000, max: 5000, def: -12000 };
 generatorLimits[generatorTypes.decayModEnv] = { min: -12000, max: 8000, def: -12000 };
 generatorLimits[generatorTypes.sustainModEnv] = { min: 0, max: 1000, def: 0 };
-generatorLimits[generatorTypes.releaseModEnv] = { min: -12000, max: 8000, def: -12000 };
+generatorLimits[generatorTypes.releaseModEnv] = { min: -7200, max: 8000, def: -12000 }; // min is set to -7200 to prevent lowpass clicks
 // keynum to mod env
 generatorLimits[generatorTypes.keyNumToModEnvHold] = { min: -1200, max: 1200, def: 0 };
 generatorLimits[generatorTypes.keyNumToModEnvDecay] = { min: -1200, max: 1200, def: 0 };
@@ -119,7 +119,7 @@ generatorLimits[generatorTypes.attackVolEnv] = { min: -12000, max: 8000, def: -1
 generatorLimits[generatorTypes.holdVolEnv] = { min: -12000, max: 5000, def: -12000 };
 generatorLimits[generatorTypes.decayVolEnv] = { min: -12000, max: 8000, def: -12000 };
 generatorLimits[generatorTypes.sustainVolEnv] = { min: 0, max: 1440, def: 0 };
-generatorLimits[generatorTypes.releaseVolEnv] = { min: -7200, max: 8000, def: -12000 }; // prevent clicks
+generatorLimits[generatorTypes.releaseVolEnv] = { min: -7200, max: 8000, def: -12000 }; // min is set to -7200  prevent clicks
 // keynum to vol env
 generatorLimits[generatorTypes.keyNumToVolEnvHold] = { min: -1200, max: 1200, def: 0 };
 generatorLimits[generatorTypes.keyNumToVolEnvDecay] = { min: -1200, max: 1200, def: 0 };
@@ -137,6 +137,7 @@ generatorLimits[generatorTypes.fineTune] = { min: -12700, max: 12700, def: 0 }; 
 generatorLimits[generatorTypes.scaleTuning] = { min: 0, max: 1200, def: 100 };
 generatorLimits[generatorTypes.exclusiveClass] = { min: 0, max: 99999, def: 0 };
 generatorLimits[generatorTypes.overridingRootKey] = { min: 0 - 1, max: 127, def: -1 };
+generatorLimits[generatorTypes.sampleModes] = { min: 0, max: 3, def: 0 };
 
 export class Generator
 {
@@ -155,19 +156,24 @@ export class Generator
      * Constructs a new generator
      * @param type {generatorTypes|number}
      * @param value {number}
+     * @param validate {boolean}
      */
-    constructor(type = generatorTypes.INVALID, value = 0)
+    constructor(type = generatorTypes.INVALID, value = 0, validate = true)
     {
         this.generatorType = type;
         if (value === undefined)
         {
             throw new Error("No value provided.");
         }
-        const lim = generatorLimits[type];
         this.generatorValue = Math.round(value);
-        if (lim !== undefined)
+        if (validate)
         {
-            this.generatorValue = Math.max(lim.min, Math.min(lim.max, this.generatorValue));
+            const lim = generatorLimits[type];
+            
+            if (lim !== undefined)
+            {
+                this.generatorValue = Math.max(lim.min, Math.min(lim.max, this.generatorValue));
+            }
         }
     }
 }

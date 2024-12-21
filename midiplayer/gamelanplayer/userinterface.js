@@ -107,6 +107,47 @@ function populateSongDropdown(json_settings, dom) {
 }
 
 /**
+ * Adds option elements to the datalist element of the player's progress bar/slider
+ * @param {*} markers the markers as a dictionary {partname: percentage} where percentage is relative to the total duration.
+ */
+function populate_slider_markers(markers, dom) {
+    let increment = 2;
+    const maxValue = dom.audioTimeSlider.max;
+
+    function nextEntry(markerEntries) {
+        if (markerEntries.length > 0) {
+            let [part_name, fraction_of_total_time] = markerEntries.shift();
+            let time_value = Math.round(fraction_of_total_time * maxValue);
+            let nearest_label_position = increment * Math.round((fraction_of_total_time * 100) / increment);
+            return [part_name, time_value, nearest_label_position];
+        } else {
+            return [null, null, null];
+        }
+    }
+
+    let markerEntries = Object.entries(markers);
+    dom.audioTimeSliderMarkers.innerHTML = "";
+
+    if (markerEntries.length > 0) {
+        let [part_name, time_value, nearest_label_position] = nextEntry(markerEntries);
+        // Create labels that are evenly distributed over the progress bar and fill in
+        // the ones that correspond with the required markers.
+        // This is the most secure and simple way (that I know of) to position the labels correctly.
+        for (let i = 0; i <= 100; i += increment) {
+            let option = document.createElement("option");
+            option.setAttribute("id", `tick${i}`);
+            option.setAttribute("label", "");
+            if (i == nearest_label_position) {
+                option.setAttribute("value", `${time_value}`);
+                option.setAttribute("label", part_name);
+                [part_name, time_value, nearest_label_position] = nextEntry(markerEntries);
+            }
+            dom.audioTimeSliderMarkers.appendChild(option);
+        }
+    }
+}
+
+/**
  * sets the change event for the song selector
  * @param {dictionary of Element} dom DOM elements
  * @param {JSON} json_settings
@@ -132,13 +173,13 @@ function setSongOnChangeEvent(dom, json_settings) {
         // Populate the part selector
         // let firstMember = new Array(new Object({ title: "Entire piece", file: json["songs"][idx]["file"] }));
         // let loopList = firstMember.concat(json["songs"][idx]["loops"]);
-        populate_dropdown(dom.partSelector, json["songs"][idx]["parts"], "name", ["file", "loop"], 0);
+        populate_dropdown(dom.partSelector, json["songs"][idx]["parts"], "name", ["name", "file", "loop"], 0);
         dom.partSelector.selectedIndex = 0;
         dom.partSelector.dispatchEvent(new Event("change"));
     };
 }
 
-/**
+/**f
  * Sets the change event for the part selector.
  * @param {AudioContext} context
  * @param {Sequencer} sequencer
@@ -150,8 +191,11 @@ function setPartOnChangeEvent(context, sequencer, dom) {
         // retrieve the file path for the selected song
         let selection = event.target.options[event.target.selectedIndex];
         let filepath = DATAFOLDER_URL_ABSOLUTE + "/midifiles/".concat(selection.getAttribute("file"));
+        let partname = selection.getAttribute("name");
         logConsole(`selected file: ${filepath}`, "always");
         dom.loopCheckbox.checked = selection.getAttribute("loop") === "true";
+        let selected_part = selectedSong.parts.find((part) => part.name == partname);
+        populate_slider_markers(selected_part.markers, dom);
 
         // resume the context if paused
         await context.resume();

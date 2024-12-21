@@ -43,14 +43,15 @@ document.getElementById("button").onclick = async () =>
 - **Excellent SoundFont support:**
   - **Full Generator Support**
   - **Full Modulator Support:** *First (to my knowledge) JavaScript SoundFont synth with that feature!*
+  - **GeneralUserGS Certified:** *[See more here!](https://github.com/mrbumpy409/GeneralUser-GS/blob/main/documentation/README.md)*
   - **SoundFont3 Support:** Play compressed SoundFonts!
   - **Experimental SF2Pack Support:** Play soundfonts compressed with BASSMIDI! (*Note: only works with vorbis compression*)
   - **Can load very large SoundFonts:** up to 4GB! *Note: Only Firefox handles this well; Chromium has a hard-coded memory limit*
 - **Soundfont manager:** Stack multiple soundfonts!
-- **DLS Level 1 and 2 Support:** *internally converted to sf2*
+- **DLS Level 1 and 2 Support:** *works with gm.dls!*
 - **Reverb and chorus support:** [customizable!](https://github.com/spessasus/SpessaSynth/wiki/Synthetizer-Class#effects-configuration-object)
 - **Export audio files** using [OfflineAudioContext](https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext)
-- **[Custom modulators for additional controllers](https://github.com/spessasus/SpessaSynth/wiki/Modulator-Class#default-modulators):** Why not?
+- **[Custom modulators for additional controllers](https://github.com/spessasus/SpessaSynth/wiki/Modulator-Class#default-modulators):** *Why not?*
 - **Written using AudioWorklets:** 
   - Runs in a **separate thread** for maximum performance
   - Supported by all modern browsers
@@ -60,7 +61,6 @@ document.getElementById("button").onclick = async () =>
   - **MIDI Tuning Standard Support:** [more info here](https://github.com/spessasus/SpessaSynth/wiki/MIDI-Implementation#midi-tuning-standard)
   - [Full **RPN** and limited **NRPN** support](https://github.com/spessasus/SpessaSynth/wiki/MIDI-Implementation#supported-registered-parameters)
   - Supports some [**Roland GS** and **Yamaha XG** system exclusives](https://github.com/spessasus/SpessaSynth/wiki/MIDI-Implementation#supported-system-exclusives)
-
 - **High-performance mode:** Play Rush E! _note: may kill your browser ;)_
 
 ### Built-in Powerful and Fast Sequencer
@@ -105,7 +105,7 @@ document.getElementById("button").onclick = async () =>
   - **Variable compression quality:** You choose between file size and quality!
   - **Compression preserving:** Avoid decompressing and recompressing uncompressed samples for minimal quality loss!
 
-#### Read and play DLS Level 1 or 2 files
+#### Read and write DLS Level 1 or 2 files
   - Read DLS (DownLoadable Sounds) files as SF2 files!
   - **Works like a normal soundfont:** *Saving it as sf2 is still [just one function!](https://github.com/spessasus/SpessaSynth/wiki/SoundFont2-Class#write)*
   - Converts articulators to both **modulators** and **generators**!
@@ -113,6 +113,7 @@ document.getElementById("button").onclick = async () =>
   - **Covers special generator cases:** *such as modLfoToPitch*!
   - **Correct volume:** *looking at you, Viena and gm.sf2!*
   - Support built right into the synthesizer!
+  - **Convert SF2 to DLS:** [with limitations](https://github.com/spessasus/SpessaSynth/wiki/DLS-Conversion-Problem);
 
 ### Export MIDI as WAV
   - Save the MIDI file as WAV audio!

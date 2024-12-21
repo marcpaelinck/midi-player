@@ -54,11 +54,10 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/soundfont/GAMELAN1.sf2")
                 let msg;
 
                 const context = new AudioContext(); // create an audioContext
-                if (context == null) {
-                    document.getElementById("message").innerText += `\n(create context) no context created.`;
-                }
                 if (context == null) msg = `\n(create context) no context created.`;
-                else msg = `\n(create context) OK`;
+                else {
+                    msg = `\n(create context) OK, context state=${context.state}`;
+                }
                 document.getElementById("message").innerText += msg;
 
                 await context.audioWorklet
@@ -83,8 +82,6 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/soundfont/GAMELAN1.sf2")
             } catch (error) {
                 document.getElementById("message").innerText += `\n(set up player error) ${error.message}`;
             }
-            // }).catch((error) => {
-            //document.getElementById("message").innerText += `\n(click error) ${error.message}`;
         });
     })
     .catch((error) => {

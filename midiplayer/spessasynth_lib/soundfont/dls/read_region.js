@@ -56,10 +56,10 @@ export function readRegion(chunk)
     const waveSampleChunk = regionChunks.find(c => c.header === "wsmp");
     // cbSize
     readLittleEndian(waveSampleChunk.chunkData, 4);
-    const originalKey = readLittleEndian(waveSampleChunk.chunkData, 2);
+    let originalKey = readLittleEndian(waveSampleChunk.chunkData, 2);
     
     // sFineTune
-    const pitchCorrection = signedInt16(
+    let pitchCorrection = signedInt16(
         waveSampleChunk.chunkData[waveSampleChunk.chunkData.currentIndex++],
         waveSampleChunk.chunkData[waveSampleChunk.chunkData.currentIndex++]
     );

@@ -10,6 +10,8 @@ import { NON_CC_INDEX_OFFSET } from "./controller_tables.js";
  * purpose: precomputes all curve types and computes modulators
  */
 
+const EFFECT_MODULATOR_TRANSFORM_MULTIPLIER = 1000 / 200;
+
 /**
  * Computes a given modulator
  * @param controllerTable {Int16Array} all midi controllers as 14bit values + the non controller indexes, starting at 128
@@ -94,9 +96,16 @@ export function computeWorkletModulator(controllerTable, modulator, voice)
     }
     const secondSrcValue = transforms[modulator.secSrcCurveType][modulator.secSrcPolarity][modulator.secSrcDirection][rawSecondSrcValue];
     
+    // see the comment for isEffectModulator (modulator.js in basic_soundfont) for explanation
+    let transformAmount = modulator.transformAmount;
+    if (modulator.isEffectModulator && transformAmount <= 1000)
+    {
+        transformAmount *= EFFECT_MODULATOR_TRANSFORM_MULTIPLIER;
+        transformAmount = Math.min(transformAmount, 1000);
+    }
     
     // compute the modulator
-    let computedValue = sourceValue * secondSrcValue * modulator.transformAmount;
+    let computedValue = sourceValue * secondSrcValue * transformAmount;
     
     if (modulator.transformType === 2)
     {
@@ -121,11 +130,6 @@ export function computeModulators(voice, controllerTable, sourceUsesCC = -1, sou
     const generators = voice.generators;
     const modulatedGenerators = voice.modulatedGenerators;
     
-    // Modulation envelope is cheap to recalculate
-    // why here and not at the bottom?
-    // I dunno, seems to work fine
-    WorkletModulationEnvelope.recalculate(voice);
-    
     if (sourceUsesCC === -1)
     {
         // All modulators mode: compute all modulators
@@ -144,6 +148,7 @@ export function computeModulators(voice, controllerTable, sourceUsesCC = -1, sou
             );
         });
         WorkletVolumeEnvelope.recalculate(voice);
+        WorkletModulationEnvelope.recalculate(voice);
         return;
     }
     
@@ -199,6 +204,8 @@ export function computeModulators(voice, controllerTable, sourceUsesCC = -1, sou
     {
         WorkletVolumeEnvelope.recalculate(voice);
     }
+    
+    WorkletModulationEnvelope.recalculate(voice);
 }
 
 

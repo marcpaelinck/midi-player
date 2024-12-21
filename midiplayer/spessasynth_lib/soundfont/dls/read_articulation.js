@@ -1,53 +1,12 @@
 import { readLittleEndian } from "../../utils/byte_functions/little_endian.js";
 import { DLSDestinations } from "./dls_destinations.js";
-import { DLSSources } from "./dls_sources.js";
+import { DLS_1_NO_VIBRATO_MOD, DLS_1_NO_VIBRATO_PRESSURE, DLSSources } from "./dls_sources.js";
 import { getSF2ModulatorFromArticulator } from "./articulator_converter.js";
 import { SpessaSynthInfo, SpessaSynthWarn } from "../../utils/loggin.js";
 import { consoleColors } from "../../utils/other.js";
 import { Generator, generatorTypes } from "../basic_soundfont/generator.js";
 import { Modulator } from "../basic_soundfont/modulator.js";
 
-/**
- * @param source {number}
- * @param control {number}
- * @param destination {number}
- * @param value {number}
- * @param transform {number}
- */
-function modulatorConverterDebug(
-    source,
-    control,
-    destination,
-    value,
-    transform
-)
-{
-    const type = Object.keys(DLSDestinations).find(k => DLSDestinations[k] === destination);
-    const srcType = Object.keys(DLSSources).find(k => DLSSources[k] === source);
-    const ctrlType = Object.keys(DLSSources).find(k => DLSSources[k] === control);
-    const typeString = type ? type : destination.toString(16);
-    const srcString = srcType ? srcType : source.toString(16);
-    const ctrlString = ctrlType ? ctrlType : control.toString(16);
-    SpessaSynthInfo(
-        `%cAttempting to convert the following DLS Articulator to SF2 Modulator:
-        Source: %c${srcString}%c
-        Control: %c${ctrlString}%c
-        Destination: %c${typeString}%c
-        Amount: %c${value}%c
-        Transform: %c${transform}%c...`,
-        consoleColors.info,
-        consoleColors.recognized,
-        consoleColors.info,
-        consoleColors.recognized,
-        consoleColors.info,
-        consoleColors.recognized,
-        consoleColors.info,
-        consoleColors.recognized,
-        consoleColors.info,
-        consoleColors.recognized,
-        consoleColors.info
-    );
-}
 
 /**
  * Reads the articulator chunk
@@ -80,7 +39,6 @@ export function readArticulation(chunk, disableVibrato)
         const scale = readLittleEndian(artData, 4) | 0;
         const value = scale >> 16; // convert it to 16 bit as soundfont uses that
         
-        // modulatorConverterDebug(source, control, destination, value, transform);
         // interpret this somehow...
         // if source and control are both zero, it's a generator
         if (source === 0 && control === 0 && transform === 0)
@@ -126,18 +84,20 @@ export function readArticulation(chunk, disableVibrato)
                     generator = new Generator(generatorTypes.attackVolEnv, value);
                     break;
                 case DLSDestinations.volEnvHold:
-                    generator = new Generator(generatorTypes.holdVolEnv, value);
+                    // do not validate because keyNumToSomething
+                    generator = new Generator(generatorTypes.holdVolEnv, value, false);
                     break;
                 case DLSDestinations.volEnvDecay:
-                    generator = new Generator(generatorTypes.decayVolEnv, value);
+                    // do not validate because keyNumToSomething
+                    generator = new Generator(generatorTypes.decayVolEnv, value, false);
                     break;
                 case DLSDestinations.volEnvRelease:
                     generator = new Generator(generatorTypes.releaseVolEnv, value);
                     break;
                 case DLSDestinations.volEnvSustain:
                     // gain seems to be (1000 - value) / 10 = sustain dB
-                    const sustainDb = (1000 - value) / 10;
-                    generator = new Generator(generatorTypes.sustainVolEnv, sustainDb * 10);
+                    const sustainCb = 1000 - value;
+                    generator = new Generator(generatorTypes.sustainVolEnv, sustainCb);
                     break;
                 
                 // mod env
@@ -148,10 +108,12 @@ export function readArticulation(chunk, disableVibrato)
                     generator = new Generator(generatorTypes.attackModEnv, value);
                     break;
                 case DLSDestinations.modEnvHold:
-                    generator = new Generator(generatorTypes.holdModEnv, value);
+                    // do not validate because keyNumToSomething
+                    generator = new Generator(generatorTypes.holdModEnv, value, false);
                     break;
                 case DLSDestinations.modEnvDecay:
-                    generator = new Generator(generatorTypes.decayModEnv, value);
+                    // do not validate because keyNumToSomething
+                    generator = new Generator(generatorTypes.decayModEnv, value, false);
                     break;
                 case DLSDestinations.modEnvRelease:
                     generator = new Generator(generatorTypes.releaseModEnv, value);
@@ -222,6 +184,14 @@ export function readArticulation(chunk, disableVibrato)
                 if (source === DLSSources.modEnv && destination === DLSDestinations.filterCutoff)
                 {
                     generators.push(new Generator(generatorTypes.modEnvToFilterFc, value));
+                }
+                else
+                    // scale tuning (key number to pitch)
+                if (source === DLSSources.keyNum && destination === DLSDestinations.pitch)
+                {
+                    // this is just a soundfont generator, but the amount must be changed
+                    // 12800 means the regular scale (100)
+                    generators.push(new Generator(generatorTypes.scaleTuning, value / 128));
                 }
                 else
                     // key to vol env hold
@@ -331,50 +301,14 @@ export function readArticulation(chunk, disableVibrato)
         }
     }
     
-    // override reverb and chorus with 1000 instead of 200 (if not overriden)
-    // reverb
-    if (modulators.find(m => m.modulatorDestination === generatorTypes.reverbEffectsSend) === undefined)
-    {
-        modulators.push(new Modulator({
-            srcEnum: 0x00DB,
-            dest: generatorTypes.reverbEffectsSend,
-            amt: 1000,
-            secSrcEnum: 0x0,
-            transform: 0
-        }));
-    }
-    // chorus
-    if (modulators.find(m => m.modulatorDestination === generatorTypes.chorusEffectsSend) === undefined)
-    {
-        modulators.push(new Modulator({
-            srcEnum: 0x00DD,
-            dest: generatorTypes.chorusEffectsSend,
-            amt: 1000,
-            secSrcEnum: 0x0,
-            transform: 0
-        }));
-    }
-    
     // it seems that dls 1 does not have vibrato lfo, so we shall disable it
     if (disableVibrato)
     {
         modulators.push(
             // mod to vib
-            new Modulator({
-                srcEnum: 0x0081,
-                dest: generatorTypes.vibLfoToPitch,
-                amt: 0,
-                secSrcEnum: 0x0,
-                transform: 0
-            }),
+            Modulator.copy(DLS_1_NO_VIBRATO_MOD),
             // press to vib
-            new Modulator({
-                srcEnum: 0x000D,
-                dest: generatorTypes.vibLfoToPitch,
-                amt: 0,
-                secSrcEnum: 0x0,
-                transform: 0
-            })
+            Modulator.copy(DLS_1_NO_VIBRATO_PRESSURE)
         );
     }
     

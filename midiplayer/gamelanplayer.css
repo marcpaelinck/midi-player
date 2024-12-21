@@ -34,36 +34,51 @@
 }
 /* SELECTOR PANEL above player */
 .selector-group {
-	display: table;
-	grid-template-columns: max-content;
+ display: table;
+ grid-template-columns: max-content;
 /*     padding-right: 10%; */
 }
 .selector-box {
-	display: table-row;
+ display: table-row;
     padding-bottom: 10%;
 }
 .label {
-	display: table-cell;
+ display: table-cell;
     padding-right: 10px;
-	white-space: nowrap;
-	width: 1%;
+ white-space: nowrap;
+ width: 1%;
 }
 .selector {
-	display: table-cell;
+ display: table-cell;
     padding-right: 10px;
-	width: auto;
+ width: auto;
 }
 /* PLAYER */
 #progress {
     width: 100%;
+    margin: 0;
 } 
+/*formats for label positioning. Dstributes labels evenly over the progress bar.
+This requires dummy labels to be created */
+datalist#progress-markers {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  writing-mode: vertical-lr;
+  width: 100%;
+}
+datalist#progress-markers option {
+  margin-bottom: 100%;
+  min-width:1px;
+  rotate: -75deg;
+}
 .mp-player-button {
     font-size: inherit;
     line-height: 30pt;
     padding-bottom: 5%;
 }
 .mp-player-button span {
-		vertical-align: middle;
+  vertical-align: middle;
 }
 .mp-animation {
     width:100%;
