@@ -1,0 +1,113 @@
+<svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+    <defs>
+        <linearGradient x1="35" y1="140" x2="35" y2="25" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill1">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.5" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="41" y1="830" x2="54" y2="82" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill2">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.5" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="42" y1="-24" x2="74" y2="30" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill3">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.72" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="44.2537" y1="-28.155" x2="270.746" y2="274.155" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="panggulred-fill">
+            <stop offset="0" stop-color="#780A17"/>
+            <stop offset="0.616822" stop-color="#D21731"/>
+            <stop offset="1" stop-color="#E41A37"/>
+        </linearGradient>
+        <linearGradient x1="85.9998" y1="805" x2="228" y2="805" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="panggulgrip-fill">
+            <stop offset="0" stop-color="#A27A6A"/>
+            <stop offset="0.61" stop-color="#E6DBD6"/>
+            <stop offset="1" stop-color="#E6DBD6"/>
+        </linearGradient>
+        <linearGradient x1="151.082" y1="174.799" x2="163.918" y2="238.201" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="panggulblack-fill">
+            <stop offset="0" stop-color="#353339"/>
+            <stop offset="0.52" stop-color="#353339"/>
+            <stop offset="1" stop-color="#434C5D"/>
+        </linearGradient>
+        <rect x="0" y="0" rx="12" ry="12" width="30" height="90" fill="#CC9900" fill-rule="evenodd" id="separator"/>
+        <symbol id="daun" width="30" height="128" viewBox="0 0 30 128">
+            <rect class="highlight-target-bg" x="5" y="4" width="20" height="120" fill="url(#fill1)" fill-opacity="1"/>
+            <path class="fixed-item" id="rechts" d="M30 0 30 128 25 124 25 4Z" fill="url(#fill2)" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="links" d="M0 0 0 128 5 124 5 4Z" fill="url(#fill3)" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="boven" d="M0 0 30 0 25 4 5 4Z" fill="#CC9900" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="onder" d="M0 128 30 128 25 124 5 124Z" fill="#966F00" fill-rule="evenodd" fill-opacity="1"/>
+        </symbol>
+        <symbol id="highlight-target" width="30" height="128" viewBox="0 0 30 128">
+            <rect class="highlight-target" x="5" y="4" width="20" height="120"/>
+        </symbol>
+        <symbol id="suspenders" width="6" height="128" viewBox="0 0 6 128">
+            <rect class="fixed-item" x="1" y="32" rx="2" ry="2" width="3" height="9" fill="#CC9900" fill-rule="evenodd"/>
+            <rect class="fixed-item" x="1" y="87" rx="2" ry="2" width="3" height="9" fill="#CC9900" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="panggul" width="40" height="180" viewBox="0 0 40 180">
+            <g transform="scale(0.1 0.1) translate(50 300)">
+                <path d="M0 123C-2.00518e-14 57.8305 70.5151 5.00016 157.5 5.00016 244.485 5.00016 315 57.8305 315 123 315 188.17 244.485 241 157.5 241 70.5151 241-1.00259e-13 188.17 0 123Z" fill="url(#panggulred-fill)" fill-rule="evenodd"/>
+                <path d="M92.6307 206 218.824 206 224.729 213.774C234.256 227.014 220.21 235.188 217.499 244.538 214.788 253.888 210.57 261.126 208.461 269.873 206.352 278.619 206.503 283.898 204.846 297.018 203.189 310.137 201.532 312.249 198.52 348.592 195.507 384.936 185.716 445.258 186.771 515.08 187.825 584.902 201.683 664.979 204.846 767.526 208.009 870.072 213.995 1024.28 205.75 1130.36 197.505 1236.44 172.054 1404 155.375 1404 138.697 1404 113.81 1236.44 105.678 1130.36 97.5459 1024.28 103.419 870.072 106.582 767.526 109.745 664.979 123.603 584.902 124.657 515.08 125.712 445.258 115.921 384.936 112.908 348.592 109.896 312.249 108.239 310.137 106.582 297.018 104.925 283.898 105.076 278.619 102.967 269.873 100.858 261.126 96.6405 253.888 93.9292 244.538 91.2178 235.188 83.6866 219.203 86.6991 213.774 88.271 211.346 90.2409 208.765 92.5299 206.106L92.6307 206Z" fill="url(#panggulgrip-fill)" fill-rule="evenodd"/>
+                <path d="M159.969 9.88413C211.402-5.2987 269.114 36.6532 288.873 103.586 297.472 132.716 297.721 163.252 289.574 189.602" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+                <path d="M126.323 11.769C158.483 3.38629 201.09 60.0283 221.487 138.282 226.845 158.838 230.3 179.627 231.614 199.207" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+                <path d="M54.1284 0C84.0228-4.10638e-14 108.257 48.1355 108.257 107.514 108.257 151.044 95.0416 190.279 74.7843 206.891" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-0.993647 -0.112546 -0.112546 0.993647 174.152 15.2499)"/>
+                <path d="M73.9846 21.0636C88.096 17.6438 115.316 79.9871 134.782 160.311 137.079 169.789 139.207 179.284 141.137 188.66" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+                <path d="M26.2903 0C40.8102-9.5262e-14 52.5809 67.0004 52.5809 149.65 52.5809 150.009 52.5807 150.369 52.5803 150.729" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-0.842906 0.53806 0.53806 0.842906 50.361 44.7144)"/>
+                <path d="M17.573 0C27.2784-9.60252e-14 35.1462 56.281 35.1462 125.707 35.1462 146.63 34.4161 167.222 33.0222 185.617" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-0.993647 -0.112546 -0.112546 0.993647 174.93 10.2163)"/>
+                <path d="M202.332 6.14665C209.317 6.93781 208.328 66.3011 200.124 138.738 197.946 157.97 195.386 176.92 192.627 194.246" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+                <path d="M246.008 26.005C262.285 27.8486 270.519 73.1458 264.399 127.179 260.739 159.496 252.507 189.183 242.404 206.504" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+                <path d="M157.935 190C197.222 192.024 208.773 193.184 237.912 205.214 240.515 215.445 238.725 216.567 229.504 222.749 205.756 219.685 183.359 213.585 158.26 213.558 133.378 213.53 108.061 221.043 87.192 223 80.527 216.522 74.5372 215.441 76.3175 203.564 107.435 191.59 124.583 191.075 157.935 190Z" fill="url(#panggulblack-fill)" fill-rule="evenodd"/>
+                <path d="M73.7926 0C114.547-2.57138e-14 147.585 45.2131 147.585 100.986 147.585 146.118 125.703 185.771 93.982 198.119" stroke="#FBFAE5" stroke-width="13.75" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-0.993647 -0.112546 -0.112546 0.993647 179.168 21.2174)"/>
+            </g>
+        </symbol>
+    </defs>
+    <style>
+         <!-- 
+            The styling enables animation. See file GK_REYONG.svg for an explanation.
+         -->
+       .target *{
+            fill:inherit;
+        }
+         <!-- The next setting defines the default color for the highlight-target of a daun (key) -->
+        .target {
+            fill:url(#fill1);
+        }
+    </style>
+    <!-- without dummy, Firefox sets the fill of the first daun to white when the highlight of another key is removed -->
+    <use id="dummy" href="#suspenders" x="0" y="0" transform="scale(1 .98)"/>" 0.00"
+    <use id="DING1-daun" class="daun" href="#daun" x="0" y="0.0%" transform="scale(1 1.00)"/>
+    <use id="DING1" class="target" href="#highlight-target" x="0" y="0.0%" transform="scale(1 1.00)"/>
+    <use id="" href="#suspenders" x="30"/>
+    <use id="DONG1-daun" class="daun" href="#daun" x="36" y="0.9%" transform="scale(1 0.98)"/>
+    <use id="DONG1" class="target" href="#highlight-target" x="36" y="0.9%" transform="scale(1 0.98)"/>
+    <use id="" href="#suspenders" x="66"/>
+    <use id="DENG1-daun" class="daun" href="#daun" x="72" y="1.8%" transform="scale(1 0.96)"/>
+    <use id="DENG1" class="target" href="#highlight-target" x="72" y="1.8%" transform="scale(1 0.96)"/>
+    <use id="" href="#suspenders" x="102"/>
+    <use id="DEUNG1-daun" class="daun" href="#daun" x="108" y="2.6%" transform="scale(1 0.95)"/>
+    <use id="DEUNG1" class="target" href="#highlight-target" x="108" y="2.6%" transform="scale(1 0.95)"/>
+    <use id="" href="#suspenders" x="138"/>
+    <use id="DUNG1-daun" class="daun" href="#daun" x="144" y="3.5%" transform="scale(1 0.93)"/>
+    <use id="DUNG1" class="target" href="#highlight-target" x="144" y="3.5%" transform="scale(1 0.93)"/>
+    <use id="" href="#suspenders" x="174"/>
+    <use id="DANG1-daun" class="daun" href="#daun" x="180" y="4.3%" transform="scale(1 0.91)"/>
+    <use id="DANG1" class="target" href="#highlight-target" x="180" y="4.3%" transform="scale(1 0.91)"/>
+    <use id="" href="#suspenders" x="210"/>
+    <use id="DAING1-daun" class="daun" href="#daun" x="216" y="5.1%" transform="scale(1 0.90)"/>
+    <use id="DAING1" class="target" href="#highlight-target" x="216" y="5.1%" transform="scale(1 0.90)"/>
+    <g id="helpinghand" class="test">
+        <!-- The "helpinghand" group should contain three data elements, each having a JSON dictionary as value parameter.
+             The class="x" element contains the X coordinates for the helping hand symbol, for each key of the instrument.
+             Format: {<note1>: x-value, ...})
+             The class="y" element contains the default Y coordinate for the helping hand symbol.
+             The class="animation" element contains additional animation values. All values are relative.
+             hoverx, hovery: distance over which the mallet should move during the idle/waiting step of the animation
+              (see code). stroke_x, _y, _rotation, _scale: transformation values for the stroke.
+         -->
+        <use class="helpinghand" href="#panggul" x="0" y="0"/>
+        <data class="x" value='{"DING1": 0, "DONG1": 36, "DENG1": 72, "DEUNG1": 108, "DUNG1": 144, "DANG1": 180, "DAING1": 216}'/>
+        <data class="y" value='{"y": 0}'/>
+        <data class="animation" value='{"hover_x": 3, "hover_y": 0, "stroke_x": -5, "stroke_y": 30, "stroke_rotation": -5, "stroke_scale": [1, 0.9]}'/>
+    </g>
+</svg>

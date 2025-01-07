@@ -79,72 +79,72 @@
     </style>
     <g id="DING1" class="target" transform="matrix(1 0 0 1 0 0)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DONG1" class="target" transform="matrix(0.95 0 0 0.95 620 15)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DENG1" class="target" transform="matrix(0.9 0 0 0.9 1210 30)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DEUNG1" class="target" transform="matrix(0.85 0 0 0.85 1770 45)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DUNG1" class="target" transform="matrix(0.81 0 0 0.81 2306 57)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DANG1" class="target" transform="matrix(0.77 0 0 0.77 2818 69)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DAING1" class="target" transform="matrix(0.73 0 0 0.73 3306 81)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DING2" class="target" transform="matrix(0.69 0 0 0.69 3770 93)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DONG2" class="target" transform="matrix(0.65 0 0 0.65 4210 105)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DENG2" class="target" transform="matrix(0.62 0 0 0.62 4632 114)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DEUNG2" class="target" transform="matrix(0.59 0 0 0.59 5036 123)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DUNG2" class="target" transform="matrix(0.56 0 0 0.56 5422 132)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DANG2" class="target" transform="matrix(0.53 0 0 0.53 5790 141)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
     <g id="DAING2" class="target" transform="matrix(0.5 0 0 0.5 6140 150)">
         <use class="chime" href="#chime" x="0" y="0"/>
-        <use class="rim" href="#highlight-rim" x="0" y="0" />
-        <use class="knob" href="#highlight-knob" x="0" y="0"/>
+        <use class="rim target" href="#highlight-rim" x="0" y="0" />
+        <use class="knob OPEN ABBREVIATED MUTED target" href="#highlight-knob" x="0" y="0"/>
     </g>
 </svg>

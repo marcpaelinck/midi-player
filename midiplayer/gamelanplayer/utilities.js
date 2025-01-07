@@ -15,9 +15,9 @@ export function log(msg) {
     }
 }
 
-const msgTypes = ["always"];
+const displayLogMsgTypes = ["always", "helpinghand"]; // Determines which types will be logged.
 export function logConsole(msg, msg_type = none) {
-    if (LOGGING && msgTypes.includes(msg_type)) {
+    if (LOGGING && displayLogMsgTypes.includes(msg_type)) {
         let now = new Date();
         let hour = now.getHours();
         let minute = now.getMinutes();
@@ -54,7 +54,7 @@ export function waitForObjectContent(selector) {
  * @param {*} file File containing the XML/HTML content
  */
 export function loadHTMLContent(element, file) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         element.setAttribute("w3-include-html", file);
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -69,6 +69,19 @@ export function loadHTMLContent(element, file) {
         };
         xhttp.open("GET", file, true);
         xhttp.send();
+    });
+}
+
+export function fetchJSONData(path) {
+    return new Promise((resolve) => {
+        fetch(path)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                resolve(res.json());
+            })
+            .catch((error) => reject("Unable to fetch data:", error));
     });
 }
 

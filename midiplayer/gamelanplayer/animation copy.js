@@ -1,82 +1,50 @@
-import { delay } from "./utilities.js";
-
-const colorClear = "rgb(255, 255, 255)";
-const colorBorder = "black";
-const colorGold = "rgb(255, 215, 0)";
-const colorGoldLight = "rgb(255, 243, 178)";
-const colorDefault = colorGoldLight;
-const colorHilite = ["green", "purple", "orange"];
-const CIRCLE = "circle";
-const RECTANGLE = "rectangle";
-const TRAPEZE = "trapeze";
+import { logConsole, loadHTMLContent, delay } from "./utilities.js";
+import { messageTypes } from "../spessasynth_lib/midi_parser/midi_message.js";
 
 let IdGenerator = 0;
 
 class Key {
+    channel;
     note;
-    midiNote;
+    midiNotes;
+    strokes;
+    highlightScheme; // {stroke => {'color': str, 'cssvariable': str}}
     shape;
-    x;
-    y;
-    width;
-    height;
-    drawingContext;
-    sequence;
+    xpos;
+    midiToStrokeDict;
 
-    constructor(note, midiNote, shape, x, y, width, height, drawingContext, sequence) {
-        this.note = note;
-        this.midiNote = midiNote;
+    constructor(channel, note, midiNotes, strokes, highlightScheme, shape) {
+        this.channel = channel;
+        this.channelIndex = this.note = note;
+        this.midiNotes = midiNotes.filter((value) => value !== null);
+        this.strokes = strokes;
+        this.highlightScheme = highlightScheme;
         this.shape = shape;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.drawingContext = drawingContext;
-        this.sequence = sequence;
+        this.xpos = shape.x.baseVal.valueInSpecifiedUnits;
+        this.#createMidiDict(midiNotes);
     }
 
     /**
-     * Creates the path for the contours of the key.
+     * Creates a dictionary to look up the stroke and highlight color for a given midi note.
      */
-    #createPath() {
-        this.drawingContext.beginPath();
-        switch (this.shape) {
-            case RECTANGLE:
-                // Using path instead of drawRectangle to make the draw function generic.
-                this.drawingContext.moveTo(this.x, this.y);
-                this.drawingContext.lineTo(this.x, this.y + this.height);
-                this.drawingContext.lineTo(this.x + this.width, this.y + this.height);
-                this.drawingContext.lineTo(this.x + this.width, this.y);
-                this.drawingContext.closePath();
-                break;
-            case CIRCLE:
-                let radius = Math.floor(this.width / 2);
-                this.drawingContext.arc(this.x + radius, this.y + radius, radius, 0, 2 * Math.PI);
-                break;
-            case TRAPEZE:
-                this.drawingContext.moveTo(this.x, this.y + Math.floor(this.height / 3));
-                this.drawingContext.lineTo(this.x, this.y + Math.floor((2 * this.height) / 3));
-                this.drawingContext.lineTo(this.x + this.width, this.y + this.height);
-                this.drawingContext.lineTo(this.x + this.width, this.y);
-                this.drawingContext.closePath();
-                break;
-            default:
+    #createMidiDict(midiNotes) {
+        this.midiToStrokeDict = {};
+        for (let i = 0; i < midiNotes.length; i++) {
+            if (midiNotes[i] !== null) this.midiToStrokeDict[midiNotes[i]] = this.strokes[i];
         }
+        let x = 1; //dummy for breakpoint
     }
 
-    /**
-     * Draws the key on the canvas
-     * @param {string} color
-     * @param {number} alpha
-     */
-    draw(color = colorDefault, alpha = 1) {
-        this.drawingContext.strokeStyle = colorBorder;
-        this.drawingContext.globalAlpha = alpha;
-        this.drawingContext.fillStyle = color;
-        this.#createPath();
-        this.drawingContext.fill();
-        this.drawingContext.globalAlpha = 1;
-        this.drawingContext.stroke();
+    getStroke(midiNote) {
+        return this.midiToStrokeDict[midiNote];
+    }
+
+    getHighlightColor(midiNote) {
+        return this.highlightScheme[this.midiToStrokeDict[midiNote]]["hlcolor"];
+    }
+
+    getCSSVariable(midiNote) {
+        return this.highlightScheme[this.midiToStrokeDict[midiNote]]["cssvariable"];
     }
 }
 
@@ -111,25 +79,33 @@ class Abort {
  */
 class Highlighter {
     id;
-    eventDict; // Dictionary containing the noteoff events of the sythesizer.
-    drawingContext; // Canvas drawingContext.
     key; // Key object that should be highlighted.
-    hiliteColor;
-    channel;
     midiNote; // Midi note that is being played.
+    channel;
+    eventDict; // Dictionary containing the noteoff events of the sythesizer.
+    imageDoc;
+    highlightTags;
     startAnimation; // Starting time of the highlighter's animation.
     eventOffID = null; // ID of this highlighter's abort event (see below).
     fade_duration = 1000; // Duration of the animation in milliseconds.
+    initial_alpha = 1.0;
 
-    constructor(key, hiliteColor, midiNote, channel, eventDict, drawingContext) {
+    constructor(key, midiNote, imageDoc, channel, eventDict) {
         this.id = IdGenerator++;
         this.key = key;
-        this.hiliteColor = hiliteColor;
-        this.channel = channel;
         this.midiNote = midiNote;
+        this.imageDoc = imageDoc;
+        this.channel = channel;
         this.eventDict = eventDict;
-        this.drawingContext = drawingContext;
+        this.stroke = key.getStroke(midiNote);
+        this.highlightTags = ["highlight", this.stroke, key.getCSSVariable(midiNote)];
+
         this.startAnimation = new Date();
+        this.totalframes = 0;
+    }
+
+    toStr() {
+        return `id=${this.id} midi=${this.midiNote} note=${this.key.note}-${this.stroke}`;
     }
 
     /**
@@ -157,19 +133,33 @@ class Highlighter {
      */
     currentAlpha() {
         let elapsedMillis = new Date().getTime() - this.startAnimation.getTime();
-        return Math.max(1 - elapsedMillis / this.fade_duration, 0);
+        return Math.max(this.initial_alpha * (1 - elapsedMillis / this.fade_duration), 0);
+    }
+
+    setOpacity(value) {
+        // Set the value of variable opacity
+        let r = this.imageDoc.querySelector(":root");
+        r.style.setProperty("--alpha", value);
+        var x = 1;
+    }
+
+    setColor() {
+        // Set the value of the css variable
+        let r = this.imageDoc.querySelector(":root");
+        r.style.setProperty(this.key.getCSSVariable(this.midiNote), this.key.getHighlightColor(this.midiNote));
+        var x = 1;
     }
 
     /**
      * Determines a single frame of the animation.
      * @returns true if this is the last frame of the animation.
      */
-    #hilite_frame() {
+    #hilite_frame(highLighter) {
         // Draw a non-highlighted key
-        this.key.draw();
         // Draw the hilite on top of the default color.
         let alpha = this.currentAlpha();
-        if (alpha > 0) this.key.draw(this.hiliteColor, alpha);
+        logConsole(`alpha=${alpha} ${highLighter.toStr()}`, "highlight");
+        if (alpha > 0) this.setOpacity(alpha);
         return alpha <= 0;
     }
 
@@ -179,19 +169,51 @@ class Highlighter {
      * @param {Abort[]} abortObjectList List of abort objects to listen to.
      */
     start_hilite(abortObjectList) {
-        let highlighter = this;
+        let highLighter = this;
         let abortObjects = abortObjectList;
+        logConsole(`start ${highLighter.toStr()}`, "ani-detail");
         do_loop();
 
         function do_loop() {
-            let abort = highlighter.#hilite_frame();
+            highLighter.off();
+            highLighter.on();
+            let abort = highLighter.#hilite_frame(highLighter);
+            let endloop = abort;
             abortObjects.forEach((signal) => (abort = abort || signal.isRaised()));
             if (!abort) {
+                logConsole(`timeout ${highLighter.toStr()}`, "test1");
                 window.requestAnimationFrame(do_loop);
             } else {
-                highlighter.key.draw();
-                highlighter.deleteSynthNoteOffEvent();
+                highLighter.off();
+                highLighter.deleteSynthNoteOffEvent();
+                if (abort != endloop) {
+                    logConsole(`animation prematurely aborted ${highLighter.toStr()}`, "ani-detail");
+                } else {
+                    logConsole(
+                        `animation terminated normally for ${highLighter.toStr()}', total ${
+                            highLighter.totalframes
+                        } frames`,
+                        "ani-detail"
+                    );
+                }
             }
+        }
+    }
+
+    on() {
+        let classList = this.key.shape.classList;
+        if (!classList.contains("highlight")) {
+            logConsole(`setting color to ${this.highlightColor} for ${this.toStr()}`, "ani-detail");
+            this.setColor(this.highlightColor);
+            delay(50).then(classList.add(...this.highlightTags));
+        }
+    }
+
+    off() {
+        let classList = this.key.shape.classList;
+        if (classList.contains(...this.highlightTags)) {
+            classList.remove(...this.highlightTags);
+            this.setOpacity(1);
         }
     }
 }
@@ -201,20 +223,26 @@ class Highlighter {
  * Draws the inital layout and creates event listeners for the synthesizer.
  */
 export class Animator {
-    canvas = null;
     synthesizer = null;
-    drawingContext = null;
+    sequencer = null;
+    settings = null;
+
     instrument = null;
     keys = null;
+    midiToKeyDict = null; // dict[channel][midiNote]
+    imageDoc = null;
     abortAll;
 
-    constructor(canvas, synthesizer) {
-        this.canvas = canvas;
+    constructor(synthesizer, sequencer, settings) {
         this.synthesizer = synthesizer;
-        this.drawingContext = this.canvas.getContext("2d");
+        this.sequencer = sequencer;
+        this.settings = settings;
         this.abortAll = new Abort(false);
-        this.#initialize_canvas();
+        this.midiToKeyDict = {};
+        // Set the synthesizer events. Needs to be done only once.
         this.#set_animation_events(this.synthesizer);
+        document.getElementById("svg-embed").setH;
+        // document.getElementById("svg-embed").onload = this.#process_svg_document();
     }
 
     /**
@@ -223,14 +251,24 @@ export class Animator {
      * @param {number} midiNote
      * @returns Key object.
      */
-    getKeyAndColor(midiNote) {
-        // The MIDI notes are numbered from 1 through N where N is the total number of keys.
-        // In case of multiple strokes ([open], [abbreviated], [muted] or for the kendang [kp], [dt], [nu]),
-        // the second stroke is numbered from N+1 through 2N, the next from 2N+1 through 3N etc.
-        // Currently the kempli and gong section are both on channel 0 with notes 1 for kempli and 2-4 for G, P and T.
-        let key = this.keys[(midiNote - 1 - this.instrument.midioffset) % this.keys.length];
-        let hiliteColor = colorHilite[Math.floor((midiNote - 1 - this.instrument.midioffset) / this.keys.length)];
-        return [key, hiliteColor];
+    getKey(channel, midiNote) {
+        if (channel in this.midiToKeyDict) {
+            if (midiNote in this.midiToKeyDict[channel]) return this.midiToKeyDict[channel][midiNote];
+        }
+        return null;
+    }
+
+    getHighlightScheme(channelSeq) {
+        let scheme = {};
+        for (const [stroke, colors] of Object.entries(this.settings.animation.highlight)) {
+            let schemeID = channelSeq % colors.length;
+            let varID = "";
+            if (this.instrument.channels.length > 1) {
+                if (colors.length > 1) varID = `${schemeID + 1}`;
+            }
+            scheme[stroke] = { hlcolor: colors[schemeID], cssvariable: "--color" + varID };
+        }
+        return scheme;
     }
 
     /**
@@ -239,68 +277,55 @@ export class Animator {
      */
     set_instrument(instrument) {
         this.instrument = instrument;
+        document.getElementById("svg-embed").innerHTML = "";
         if (instrument == null) return;
-
-        // Determine dimensions of keys and separating gaps
-        let config = instrument["configuration"];
-        let gap_ratio = 0.1; // small gap between the instrument keys
-        let GAP_ratio = 0.2; // wider gap where the suspenders are placed
-        let tot_GAPS = config.length - 1; // # wider gaps
-        let tot_keys = 0;
-        let notes = [];
-        for (let gidx = 0; gidx < config.length; gidx++) {
-            tot_keys += config[gidx].length;
-            for (let kidx = 0; kidx < config[gidx].length; kidx++) {
-                notes.push(config[gidx][kidx]);
-            }
-        }
-        let tot_gaps = tot_keys - 1 - tot_GAPS; // # regular gaps
-        let key_width = Math.floor(this.canvas.width / (tot_keys + GAP_ratio * tot_GAPS + gap_ratio * tot_gaps));
-        let gap_width = Math.floor(key_width * gap_ratio);
-        let GAP_width = Math.floor(key_width * GAP_ratio);
-        let key_height = Math.floor(this.canvas.height * 0.9);
-        if (this.instrument["shape"] === CIRCLE) key_height = key_width;
-
-        let sequence;
-        if ("sequence" in instrument) {
-            // Retrieve specification of midinotes
-            sequence = instrument.sequence;
-        } else {
-            // Default: MIDI notes numbered sequencially from 1.
-            sequence = [];
-            for (let i = 1; i < tot_keys; i++) {
-                sequence.push(i);
-            }
-        }
+        if (instrument["animation"] == null) return;
 
         // Populate the keys collection
-        this.keys = [];
-        let xpos = 0;
-        let count = 0;
-        for (let gidx = 0; gidx < config.length; gidx++) {
-            for (let kidx = 0; kidx < config[gidx].length; kidx++) {
-                let key = new Key(
-                    notes[sequence[count] - 1],
-                    sequence[count],
-                    this.instrument["shape"],
-                    xpos,
-                    0,
-                    key_width,
-                    key_height,
-                    this.drawingContext,
-                    sequence[count]
-                );
-                this.keys.push(key);
-                // Add a small gap between the keys
-                xpos += key_width + gap_width;
-                count++;
-            }
-            // Replace the small gap with a wider gap between key groups
-            xpos += GAP_width - gap_width;
-        }
-        this.keys.sort((a, b) => {
-            return Math.sign(a.midiNote - b.midiNote);
+        // Load the animation picture
+        let animationProfile = this.settings.animation.profiles[instrument.animation];
+        let svcFile = this.settings.datafolder + "/animation/" + animationProfile.file;
+        let embed_div = document.getElementById("svg-embed");
+        loadHTMLContent(embed_div, svcFile).then((response) => {
+            this.#process_svg_document(response);
         });
+    }
+
+    get_instrument() {
+        return this.instrument;
+    }
+
+    #process_svg_document(response) {
+        console.log(response);
+        if (this.instrument == null) return;
+        this.imageDoc = document;
+
+        // Create Key objects
+        let animationHighlight = this.settings.animation.highlight;
+        let animationProfile = this.settings.animation.profiles[this.instrument.animation];
+        let channels = this.instrument.channels;
+        for (let channelSeq = 0; channelSeq < channels.length; channelSeq++) {
+            let channel = channels[channelSeq];
+            for (const [note, midiNotes] of Object.entries(animationProfile.notes)) {
+                if (note !== null) {
+                    let key = new Key(
+                        channel,
+                        note,
+                        midiNotes,
+                        animationProfile.strokes,
+                        this.getHighlightScheme(channelSeq),
+                        this.imageDoc.getElementById(note)
+                    );
+                    // Update midiToKeyDict for quick lookup
+                    for (const [midiNote, ignore] of Object.entries(key.midiToStrokeDict)) {
+                        if (!(channel in this.midiToKeyDict)) {
+                            this.midiToKeyDict[channel] = {};
+                        }
+                        this.midiToKeyDict[channel][midiNote] = key;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -309,74 +334,111 @@ export class Animator {
      * If
      */
     animate() {
-        // Clear the canvas and existing animation events
+        // Clear existing animation events
         this.abortAll.raise();
-
-        // Wait for all animation to finish
-        delay(100).then(() => {
-            this.#clear_canvas();
-
-            // No instrument focus selected
-            if (this.instrument == null) return;
-
-            // TODO: enable non-consecutive note indices)
-            this.keys.forEach((key) => key.draw());
-            this.abortAll.clear();
-        });
-    }
-
-    /* Private methods */
-
-    /**
-     * Sets up the canvas sizes.
-     */
-    #initialize_canvas() {
-        // Get the encompasssing row div element (which is not necessarily the direct parent div)
-        let parent_rowdiv = this.canvas.ownerDocument.querySelector("#canvas").closest("div.mp-row.mp-animation");
-        let animation_width = Math.min(600, parent_rowdiv.clientWidth);
-        this.canvas.width = animation_width;
-        this.canvas.height = Math.floor(animation_width / 2);
-    }
-
-    #clear_canvas() {
-        this.drawingContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // No instrument focus selected
+        if (this.instrument == null) return;
+        this.abortAll.clear();
     }
 
     /**
      * Adds synthesizer noteon/noteoff events to highlight the corresponding key on the canvas.
      * @param {Synthetizer} synthesizer
-     * @param {JSON} instrument
-     * @param {Array[Key]} keys
+     * @param {Sequencer} sequencer
      */
-    #set_animation_events(synthesizer) {
+    #set_animation_events() {
         let animator = this;
 
-        synthesizer.eventHandler.addEvent("noteon", "animation", (event_on) => {
+        animator.synthesizer.eventHandler.addEvent("noteon", "animation", (event_on) => {
             if (animator.instrument == null) return;
             if (animator.instrument["channels"].includes(event_on.channel)) {
-                let [key, color] = animator.getKeyAndColor(event_on.midiNote);
-                let highLighter = new Highlighter(
-                    key,
-                    color,
-                    event_on.midiNote,
-                    event_on.channel,
-                    synthesizer.eventHandler.events["noteoff"]
-                );
-                logConsole(`animation requested for key ${key.note}${highLighter.id}`, "ani-detail");
-                let abortSignal = new Abort(false);
-                let eventOffID = `animation${event_on.midiNote}`;
-                highLighter.setEventOffID(eventOffID);
-                highLighter.start_hilite([abortSignal, animator.abortAll]);
+                let key = animator.getKey(event_on.channel, event_on.midiNote);
+                if (key !== null) {
+                    let highLighter = new Highlighter(
+                        key,
+                        event_on.midiNote,
+                        animator.imageDoc,
+                        event_on.channel,
+                        animator.synthesizer.eventHandler.events["noteoff"]
+                    );
+                    logConsole(`note_on ${highLighter.toStr()}`, "ani-detail");
+                    let abortSignal = new Abort(false);
+                    let eventOffID = `animation${highLighter.id}`;
+                    highLighter.setEventOffID(eventOffID);
+                    highLighter.start_hilite([abortSignal, animator.abortAll]);
 
-                // add Highlighter to note off listeners
-                synthesizer.eventHandler.addEvent("noteoff", eventOffID, (event_off) => {
-                    if (animator.instrument == null) return;
-                    if (event_off.channel == highLighter.channel && event_off.midiNote === highLighter.midiNote) {
-                        logConsole(`END animation requested for key ${key.note}${highLighter.id}`, "ani-detail");
-                        abortSignal.raise();
-                    }
-                });
+                    // add Highlighter to note off listeners
+                    animator.synthesizer.eventHandler.addEvent("noteoff", eventOffID, (event_off) => {
+                        if (animator.instrument == null) return;
+                        if (event_off.channel == highLighter.channel && event_off.midiNote === highLighter.midiNote) {
+                            logConsole(`note_off ${highLighter.toStr()}`, "ani-detail");
+                            highLighter.off();
+                            abortSignal.raise();
+                        }
+                    });
+                }
             }
+
+            animator.sequencer.onTextEvent = (t1, t2) => {
+                // Animation of the 'Helping hand' are triggered by marker metamessages.
+                if (animator.instrument == null) return;
+                var text = new TextDecoder().decode(t1);
+                if ((t2 == messageTypes.marker) & text.startsWith("{")) {
+                    logConsole(`message: ${text} - ${t2}`, "helpinghand");
+                    var message = JSON.parse(text);
+                    if (
+                        ("type" in message) &
+                        (message.type == "helpinghand") &
+                        (message.position == animator.instrument.group)
+                    ) {
+                        moveHelpingHandToNextNote(message);
+                    }
+                }
+            };
         });
     }
+}
+
+var ANIMATOR = none;
+export function createAnimator(synthesizer, sequencer, json_settings) {
+    ANIMATOR = new Animator(synthesizer, sequencer, json_settings);
+}
+
+export function getAnimator() {
+    return ANIMATOR;
+}
+
+const coord = {
+    DING1: "translate(0%)",
+    DONG1: "translate(10.3%)",
+    DENG1: "translate(20.5%)",
+    DUNG1: "translate(30.9%)",
+    DANG1: "translate(41%)",
+    PARK: "translate(60%)", // Default starting position
+};
+
+var prevnote = "PARK";
+
+function moveHelpingHandToNextNote(noteinfo) {
+    const animationDuration = 500;
+    const bezier = "cubic-bezier(0.87, 0.02, 0.15, 0.99)";
+    const helpingHand = document.getElementById("helpinghand");
+    if (!helpingHand) return;
+    //{"type": "helpinghand", "position": "CALUNG", "pitch": "DUNG", "octave": 1, "timeuntil": 1125.0}
+    var timeUntilNext = noteinfo["timeuntil"];
+    var note = `${noteinfo.pitch}${noteinfo.octave}`;
+    var startFlashing = Math.max(timeUntilNext - animationDuration, 0) / timeUntilNext;
+    var helpingHandKeyframes = new KeyframeEffect(
+        helpingHand,
+        [
+            // { transform: coord[prevnote], offset: 0 },
+            { transform: coord[prevnote], offset: 0, easing: bezier },
+            { transform: coord[note], offset: 1, easing: bezier },
+        ],
+        { duration: timeUntilNext, fill: "forwards" }
+    );
+    logConsole(`prevnote=${prevnote} note=${note}`, "helpinghand");
+    var helpingHandAnimation = new Animation(helpingHandKeyframes, document.timeline);
+    helpingHandAnimation.play();
+    prevnote = note;
 }

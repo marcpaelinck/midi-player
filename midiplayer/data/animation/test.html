@@ -1,10 +1,11 @@
 <html>
 
-    <embed id="svgimage" width="1000" src="http://localhost:8080/midiplayer/data/animation/GK_GONGS.svg"/>
+    <embed id="svgimage" width="1000" src="http://localhost:8080/midiplayer/data/animation/GK_REYONG.svg"/>
+    <div id="svg-embed"></div>
     <!-- Created with Fritzing (http://www.fritzing.org/) -->
      <div>
         <!-- *** REYONG ***-->
-        <!-- <button type="button" name="note" value="DENG0"  onmousedown="highlight('DENG0', true)"   onmouseup="highlight('DENG0', false)">DENG0
+        <button type="button" name="note" value="DENG0"  onmousedown="highlight('DENG0', true)"   onmouseup="highlight('DENG0', false)">DENG0
         <button type="button" name="note" value="DUNG0"  onmousedown="highlight('DUNG0', true)"   onmouseup="highlight('DUNG0', false)">DUNG0
         <button type="button" name="note" value="DANG0"  onmousedown="highlight('DANG0', true)"   onmouseup="highlight('DANG0', false)">DANG0
         <button type="button" name="note" value="DING1"  onmousedown="highlight('DING1', true)"   onmouseup="highlight('DING1', false)">DING1
@@ -15,7 +16,7 @@
         <button type="button" name="note" value="DING2"  onmousedown="highlight('DING2', true)"   onmouseup="highlight('DING2', false)">DING2
         <button type="button" name="note" value="DONG2"  onmousedown="highlight('DONG2', true)"   onmouseup="highlight('DONG2', false)">DONG2
         <button type="button" name="note" value="DENG2"  onmousedown="highlight('DENG2', true)"   onmouseup="highlight('DENG2', false)">DENG2
-        <button type="button" name="note" value="DUNG2"  onmousedown="highlight('DUNG2', true)"   onmouseup="highlight('DUNG2', false)">DUNG2 -->
+        <button type="button" name="note" value="DUNG2"  onmousedown="highlight('DUNG2', true)"   onmouseup="highlight('DUNG2', false)">DUNG2
         <!-- *** GK POKOK ***-->
         <!-- <button type="button" name="note" value="DING1"  onmousedown="highlight('DING1', true)"   onmouseup="highlight('DING1', false)" checked="true">DING1
         <button type="button" name="note" value="DONG1"  onmousedown="highlight('DONG1', true)"   onmouseup="highlight('DONG1', false)">DONG1
@@ -38,9 +39,9 @@
         <button type="button" name="note" value="DANG2"  onmousedown="highlight('DANG2', true)"   onmouseup="highlight('DANG2', false)">DANG2
         <button type="button" name="note" value="DAING2" onmousedown="highlight('DAING2', true)"  onmouseup="highlight('DAING2', false)">DAING2 -->
         <!-- *** GONG ***-->
-        <button type="button" name="note" value="GONG"  onmousedown="highlight('GONG', true)"   onmouseup="highlight('GONG', false)">GONG
+        <!-- <button type="button" name="note" value="GIR"  onmousedown="highlight('GIR', true)"   onmouseup="highlight('GIR', false)">GIR
         <button type="button" name="note" value="PUR"  onmousedown="highlight('PUR', true)"   onmouseup="highlight('PUR', false)">PUR
-        <button type="button" name="note" value="TONG"  onmousedown="highlight('TONG', true)"   onmouseup="highlight('TONG', false)">TONG
+        <button type="button" name="note" value="TONG"  onmousedown="highlight('TONG', true)"   onmouseup="highlight('TONG', false)">TONG -->
         <!-- *** KENDANG ***-->
         <!-- <button type="button" name="note" value="KA"  onmousedown="highlight('KA', true)"   onmouseup="highlight('KA', false)">KA
         <button type="button" name="note" value="PAK"  onmousedown="highlight('PAK', true)"   onmouseup="highlight('PAK', false)">PAK
@@ -55,14 +56,23 @@
         <input type="radio"  name="stroke" value="MUTED">MUTED
         <input type="radio"  name="stroke" value="TICK1">TICK1
         <input type="radio"  name="stroke" value="TICK2">TICK2
+        <input type="radio"  name="stroke" value="STRIKE">STRIKE
         <input type="radio"  name="stroke" value="KAPAK">KAPAK
         <input type="radio"  name="stroke" value="DETUT">DETUT
         <input type="radio"  name="stroke" value="CUNGKUNG">CUNGKUNG
         <input type="radio"  name="stroke" value="INVALID">INVALID
     </div>
 
+<script type="module" src="../../gamelanplayer/utilities.js"></script>
 <script>
-      const colors = {"OPEN": "green", "ABBREVIATED": "blue", "MUTED": "purple", "TICK1": "green", "TICK2": "blue", "KAPAK": "green", "DETUT": "blue", "CUNGKUNG": "purple"}
+    function loadInstrument() {
+        let svcFile = "./SP_GONGS.svc"
+        let embed_div = document.getElementById("svg-embed");
+        loadHTMLContent(embed_div, svcFile).then((response) => {
+        });        
+    }
+    // loadInstrument() 
+     const colors = {"OPEN": "green", "ABBREVIATED": "blue", "MUTED": "purple", "TICK1": "green", "TICK2": "blue", "STRIKE": "blue", "KAPAK": "green", "DETUT": "blue", "CUNGKUNG": "purple"}
 
       function getRadioValue(name) {
             var ele = document.getElementsByName(name);
@@ -85,17 +95,19 @@
         let highlight_tags = ["highlight", stroke];
 
         let imageDoc = document.getElementById('svgimage').getSVGDocument();
-        let r = imageDoc.querySelector(':root');
-        console.log(r.style.getPropertyValue("--color"))
-        r.style.setProperty("--color", colors[stroke]);
-        console.log(r.style.getPropertyValue("--color"))
+        // let r = imageDoc.querySelector(':root');
+        // console.log(r.style.getPropertyValue("--color"))
+        // r.style.setProperty("--color", colors[stroke]);
+        // console.log(r.style.getPropertyValue("--color"))
         console.log(note)
         let classes = imageDoc.getElementById(note).classList;
         if (on) {
             console.log(highlight_tags);
-            classes.add(...highlight_tags);
+            imageDoc.getElementById(note).style.fill=colors[stroke]
+            // classes.add(...highlight_tags);
         } else {
-            classes.remove(...highlight_tags);
+            imageDoc.getElementById(note).style.fill=""
+            // classes.remove(...highlight_tags);
         }
     }
 </script>

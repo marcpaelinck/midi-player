@@ -1,0 +1,92 @@
+<svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+    <defs>
+        <linearGradient x1="35" y1="140" x2="35" y2="25" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill1">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.5" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="41" y1="830" x2="54" y2="82" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill2">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.5" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="42" y1="-24" x2="74" y2="30" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill3">
+            <stop offset="0" stop-color="#966F00"/>
+            <stop offset="0.72" stop-color="#CC9900"/>
+            <stop offset="1" stop-color="#FEBB00"/>
+        </linearGradient>
+        <linearGradient x1="13.707" y1="999.414" x2="353.801" y2="276.606" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="panggulfill0">
+            <stop offset="0" stop-color="#D6C9A6"/>
+            <stop offset="0.0277778" stop-color="#D6CAA7"/>
+            <stop offset="1" stop-color="#E7E0CB"/>
+        </linearGradient>
+        <linearGradient x1="1.24525" y1="994.136" x2="340.296" y2="273.547" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="panggulfill1">
+            <stop offset="0" stop-color="#B1A46B"/>
+            <stop offset="1" stop-color="#BFB88F"/>
+        </linearGradient>
+        <rect x="0" y="0" rx="12" ry="12" width="30" height="90" fill="#CC9900" fill-rule="evenodd" id="separator"/>
+        <symbol id="daun" width="30" height="128" viewBox="0 0 33 128">
+            <rect class="highlight-target-bg" x="5" y="4" width="20" height="120" fill="url(#fill1)" fill-opacity="1"/>
+            <path class="fixed-item" id="rechts" d="M30 0 30 128 25 124 25 4Z" fill="url(#fill2)" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="links" d="M0 0 0 128 5 124 5 4Z" fill="url(#fill3)" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="boven" d="M0 0 30 0 25 4 5 4Z" fill="#CC9900" fill-rule="evenodd" fill-opacity="1"/>
+            <path class="fixed-item" id="onder" d="M0 128 30 128 25 124 5 124Z" fill="#966F00" fill-rule="evenodd" fill-opacity="1"/>
+        </symbol>
+        <symbol id="highlight-target" width="30" height="128" viewBox="0 0 33 128">
+            <rect class="highlight-target" x="5" y="4" width="20" height="120"/>
+        </symbol>
+        <symbol id="suspenders" width="6" height="128" viewBox="0 0 6 128">
+            <rect class="fixed-item" x="1" y="32" rx="2" ry="2" width="3" height="9" fill="#CC9900" fill-rule="evenodd"/>
+            <rect class="fixed-item" x="1" y="87" rx="2" ry="2" width="3" height="9" fill="#CC9900" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="panggul" width="383" height="3070">
+            <path transform="scale(0.12 0.12) translate(130 250)" d="M181.795 1053.41C199.547 1014.88 207.132 877.38 218.919 755.872 230.706 634.364 255.453 403.768 252.516 324.361 261.895 246.766 199.196 154.642 177.059 246.971 159.201 294.847 151.49 542.898 145.366 611.616 169.653 629.016 145.123 747.136 140.844 791.59 125.446 862.11 134.007 826.569 119.693 878.338 106.817 931.922 100.549 958.155 99.3347 976.266 98.1204 994.377 98.6642 974.148 112.408 987.005 93.321 1035.56 164.044 1091.93 181.795 1053.41Z" fill="url(#panggulfill0)" fill-rule="evenodd"/>
+            <path transform="scale(0.12 0.12) translate(130 250)" d="M166.226 1054.64C186.266 1017.68 192.008 877.672 204.095 755.526 216.182 633.379 241.503 401.565 238.75 321.766 248.323 243.758 185.773 151.319 163.393 244.165 145.401 292.324 137.095 541.641 130.802 610.718 155.075 628.149 130.238 746.92 125.849 791.608 110.266 862.519 118.921 826.779 104.469 878.843 91.4516 932.726 74.1161 947.64 83.8564 977.311 93.5967 1006.98 146.187 1091.61 166.226 1054.64Z" fill="url(#panggulfill1)" fill-rule="evenodd"/>
+            <path transform="scale(0.12 0.12) translate(130 250)" d="M152.196 15.0027C127.497 9.91953 105.558 17.0352 88.1515 21.0738 70.7448 25.1123 58.7659 32.7881 47.7561 39.2338 44.4393 42.7148 39.2323 47.704 35.9907 59.416 32.7491 71.1281 27.547 90.4903 28.307 109.506 29.067 128.522 22.5987 155.565 40.5508 173.511 58.503 191.457 109.389 202.51 136.02 217.183 162.65 231.856 178.011 242.645 200.333 261.55 222.655 280.455 247.401 302.985 269.952 330.615 292.503 358.245 320.702 404.417 335.639 427.33 350.576 450.242 353.564 459.969 359.575 468.092 365.586 476.215 368.087 476.258 371.706 476.069 375.325 475.881 379.508 471.546 381.286 466.962 383.065 462.378 383.243 467.807 382.378 448.565 381.514 429.323 382.609 402.91 376.099 351.508 369.59 300.106 346.834 205.485 319.084 144.206 293.031 100.616 297.709 107.814 282.624 91.4784 267.538 75.1432 251.255 62.4939 236.349 51.5723 197.33 26.8784 176.896 20.0858 152.196 15.0027Z" fill="#262626" fill-rule="evenodd"/>
+            <path transform="scale(0.12 0.12) translate(130 250)" d="M209.443 35.0971C200.576 34.1683 197.909 31.5903 182.842 32.3105 167.775 33.0307 136.415 35.0537 119.04 39.4189 101.665 43.7842 89.6371 51.7764 78.5913 58.5015 75.2414 62.0955 69.7971 67.3573 66.5954 79.2311 63.3938 91.105 59.5625 111.549 59.3813 129.745 59.2001 147.941 58.2231 167.915 65.5078 188.407L52.872 182.977C45.2535 158.95 47.5359 141.875 48.3432 123.121 49.1505 104.367 53.8398 82.4425 57.7161 70.453 61.5925 58.4635 68.251 54.7787 71.6009 51.1848 82.6469 44.4596 95.9615 37.7885 113.594 33.6875 131.227 29.5866 163.18 27.212 177.396 26.5791 191.612 25.9461 190.743 28.0271 198.892 29.8898 203.259 33.2663 205.103 32.8787 209.443 35.0971Z" fill="#ADA46F" fill-rule="evenodd"/>
+            <path transform="scale(0.12 0.12) translate(130 250)" d="M223.542 44.637C227.985 47.2488 228.415 46.8277 236.87 52.4724 225.809 49.3071 224.849 47.2532 209.463 47.1264 194.078 46.9997 160.446 49.402 144.558 51.7119 128.67 54.0218 122.32 56.9519 114.135 60.9859 101.387 68.026 101.96 64.7055 94.8557 75.3513 86.2569 92.5174 84.8435 121.201 84.4303 141.817 84.0171 162.432 84.4372 179.438 92.3768 199.045L79.6446 194.429C70.6889 172.636 70.8155 156.509 71.6551 135.235 72.4948 113.961 69.936 92.6585 84.6824 66.787 102.594 51.5551 118.205 49.638 138.519 45.4151 158.833 41.1923 192.397 41.5797 206.568 41.45 220.738 41.3202 217.599 42.9534 223.542 44.637Z" fill="#ADA46F" fill-rule="evenodd"/>
+        </symbol>
+    </defs>
+    <style>
+         <!-- 
+            The styling enables animation. See file GK_REYONG.svg for an explanation.
+         -->
+       .target *{
+            fill:inherit;
+        }
+         <!-- The next setting defines the default color for the highlight-target of a daun (key) -->
+        .target {
+            fill:url(#fill1);
+        }
+    </style>
+    <g id="all">
+    <use id="DING1-daun" class="daun" href="#daun" x="0" y="0.0%" transform="scale(1 1.00)"/>
+    <use id="DING1" class="target" href="#highlight-target" x="0" y="0.0%" transform="scale(1 1.00)"/>
+    <use id="" href="#suspenders" x="30"/>
+    <use id="DONG1-daun" class="daun" href="#daun" x="36" y="0.9%" transform="scale(1 0.98)"/>
+    <use id="DONG1" class="target" href="#highlight-target" x="36" y="0.9%" transform="scale(1 0.98)"/>
+    <use id="" href="#suspenders" x="66"/>
+    <use id="DENG1-daun" class="daun" href="#daun" x="72" y="1.8%" transform="scale(1 0.96)"/>
+    <use id="DENG1" class="target" href="#highlight-target" x="72" y="1.8%" transform="scale(1 0.96)"/>
+    <use id="" href="#suspenders" x="102"/>
+    <use id="DUNG1-daun" class="daun" href="#daun" x="108" y="2.6%" transform="scale(1 0.95)"/>
+    <use id="DUNG1" class="target" href="#highlight-target" x="108" y="2.6%" transform="scale(1 0.95)"/>
+    <use id="" href="#suspenders" x="138"/>
+    <use id="DANG1-daun" class="daun" href="#daun" x="144" y="3.5%" transform="scale(1 0.93)"/>
+    <use id="DANG1" class="target" href="#highlight-target" x="144" y="3.5%" transform="scale(1 0.93)"/>
+    </g>
+    <g id="helpinghand" >
+        <!-- The "helpinghand" group should contain three data elements, each having a JSON dictionary as value parameter.
+             The class="x" element contains the X coordinates for the helping hand symbol, for each key of the instrument.
+             Format: {<note1>: x-value, ...})
+             The class="y" element contains the default Y coordinate for the helping hand symbol.
+             The class="animation" element contains additional animation values. All values are relative.
+             hoverx, hovery: distance over which the mallet should move during the idle/waiting step of the animation
+              (see code). stroke_x, _y, _rotation, _scale: transformation values for the stroke.
+         -->
+        <use class="helpinghand" href="#panggul" x="0" y="0"/>
+        <data class="x" value='{"DING1": 0, "DONG1": 36, "DENG1": 72, "DUNG1": 108, "DANG1": 144}'/>
+        <data class="y" value='{"y": 0}'/>
+        <data class="animation" value='{"hover_x": 3, "hover_y": 0, "stroke_x": -25, "stroke_y": 40, "stroke_rotation": -25, "stroke_scale": [0.8, 1]}'/>
+    </g>
+</svg>

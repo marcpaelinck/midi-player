@@ -2,7 +2,7 @@
 import { Sequencer } from "./spessasynth_lib/sequencer/sequencer.js";
 import { Synthetizer } from "./spessasynth_lib/synthetizer/synthetizer.js";
 import { DATAFOLDER_URL_ABSOLUTE, WORKLET_URL_ABSOLUTE } from "./settings.js";
-import { initializeDropDownsAndEvents } from "./gamelanplayer/userinterface.js";
+import { initializeDropDownsAndEvents, restoreInstrumentVolumes } from "./gamelanplayer/userinterface.js";
 import { log, setTracking } from "./gamelanplayer/utilities.js";
 // import { parse } from "./yaml/browser/dist/index.js";
 
@@ -19,6 +19,8 @@ const dom = {
     playPauseButton: document.getElementById("play"),
     stopButton: document.getElementById("stop"),
     canvas: document.getElementById("canvas"),
+    panggulSelectorForm: document.getElementById("show-panggul"),
+    panggulCheckbox: document.querySelector("#show-panggul .checkbox"),
 };
 
 dom.playerElement.style.visibility = "hidden";
@@ -64,7 +66,7 @@ fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
         sequencer.addOnTimeChangeEvent((time) => {
             if (Math.abs(time) < 0.1) {
                 console.log(`(re-)starting song`);
-                dom.instrumentSelector.dispatchEvent(new Event("change"));
+                restoreInstrumentVolumes(synthesizer, settings);
             }
         }, "resetfocus");
 

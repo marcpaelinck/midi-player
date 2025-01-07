@@ -1,6 +1,7 @@
 import { DATAFOLDER_URL_ABSOLUTE } from "../settings.js";
-import { Animator } from "./animation.js";
 import { delay, logConsole, timeFormat } from "./utilities.js";
+import { createAnimator } from "./animation.js";
+import { Synthetizer } from "../spessasynth_lib/synthetizer/synthetizer.js";
 
 let selectedSong = null; // JSON
 let selectedInstrument = null; // JSON
@@ -22,7 +23,7 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
         sequencer.currentTime = (dom.audioTimeSlider.value / 1000) * sequencer.duration; // switch the time (the sequencer adjusts automatically)
         // Changing the sequencer time unpauses it.
         if (sequencer_paused) sequencer.pause();
-        dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volumes.
+        restoreInstrumentVolumes(synthesizer, json_settings); // Restore individual instrument volumes.
     };
 
     dom.audioTimeSlider.onmousedown = () => {
@@ -39,14 +40,14 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     dom.speedSelector.onchange = () => {
         if (!sequencer.paused) {
             sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
-            dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volumes.
+            restoreInstrumentVolumes(synthesizer, json_settings); // Restore individual instrument volumes.
         }
     };
 
-    const animator = new Animator(synthesizer, json_settings);
+    const animator = createAnimator(synthesizer, sequencer, json_settings, dom);
 
     setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom);
-    setPlayPauseStopOnClickEvents(sequencer, dom);
+    setPlayPauseStopOnClickEvents(synthesizer, sequencer, json_settings, dom);
 
     dom.loopCheckbox.onclick = () => {
         sequencer.loop = dom.loopCheckbox.checked;
@@ -166,20 +167,20 @@ function setSongOnChangeEvent(dom, json_settings) {
 
         // Populate the instrument selector
         let instr_jsoncontent = json["instrumentgroups"][selectedSong["instrumentgroup"]];
-        populate_dropdown(dom.instrumentSelector, instr_jsoncontent, "name", ["channel"], 1);
+        populate_dropdown(dom.instrumentSelector, instr_jsoncontent, "group", ["channel"], 1);
         dom.instrumentSelector.selectedIndex = 0;
         dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
 
         // Populate the part selector
         // let firstMember = new Array(new Object({ title: "Entire piece", file: json["songs"][idx]["file"] }));
         // let loopList = firstMember.concat(json["songs"][idx]["loops"]);
-        populate_dropdown(dom.partSelector, json["songs"][idx]["parts"], "name", ["name", "file", "loop"], 0);
+        populate_dropdown(dom.partSelector, json["songs"][idx]["parts"], "part", ["part", "file", "loop"], 0);
         dom.partSelector.selectedIndex = 0;
         dom.partSelector.dispatchEvent(new Event("change"));
     };
 }
 
-/**f
+/**
  * Sets the change event for the part selector.
  * @param {AudioContext} context
  * @param {Sequencer} sequencer
@@ -187,14 +188,15 @@ function setSongOnChangeEvent(dom, json_settings) {
  */
 function setPartOnChangeEvent(context, sequencer, dom) {
     // add an event listener for the part drop-down
+    const play_icon = "\u{25B6}";
     dom.partSelector.addEventListener("change", async (event) => {
         // retrieve the file path for the selected song
         let selection = event.target.options[event.target.selectedIndex];
         let filepath = DATAFOLDER_URL_ABSOLUTE + "/midifiles/".concat(selection.getAttribute("file"));
-        let partname = selection.getAttribute("name");
+        let partname = selection.getAttribute("part");
         logConsole(`selected file: ${filepath}`, "always");
         dom.loopCheckbox.checked = selection.getAttribute("loop") === "true";
-        let selected_part = selectedSong.parts.find((part) => part.name == partname);
+        let selected_part = selectedSong.parts.find((part) => part.part == partname);
         populate_slider_markers(selected_part.markers, dom);
 
         // resume the context if paused
@@ -206,12 +208,36 @@ function setPartOnChangeEvent(context, sequencer, dom) {
 
         const parsedSongList = [{ binary: midiFile }];
 
-        document.getElementById("play-icon").innerText = "play_arrow";
+        document.getElementById("play-icon").innerText = play_icon;
         sequencer.loadNewSongList(parsedSongList, false);
         dom.speedSelector.selectedIndex = 0;
         sequencer.loop = dom.loopCheckbox.checked;
         sequencer.pause();
     });
+}
+
+export function restoreInstrumentVolumes(synthesizer, json_settings) {
+    if (selectedSong !== null) {
+        // Determine instrument group and selected instrument
+        let instrumentgroup = json_settings["instrumentgroups"][selectedSong["instrumentgroup"]];
+        // Set instrument volumes
+        instrumentgroup.forEach((instrument) => {
+            // Max volume for focus instruments
+            // or for all instruments if no focus is selected.
+            // Channel 0 (kempli + gong) should always have max volume.
+            instrument.channels.forEach((channel) => {
+                if (
+                    (channel == 0) | // kempli + gong always loud
+                    (selectedInstrument === null) | // No focus selected
+                    (selectedInstrument && selectedInstrument.channels.includes(channel))
+                ) {
+                    synthesizer.controllerChange(channel, 7, 127, true);
+                } else {
+                    synthesizer.controllerChange(channel, 7, 50, true);
+                }
+            });
+        });
+    }
 }
 
 /**
@@ -252,30 +278,34 @@ function setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom) {
             // Initialize animation area for the focus instrument
             self.name = "";
             animator.set_instrument(selectedInstrument);
-            animator.animate();
+            // animator.animate();
         }
     };
 }
 
 /**
  * Sets the click events of the player control buttons.
+ * @param {Synthetizer} synthesizer
  * @param {Sequencer} sequencer
+ * @param {JSON} json_settings
  * @param {dictionary of Element} dom DOM elements
  */
-function setPlayPauseStopOnClickEvents(sequencer, dom) {
+function setPlayPauseStopOnClickEvents(synthesizer, sequencer, json_settings, dom) {
     const playPauseIcon = dom.playPauseButton.querySelectorAll(".icon")[0];
+    const play_icon = "\u{25B6}";
+    const pause_icon = "\u{23F8}";
     dom.playPauseButton.onclick = () => {
         if (sequencer.hasDummyData) return;
         if (sequencer.paused) {
-            playPauseIcon.innerText = "pause";
+            playPauseIcon.innerText = pause_icon;
             sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
             sequencer.play(); // resume
             delay(10).then(() => {
                 // Need to wait until sequencer has actually started
-                dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
+                restoreInstrumentVolumes(synthesizer, json_settings); // Restore individual instrument volume
             });
         } else {
-            playPauseIcon.innerText = "play_arrow";
+            playPauseIcon.innerText = play_icon;
             sequencer.pause(); // pause
         }
     };
@@ -285,7 +315,7 @@ function setPlayPauseStopOnClickEvents(sequencer, dom) {
         if (sequencer.hasDummyData) return;
         sequencer.currentTime = 0;
         sequencer.pause();
-        playPauseIcon.innerText = "play_arrow";
+        playPauseIcon.innerText = play_icon;
         dom.audioTimeSlider.value = 0;
     };
 }
