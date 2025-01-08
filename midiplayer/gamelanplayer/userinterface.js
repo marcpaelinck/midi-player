@@ -167,7 +167,7 @@ function setSongOnChangeEvent(dom, json_settings) {
 
         // Populate the instrument selector
         let instr_jsoncontent = json["instrumentgroups"][selectedSong["instrumentgroup"]];
-        populate_dropdown(dom.instrumentSelector, instr_jsoncontent, "group", ["channel"], 1);
+        populate_dropdown(dom.instrumentSelector, instr_jsoncontent, "label", ["channel"], 1);
         dom.instrumentSelector.selectedIndex = 0;
         dom.instrumentSelector.dispatchEvent(new Event("change")); // Restore individual instrument volume
 

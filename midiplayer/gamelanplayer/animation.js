@@ -303,6 +303,10 @@ export class Animator {
         }
     }
 
+    _setPanggulCheckboxValue(value) {
+        this.dom.panggulCheckbox.checked = value;
+    }
+
     #process_svg_document(response) {
         console.log(response);
         if (this.instrument == null) return;
@@ -339,6 +343,13 @@ export class Animator {
             this.dom.panggulCheckbox.onclick();
         } else {
             this._setPanggulCheckboxIsVisible(false);
+        }
+        if (this.instrument.channels.length > 1) {
+            // No panggul animation in case of multiple animations on the same instrument (e.g. polos and sangsih)
+            this._setPanggulCheckboxValue(false);
+            this.dom.panggulCheckbox.onclick();
+            this._setPanggulCheckboxIsVisible(false);
+            this.helpingHand == null;
         }
     }
 
