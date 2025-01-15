@@ -1,8 +1,9 @@
-import { logConsole, loadHTMLContent, delay, fetchJSONData } from "./utilities.js";
+import { logConsole, loadHTMLContent, fetchJSONData } from "./utilities.js";
 import { messageTypes } from "../spessasynth_lib/midi_parser/midi_message.js";
 import { DATAFOLDER_URL_ABSOLUTE } from "../settings.js";
+import { selectedSpeed } from "./userinterface.js";
 
-let IdGenerator = 0;
+// SOMETHING CHANGED AGAIN
 
 class Key {
     channel;
@@ -122,7 +123,7 @@ class HelpingHand {
             };
             this.prevnote = null;
         } else {
-            var timeToNextNote = noteinfo.timeuntil;
+            var timeToNextNote = Math.round(noteinfo.timeuntil / selectedSpeed);
             var key = `${noteinfo.pitch}${noteinfo.octave}`; // E.g. 'DONG1'. This uniquely identifies a key
             // Convert time durations to fractions (keyframe time indicators run from 0 to 1)
             var move_to_fraction = this.moveToDuration / timeToNextNote;
@@ -225,10 +226,7 @@ export class Animator {
             this.colorDict = response;
         });
         this.midiToKeyDict = {};
-        // Set the synthesizer events. Needs to be done only once.
         this.#set_animation_events(this.synthesizer);
-        document.getElementById("svg-embed").setH;
-        // document.getElementById("svg-embed").onload = this.#process_svg_document();
     }
 
     /**
@@ -290,7 +288,7 @@ export class Animator {
         let animationProfile = this.settings.animation.profiles[instrument.animation];
         let svcFile = this.settings.datafolder + "/animation/" + animationProfile.file;
         let embed_div = document.getElementById("svg-embed");
-        loadHTMLContent(embed_div, svcFile).then((response) => {
+        loadHTMLContent(embed_div, svcFile, true).then((response) => {
             this.#process_svg_document(response);
         });
     }
@@ -354,7 +352,7 @@ export class Animator {
     }
 
     /**
-     * Adds synthesizer noteon/noteoff events to highlight the corresponding key on the canvas.
+     * Adds synthesizer noteon/noteoff events to highlight the corresponding key and animate the panggul.
      * @param {Synthetizer} synthesizer
      * @param {Sequencer} sequencer
      */

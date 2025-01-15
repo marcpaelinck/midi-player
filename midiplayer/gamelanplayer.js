@@ -18,7 +18,6 @@ const dom = {
     audioTimeDisplay: document.getElementById("elapsedtime"),
     playPauseButton: document.getElementById("play"),
     stopButton: document.getElementById("stop"),
-    canvas: document.getElementById("canvas"),
     panggulSelectorForm: document.getElementById("show-panggul"),
     panggulCheckbox: document.querySelector("#show-panggul .checkbox"),
 };
@@ -27,12 +26,15 @@ dom.playerElement.style.visibility = "hidden";
 
 let settings;
 
-// Load the JSON settings file
-// fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.yaml")
-//     .then((response) => response.text())
-//     .then((text) => parse(text))
-fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json")
-    .then((response) => response.json())
+fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json", {
+    headers: {
+        "If-None-Match": "force-non-matching-tag",
+    },
+})
+    .then((response) => {
+        console.log("response.headers =", response.headers);
+        return response.json();
+    })
     .then((json) => {
         settings = json;
         settings["datafolder"] = DATAFOLDER_URL_ABSOLUTE;

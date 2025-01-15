@@ -53,7 +53,7 @@ export function waitForObjectContent(selector) {
  * @param {*} element Content will be inserted within this element
  * @param {*} file File containing the XML/HTML content
  */
-export function loadHTMLContent(element, file) {
+export function loadHTMLContent(element, file, forceCacheRefresh = False) {
     return new Promise((resolve, reject) => {
         element.setAttribute("w3-include-html", file);
         let xhttp = new XMLHttpRequest();
@@ -68,6 +68,7 @@ export function loadHTMLContent(element, file) {
             }
         };
         xhttp.open("GET", file, true);
+        if (forceCacheRefresh) xhttp.setRequestHeader("If-None-Match", "force-non-matching-tag");
         xhttp.send();
     });
 }

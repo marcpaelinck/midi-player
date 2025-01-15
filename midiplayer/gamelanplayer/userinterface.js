@@ -3,9 +3,9 @@ import { delay, logConsole, timeFormat } from "./utilities.js";
 import { createAnimator } from "./animation.js";
 import { Synthetizer } from "../spessasynth_lib/synthetizer/synthetizer.js";
 
-let selectedSong = null; // JSON
-let selectedInstrument = null; // JSON
-
+var selectedSong = null; // JSON
+var selectedInstrument = null; // JSON
+export var selectedSpeed = 1;
 /**
  * Initializes events of DOM elements. Parameters from position 3 refer to Element objects.
  * @param {*} sequencer {Sequencer}
@@ -39,7 +39,8 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     // Change playback speed
     dom.speedSelector.onchange = () => {
         if (!sequencer.paused) {
-            sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
+            selectedSpeed = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
+            sequencer.playbackRate = selectedSpeed;
             restoreInstrumentVolumes(synthesizer, json_settings); // Restore individual instrument volumes.
         }
     };
@@ -211,6 +212,7 @@ function setPartOnChangeEvent(context, sequencer, dom) {
         document.getElementById("play-icon").innerText = play_icon;
         sequencer.loadNewSongList(parsedSongList, false);
         dom.speedSelector.selectedIndex = 0;
+        selectedSpeed = 1;
         sequencer.loop = dom.loopCheckbox.checked;
         sequencer.pause();
     });
@@ -298,7 +300,7 @@ function setPlayPauseStopOnClickEvents(synthesizer, sequencer, json_settings, do
         if (sequencer.hasDummyData) return;
         if (sequencer.paused) {
             playPauseIcon.innerText = pause_icon;
-            sequencer.playbackRate = dom.speedSelector.options[dom.speedSelector.selectedIndex].value;
+            sequencer.playbackRate = selectedSpeed;
             sequencer.play(); // resume
             delay(10).then(() => {
                 // Need to wait until sequencer has actually started
