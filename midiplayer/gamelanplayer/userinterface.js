@@ -78,7 +78,7 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
  * @param {string} value label of the json items containing the value to assign to the 'value' property of the option.
  * @param {int} deletefrom delete existing content starting from given index. (-1 = do not delete existing content)
  */
-function populate_dropdown(selector, jsoncontent, display, attributes, deletefrom = 0) {
+function populate_dropdown(selector, jsoncontent, display, attributes, deletefrom = 0, sorted = false) {
     // Remove existing elements
     if (deletefrom >= 0) {
         while (selector.children.length > deletefrom) {
@@ -86,6 +86,11 @@ function populate_dropdown(selector, jsoncontent, display, attributes, deletefro
         }
     }
     selector.selectedIndex = 0;
+    if (sorted) {
+        jsoncontent.sort(function (item1, item2) {
+            return item2[display] < item1[display];
+        });
+    }
     for (let i = 0; i < jsoncontent.length; i++) {
         let item = jsoncontent[i];
         var option = document.createElement("option");
@@ -105,7 +110,7 @@ function populate_dropdown(selector, jsoncontent, display, attributes, deletefro
 function populateSongDropdown(json_settings, dom) {
     // Only keep songs that should be displayed
     json_settings["songs"] = json_settings["songs"].filter((song) => song.display);
-    populate_dropdown(dom.songSelector, json_settings["songs"], "title", [], 1);
+    populate_dropdown(dom.songSelector, json_settings["songs"], "title", [], 1, true);
 }
 
 /**
@@ -149,6 +154,26 @@ function populate_slider_markers(markers, dom) {
     }
 }
 
+function setNotationDownloadLink(dom, filename = null) {
+    if (filename == null) {
+        dom.notationLink.href = "#";
+        dom.notationLink.innerText = "";
+    } else {
+        dom.notationLink.href = DATAFOLDER_URL_ABSOLUTE + "/notation/" + filename;
+        dom.notationLink.innerText = "download notation file";
+    }
+}
+
+function setMidiDownloadLink(dom, filepath = null) {
+    if (filepath == null) {
+        dom.midiLink.href = "#";
+        dom.midiLink.innerText = "";
+    } else {
+        dom.midiLink.href = filepath;
+        dom.midiLink.innerText = "download midi file";
+    }
+}
+
 /**
  * sets the change event for the song selector
  * @param {dictionary of Element} dom DOM elements
@@ -178,6 +203,9 @@ function setSongOnChangeEvent(dom, json_settings) {
         populate_dropdown(dom.partSelector, json["songs"][idx]["parts"], "part", ["part", "file", "loop"], 0);
         dom.partSelector.selectedIndex = 0;
         dom.partSelector.dispatchEvent(new Event("change"));
+        logConsole(json["songs"][idx], "always");
+
+        setNotationDownloadLink(dom, json["songs"][idx]["pdf"]);
     };
 }
 
@@ -195,10 +223,11 @@ function setPartOnChangeEvent(context, sequencer, dom) {
         let selection = event.target.options[event.target.selectedIndex];
         let filepath = DATAFOLDER_URL_ABSOLUTE + "/midifiles/".concat(selection.getAttribute("file"));
         let partname = selection.getAttribute("part");
-        logConsole(`selected file: ${filepath}`, "always");
+        logConsole(`selected file: ${filepath}`, "debug");
         dom.loopCheckbox.checked = selection.getAttribute("loop") === "true";
         let selected_part = selectedSong.parts.find((part) => part.part == partname);
         populate_slider_markers(selected_part.markers, dom);
+        setMidiDownloadLink(dom, filepath);
 
         // resume the context if paused
         await context.resume();

@@ -20,13 +20,15 @@ const dom = {
     stopButton: document.getElementById("stop"),
     panggulSelectorForm: document.getElementById("show-panggul"),
     panggulCheckbox: document.querySelector("#show-panggul .checkbox"),
+    notationLink: document.querySelector("#notation-link"),
+    midiLink: document.querySelector("#midi-link"),
 };
 
 dom.playerElement.style.visibility = "hidden";
 
 let settings;
 
-fetch(DATAFOLDER_URL_ABSOLUTE + "/midifiles/content.json", {
+fetch(DATAFOLDER_URL_ABSOLUTE + "/content.json", {
     headers: {
         "If-None-Match": "force-non-matching-tag",
     },
