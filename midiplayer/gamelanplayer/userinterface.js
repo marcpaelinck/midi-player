@@ -154,13 +154,13 @@ function populate_slider_markers(markers, dom) {
     }
 }
 
-function setNotationDownloadLink(dom, filename = null) {
+function setNotationDownloadLink(dom, filename = null, version = null) {
     if (filename == null) {
         dom.notationLink.href = "#";
         dom.notationLink.innerText = "";
     } else {
         dom.notationLink.href = DATAFOLDER_URL_ABSOLUTE + "/notation/" + filename;
-        dom.notationLink.innerText = "download notation file";
+        dom.notationLink.innerText = `download notation file (version ${version})`;
     }
 }
 
@@ -205,7 +205,7 @@ function setSongOnChangeEvent(dom, json_settings) {
         dom.partSelector.dispatchEvent(new Event("change"));
         logConsole(json["songs"][idx], "always");
 
-        setNotationDownloadLink(dom, json["songs"][idx]["pdf"]);
+        setNotationDownloadLink(dom, json.songs[idx].pdf, json.songs[idx].notation_version);
     };
 }
 
