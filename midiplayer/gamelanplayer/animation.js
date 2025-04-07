@@ -46,6 +46,7 @@ class Key {
 class HelpingHand {
     disabled = false;
     shape = null;
+    dom = null;
     Xvalues = {};
     Yvalues = {};
     animationValues = {};
@@ -57,8 +58,9 @@ class HelpingHand {
     bezier = "cubic-bezier(0,.25,1,.71)"; // default timing curve
     bezierStroke = "cubic-bezier(.99,-0.01,1,.51)"; // timing curve for stroke (accelerates toward stroke)
 
-    constructor(shapeGroup) {
+    constructor(shapeGroup, dom) {
         this.shape = shapeGroup.querySelector(".helpinghand");
+        this.dom = dom;
         var data_x = shapeGroup.querySelector("data.x");
         var data_y = shapeGroup.querySelector("data.y");
         var data_animation = shapeGroup.querySelector("data.animation");
@@ -100,8 +102,9 @@ class HelpingHand {
         // If 'timeuntil' is longer, the remaining idle time is animated in step 2 (slight movement or 'hover' for a 'smooth' animation)
         var keyframes, options;
 
-        if (noteinfo.islast) {
+        if (noteinfo.islast && !this.dom.loopCheckbox.checked) {
             // Final animation: lift the hammer.
+            logConsole("last note", "helpinghand");
             keyframes = [
                 {
                     transform: `translate(${this.Xvalues[this.prevnote] + this.animationValues.stroke_x}px, ${
@@ -336,7 +339,7 @@ export class Animator {
         }
         var helpingHandShape = document.getElementById("helpinghand");
         if (helpingHandShape) {
-            this.helpingHand = new HelpingHand(helpingHandShape);
+            this.helpingHand = new HelpingHand(helpingHandShape, this.dom);
             this._setPanggulCheckboxIsVisible(true);
             this.dom.panggulCheckbox.onclick();
         } else {
@@ -432,13 +435,18 @@ export class Animator {
             // Animation of the 'Helping hand' are triggered by marker metamessages.
             if (animator.instrument == null) return;
             var text = new TextDecoder().decode(t1);
-            if ((t2 == messageTypes.marker) & text.startsWith("{")) {
+            if (t2 == messageTypes.marker && text.startsWith("{")) {
                 var message = JSON.parse(text);
                 if (
-                    ("type" in message) &
-                    (message.type == "helpinghand") &
-                    (message.position == animator.instrument.group)
+                    "type" in message &&
+                    message.type == "helpinghand" &&
+                    message.position == animator.instrument.group &&
+                    // The last helpinghand msg animates the panggul from the last to the first note.
+                    // So we should ignore the first hh message that moves the panggul from the 'rest'
+                    // position to the first note if looping is selected.
+                    (!this.dom.loopCheckbox.checked || message.id > 0)
                 ) {
+                    logConsole(`hh message: ${JSON.stringify(message)}`, "helpinghand");
                     animator.helpingHand.moveToNextKey(message);
                 }
             }

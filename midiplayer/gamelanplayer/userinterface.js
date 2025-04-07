@@ -185,7 +185,7 @@ function setSongOnChangeEvent(dom, json_settings) {
     dom.songSelector.onchange = () => {
         let json = json_settings;
         let selected = dom.songSelector.children[dom.songSelector.selectedIndex];
-        if ((selected.id != "_select_") & (dom.songSelector.options[0].id == "_select_")) {
+        if (selected.id != "_select_" && dom.songSelector.options[0].id == "_select_") {
             dom.songSelector.remove(0);
         }
         let idx = selected.id;
