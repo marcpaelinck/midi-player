@@ -142,16 +142,6 @@ class HelpingHand {
                 idle_time_fraction = 1 - move_to_fraction - stroke_fraction;
             }
 
-            // this.shape.style.offset = this.#calculate_path(this.Xvalues[this.prevnote], this.Xvalues[key]);
-            logConsole(`prevnote=${this.prevnote} note=${key}`, "helpinghand");
-            logConsole(
-                `translateX(${this.Xvalues[this.prevnote]}px), translateX(${this.Xvalues[key]}px)`,
-                "helpinghand"
-            );
-            logConsole(
-                `tot_time=${timeToNextNote}, moveX=${move_to_fraction}, idle=${idle_time_fraction}, strike=${stroke_fraction}`,
-                "helpinghand"
-            );
             // Set the hover X direction equal to that of the movement between the keys
             var hover_x = -Math.sign(this.Xvalues[key] - this.Xvalues[this.prevnote]) * this.animationValues.hover_x;
             if (idle_time_fraction * timeToNextNote < 200) hover_x = 0;
@@ -189,9 +179,10 @@ class HelpingHand {
             this.prevnote = key;
         }
 
+        logConsole(`animation id started ${noteinfo.id}: ${JSON.stringify(noteinfo)}`, "helpinghand");
         this.shape.animate(keyframes, options).finished.then((a) => {
             try {
-                logConsole(JSON.stringify(this.shape.style), "helpinghand");
+                logConsole(`animation id finished ${noteinfo.id}: ${JSON.stringify(noteinfo)}`, "helpinghand");
                 a.commitStyles(); // Persist the final position of the animation
             } catch (exception) {
                 // Happens when user switches intrument during animation: animation's target does not exist any more
@@ -446,7 +437,6 @@ export class Animator {
                     // position to the first note if looping is selected.
                     (!this.dom.loopCheckbox.checked || message.id > 0)
                 ) {
-                    logConsole(`hh message: ${JSON.stringify(message)}`, "helpinghand");
                     animator.helpingHand.moveToNextKey(message);
                 }
             }
