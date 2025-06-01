@@ -12,6 +12,7 @@
 <!--------------------------------------------------------------------> 
 
 <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=pause,play_arrow,stop" /> -->
+<script src="https://kit.fontawesome.com/6399209255.js" crossorigin="anonymous"></script>
 <p id="message">Please wait for the instrument samples to load. This might take up to 10 seconds.</p>
 <p id="logger"></p>
 <div id="midiplayer">
@@ -74,6 +75,15 @@
 			<datalist id="progress-markers">
 			</datalist>
 		</div>
+        <!-- backward and forward spool icons -->
+         <div class="col-12">
+            <div class="fwd-bwd-button">
+                <i id="backward-10" class="fas fa-2xl fa-undo"></i>
+            </div>
+            <div class="fwd-bwd-button">
+                <i id="forward-10" class="fas fa-2xl fa-redo"></i>
+            </div>
+        </div>
 		<div class="col-12 mp-player-button">
 			<!-- <button id="play"><span id="play-icon" class="icon material-symbols-outlined">play_arrow</span></button> <button id="stop"><span class="material-symbols-outlined">stop</span></button> -->
 			<button id="play"><span id="play-icon" class="icon">&#x25B6;</span></button> <button id="stop"><span>&#x23F9;</span></button>

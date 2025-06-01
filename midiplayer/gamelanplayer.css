@@ -72,6 +72,11 @@ datalist#progress-markers option {
   min-width:1px;
   rotate: -75deg;
 }
+.fwd-bwd-button {
+    text-align: center;
+    float: left;
+    width: 50%;
+}
 .mp-player-button {
     font-size: inherit;
     line-height: 30pt;

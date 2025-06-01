@@ -48,6 +48,7 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
     const animator = createAnimator(synthesizer, sequencer, json_settings, dom);
 
     setInstrumentOnChangeEvent(synthesizer, animator, json_settings, dom);
+    setFwd10Bwd10SpoolEvents(sequencer, dom);
     setPlayPauseStopOnClickEvents(synthesizer, sequencer, json_settings, dom);
 
     dom.loopCheckbox.onclick = () => {
@@ -68,6 +69,22 @@ export function initializeDropDownsAndEvents(context, sequencer, synthesizer, js
             dom.audioTimeDisplay.innerHTML = timeFormat(sequencer.currentTime);
         }
     }, 100);
+}
+
+function setFwd10Bwd10SpoolEvents(sequencer, dom) {
+    const seconds = 10;
+    dom.fwd10Icon.onclick = () => {
+        if (sequencer.hasDummyData) return;
+        sequencer.pause();
+        sequencer.currentTime += seconds; //* 1_000; // in milliseconds
+        sequencer.play();
+    };
+    dom.bwd10Icon.onclick = () => {
+        if (sequencer.hasDummyData) return;
+        sequencer.pause();
+        sequencer.currentTime -= seconds; //* 1_000; // in milliseconds
+        sequencer.play();
+    };
 }
 
 /**
@@ -204,6 +221,12 @@ function setSongOnChangeEvent(dom, json_settings) {
         dom.partSelector.selectedIndex = 0;
         dom.partSelector.dispatchEvent(new Event("change"));
         logConsole(json["songs"][idx], "always");
+
+        // Assign the instruments to the required channels
+        /**instr_jsoncontentlist.forEach(function (instrument) {
+            instrument.channels.forEach(function (channel) {});
+            console.log(element);
+        });*/
 
         setNotationDownloadLink(dom, json.songs[idx].pdf, json.songs[idx].notation_version);
     };

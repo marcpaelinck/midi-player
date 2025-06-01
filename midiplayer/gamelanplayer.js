@@ -16,6 +16,8 @@ const dom = {
     audioTimeSlider: document.getElementById("progress"),
     audioTimeSliderMarkers: document.getElementById("progress-markers"),
     audioTimeDisplay: document.getElementById("elapsedtime"),
+    bwd10Icon: document.getElementById("backward-10"),
+    fwd10Icon: document.getElementById("forward-10"),
     playPauseButton: document.getElementById("play"),
     stopButton: document.getElementById("stop"),
     panggulSelectorForm: document.getElementById("show-panggul"),
